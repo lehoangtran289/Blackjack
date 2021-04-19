@@ -1,7 +1,6 @@
 package com.hust.blackjack.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class BlackjackSocketServer implements Runnable {
     public void run() {
         try {
             while (serverSocketChannel.isOpen()) {
-                log.info("Waiting for events......");
+                System.out.println("Waiting for events......");
                 if (selector.select() <= 0) // blocking call
                     continue;
                 log.info("New event received");
