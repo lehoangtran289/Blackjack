@@ -1,17 +1,29 @@
 package com.hust.blackjack.model;
 
+import com.hust.blackjack.exception.CardException;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @EqualsAndHashCode
-@Builder
 public class Card {
-    private final Rank rank;
-    private final Suit suit;
+    private Rank rank;
+    private Suit suit;
+
+    public Card(Rank rank, Suit suit) throws CardException.InvalidCardException {
+        if (!Rank.isValid(rank.getValue()) || !Suit.isValid(suit.getValue())) {
+            throw new CardException.InvalidCardException();
+        } else {
+            this.rank = rank;
+            this.suit = suit;
+        }
+    }
 
     @AllArgsConstructor
+    @Getter
     public enum Rank {
         ACE(1),
         TWO(2),
@@ -27,10 +39,10 @@ public class Card {
         KING(10),
         JACK(10);
 
-        private final int value;  // value of the rank
+        private final int value;
 
-        public int value() {
-            return value;
+        public static boolean isValid(int value) {
+            return value < 1 || value > 10;
         }
 
         @Override
@@ -40,6 +52,7 @@ public class Card {
     }
 
     @AllArgsConstructor
+    @Getter
     public enum Suit {
         CLUBS("club"),
         DIAMONDS("diamonds"),
@@ -48,8 +61,15 @@ public class Card {
 
         private final String value;
 
-        public String value() {
-            return value;
+        private static final List<String> suits = new ArrayList<>();
+        static {
+            for (Suit suit : Suit.values()) {
+                suits.add(suit.getValue());
+            }
+        }
+
+        public static boolean isValid(String suit) {
+            return suits.contains(suit);
         }
 
         @Override
@@ -59,7 +79,7 @@ public class Card {
     }
 
     public int value() {
-        return this.rank.value();
+        return this.rank.getValue();
     }
 
     public Rank rank() {

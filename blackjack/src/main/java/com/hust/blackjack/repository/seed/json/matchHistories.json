@@ -1,0 +1,92 @@
+[
+  {
+    "playerName": "hoangtl1",
+    "resultState": "WIN",
+    "bet": 100,
+    "date": "12/12/2020"
+  },
+  {
+    "playerName": "hoangtl1",
+    "resultState": "WIN",
+    "bet": 200,
+    "date": "13/12/2020"
+  },
+  {
+    "playerName": "hoangtl1",
+    "resultState": "LOSE",
+    "bet": 50,
+    "date": "14/12/2020"
+  },
+  {
+    "playerName": "hoangtl1",
+    "resultState": "WIN",
+    "bet": 200,
+    "date": "15/12/2020"
+  },
+  {
+    "playerName": "hoangtl1",
+    "resultState": "WIN",
+    "bet": 50,
+    "date": "16/12/2020"
+  },
+  {
+    "playerName": "hoangtl2",
+    "resultState": "LOSE",
+    "bet": 200,
+    "date": "17/12/2020"
+  },
+  {
+    "playerName": "hoangtl2",
+    "resultState": "LOSE",
+    "bet": 200,
+    "date": "12/12/2020"
+  },
+  {
+    "playerName": "hoangtl2",
+    "resultState": "PUSH",
+    "bet": 100,
+    "date": "12/12/2020"
+  },
+  {
+    "playerName": "hoangtl2",
+    "resultState": "LOSE",
+    "bet": 20,
+    "date": "12/12/2020"
+  },
+  {
+    "playerName": "hoangtl3",
+    "resultState": "WIN",
+    "bet": 20,
+    "date": "12/12/2020"
+  },
+  {
+    "playerName": "hoangtl3",
+    "resultState": "LOSE",
+    "bet": 120,
+    "date": "16/12/2020"
+  },
+  {
+    "playerName": "hoangtl4",
+    "resultState": "WIN",
+    "bet": 100,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "hoangtl4",
+    "resultState": "LOSE",
+    "bet": 200,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "hoangtl4",
+    "resultState": "LOSE",
+    "bet": 200,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "hoangtl4",
+    "resultState": "BLACKJACK",
+    "bet": 40,
+    "date": "19/12/2020"
+  }
+]

@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class BlackjackApplication implements CommandLineRunner {
 
-	private final BlackjackSocketServer blackjackSocketServer;
+    private final BlackjackSocketServer blackjackSocketServer;
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(BlackjackApplication.class);
@@ -22,9 +22,10 @@ public class BlackjackApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         try {
-            (new Thread(blackjackSocketServer)).start();
+//            (new Thread(blackjackSocketServer)).start();
+            blackjackSocketServer.run();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

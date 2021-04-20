@@ -1,5 +1,6 @@
 package com.hust.blackjack.model;
 
+import com.hust.blackjack.exception.CardException;
 import lombok.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Deck {
     private List<Card> deck;
 
-    public Deck() {
+    public Deck() throws CardException.InvalidCardException {
         for (Card.Suit suit : Card.Suit.values()) {
             for (Card.Rank rank : Card.Rank.values()) {
                 deck.add(new Card(rank, suit));

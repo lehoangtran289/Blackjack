@@ -1,6 +1,11 @@
 package com.hust.blackjack.service;
 
+import com.hust.blackjack.exception.RequestException;
+import com.hust.blackjack.repository.CreditCardRepository;
+import com.hust.blackjack.repository.MatchHistoryRepository;
+import com.hust.blackjack.repository.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,17 +20,29 @@ import java.util.Set;
 
 @Service
 @Slf4j
-public class BlackjackSocketServer implements Runnable {
-    public static final int SERVER_PORT = 1234;
+public class BlackjackSocketServer {
     private final int port;
     private final ServerSocketChannel serverSocketChannel;
     private final Selector selector;
     private final ByteBuffer commonBuffer = ByteBuffer.allocate(10000);
 
-    public BlackjackSocketServer() throws IOException {
-        this.port = SERVER_PORT;
+    private final CreditCardRepository creditCardRepository;
+    private final PlayerRepository playerRepository;
+    private final MatchHistoryRepository matchHistoryRepository;
+    private final RequestProcessingService processingService;
+
+    public BlackjackSocketServer(CreditCardRepository creditCardRepository,
+                                 PlayerRepository playerRepository,
+                                 MatchHistoryRepository matchHistoryRepository,
+                                 RequestProcessingService processingService,
+                                 @Value("${server-port}") int port) throws IOException {
+        this.creditCardRepository = creditCardRepository;
+        this.playerRepository = playerRepository;
+        this.matchHistoryRepository = matchHistoryRepository;
+        this.processingService = processingService;
 
         //Create TCP server channel
+        this.port = port;
         this.serverSocketChannel = ServerSocketChannel.open();
         this.serverSocketChannel.socket().bind(new InetSocketAddress(this.port));
         this.serverSocketChannel.configureBlocking(false);
@@ -36,7 +53,6 @@ public class BlackjackSocketServer implements Runnable {
         commonBuffer.clear();
     }
 
-    @Override
     public void run() {
         try {
             while (serverSocketChannel.isOpen()) {
@@ -49,7 +65,7 @@ public class BlackjackSocketServer implements Runnable {
                 Iterator<SelectionKey> iterator = selectedKeys.iterator();
                 while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();
-                    log.info("Processing {}", key);
+                    log.info("Processing key: {}", key);
 
                     try {
                         if (key.isAcceptable()) {
@@ -82,15 +98,15 @@ public class BlackjackSocketServer implements Runnable {
         log.info("Registering new reading channel: {}", client);
 
         String address = client.getRemoteAddress().toString();
-        client.register(selector, SelectionKey.OP_READ, address);     // TODO: attach object here
+        client.register(selector, SelectionKey.OP_READ, client);     // TODO: attach here
     }
 
     private void processReadingRequest(SelectionKey selectionKey) throws IOException {
         SocketChannel client = (SocketChannel) selectionKey.channel();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();     // store message received
 
         commonBuffer.clear();
-        int read = 0;
+        int read;
         while ((read = client.read(commonBuffer)) > 0) {
             commonBuffer.flip();
             byte[] bytes = new byte[commonBuffer.limit()];
@@ -102,9 +118,16 @@ public class BlackjackSocketServer implements Runnable {
             log.info("Closing channel {}", client);
             client.close();
         } else {
-            String msg = selectionKey.attachment() + ": " + sb;     // TODO: read message here
-            log.info("Message received from {}: {}", client.getRemoteAddress(), msg.trim());
-            processWriting(msg);
+            String msg = sb.toString().trim();     // TODO: read message here
+            log.info("Message received from {}: {}", client.getRemoteAddress(), msg);
+
+            //TODO: process request
+            try {
+                processingService.process(client, msg);
+            } catch (RequestException e) {
+                e.printStackTrace();
+            }
+//            processWriting(msg);
         }
     }
 

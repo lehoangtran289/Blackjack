@@ -1,0 +1,22 @@
+[
+  {
+    "cardNumber": "201767642017",
+    "cardOwner": "hoangtl1",
+    "balance": 10000000
+  },
+  {
+    "cardNumber": "201768612017",
+    "cardOwner": "hoangtl2",
+    "balance": 1500000
+  },
+  {
+    "cardNumber": "201702242017",
+    "cardOwner": "hoangtl3",
+    "balance": 900000
+  },
+  {
+    "cardNumber": "201767962017",
+    "cardOwner": "hoangtl4",
+    "balance": 50000
+  }
+]

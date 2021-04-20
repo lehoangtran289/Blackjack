@@ -1,0 +1,22 @@
+[
+  {
+    "playerName": "hoangtl1",
+    "password": "123",
+    "bank": 1500.0
+  },
+  {
+    "playerName": "hoangtl2",
+    "password": "123",
+    "bank": 580.0
+  },
+  {
+    "playerName": "hoangtl3",
+    "password": "123",
+    "bank": 900.0
+  },
+  {
+    "playerName": "hoangtl4",
+    "password": "123",
+    "bank": 1760
+  }
+]
