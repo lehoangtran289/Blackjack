@@ -124,7 +124,7 @@ public class BlackjackSocketServer {
             //TODO: process request
             try {
                 processingService.process(client, msg);
-            } catch (RequestException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 //            processWriting(msg);

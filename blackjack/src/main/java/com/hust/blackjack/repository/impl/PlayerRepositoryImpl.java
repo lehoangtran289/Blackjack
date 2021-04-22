@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +54,11 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     @Override
     public void save(Player newPlayer) {
         players.add(newPlayer);
+    }
+
+    @Override
+    public boolean existsByChannel(SocketChannel channel) {
+        return players.stream()
+                .anyMatch(p -> p.getChannel() == channel);
     }
 }

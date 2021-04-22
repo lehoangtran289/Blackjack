@@ -2,6 +2,7 @@ package com.hust.blackjack.service;
 
 import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.Player;
+import com.hust.blackjack.model.RequestType;
 import com.hust.blackjack.repository.CreditCardRepository;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import com.hust.blackjack.repository.PlayerRepository;
@@ -37,10 +38,23 @@ public class RequestProcessingService {
         if (request.isEmpty())
             throw new RequestException("Invalid request");
 
-        switch (request.get(0)) {
-            case "LOGIN": {
+        RequestType requestType;
+        try {
+            requestType = RequestType.from(request.get(0));
+        } catch (RequestException ex) {
+            writeToChannel(channel, "INVALID REQUEST\n");
+            throw new RequestException("INVALID REQUEST");
+        }
+
+        switch (requestType) {
+            case LOGIN: {
                 if (!isRequestLengthValid(request)) {
                     throw new RequestException("Invalid request length");
+                }
+                if (playerRepository.existsByChannel(channel)) {
+                    writeToChannel(channel, "FAIL - THIS CHANNEL ALREADY LOGIN, MUST LOGOUT FIRST\n");
+                    log.error("channel already login");
+                    break;
                 }
                 String playerName = request.get(1);
                 String password = request.get(2);
@@ -56,11 +70,12 @@ public class RequestProcessingService {
                     log.error("player already login");
                     break;
                 }
+
                 writeToChannel(channel, "LOGIN SUCCESS\n");
                 player.setChannel(channel);
                 break;
             }
-            case "LOGOUT": {
+            case LOGOUT: {
                 if (!isRequestLengthValid(request)) {
                     writeToChannel(channel, "INVALID REQUEST LENGTH\n");
                     throw new RequestException("Invalid request length");
@@ -87,7 +102,7 @@ public class RequestProcessingService {
                 player.setChannel(null);
                 break;
             }
-            case "SIGNUP": {
+            case SIGNUP: {
                 if (!isRequestLengthValid(request)) {
                     break;
                 }
@@ -104,18 +119,18 @@ public class RequestProcessingService {
                 break;
             }
             default:
+                writeToChannel(channel, "INVALID REQUEST\n");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
         }
     }
 
-    private boolean isRequestLengthValid(List<String> request) throws RequestException.InvalidRequestLengthException {
-        switch (request.get(0)) {
-            case "LOGIN":
+    private boolean isRequestLengthValid(List<String> request) throws RequestException {
+        switch (RequestType.from(request.get(0))) {
+            case LOGIN:
+            case SIGNUP:
                 return request.size() == 3;
-            case "LOGOUT":
+            case LOGOUT:
                 return request.size() == 2;
-            case "SIGNUP":
-                return request.size() == 3;
             default:
                 throw new RequestException.InvalidRequestLengthException();
         }

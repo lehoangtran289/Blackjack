@@ -2,6 +2,7 @@ package com.hust.blackjack.repository;
 
 import com.hust.blackjack.model.Player;
 
+import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +16,6 @@ public interface PlayerRepository {
     boolean isPlayerExists(String playerName);
 
     void save(Player newPlayer);
+
+    boolean existsByChannel(SocketChannel channel);
 }
