@@ -1,25 +1,8 @@
 from tkinter import *
+import tkinter.messagebox
 import socket
 from utils import configs
-from utils import client_utils
-"""
-class App:
-    def __init__(self, root):
-        self.root= root
-        #setting title
-        root.title("BlackJack")
-        #setting window size
-        width= global_const.WINDOW_WIDTH
-        height= global_const.WINDOW_HEIGHT
-        screenwidth = root.winfo_screenwidth()
-        screenheight = root.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        root.geometry(alignstr)
-        root.resizable(width=False, height=False)
 
-        #setup Frames
-        container = Frame(self)
-        container.pack()"""
 class App(Tk):
 	def __init__(self, *args, **kwargs):
 		Tk.__init__(self, *args, **kwargs)
@@ -33,17 +16,17 @@ class App(Tk):
 
 		self.frames = {}
 
-		for F in (HomePage, LoginPage, SignupPage):
+		for F in (StartPage, LoginPage, SignupPage, HomePage):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")
 
-		self.show_frame(HomePage)	
+		self.show_frame(StartPage)	
 	def show_frame(self, context):
 		frame = self.frames[context]
 		frame.tkraise()
 
-class HomePage(Frame):
+class StartPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         label = Label(self, text= "Welcome to BlackJack")
@@ -69,14 +52,23 @@ class LoginPage(Frame):
 
         login_button = Button(self, text= "Login", command= self.login)
         login_button.pack()
-        back_button = Button(self, text= "Back", command= lambda:controller.show_frame(HomePage))
+        back_button = Button(self, text= "Back", command= lambda:controller.show_frame(StartPage))
         back_button.pack()
 
     def login(self):
-        message = "LOGIN " + self.username.get() + " " + self.password.get()
-        s.sendall(message.encode())
-        recv = s.recv(1024)
-        print(recv.decode('utf-8'))
+        if self.username.get() == "":
+            tkinter.messagebox.showinfo("Sign up failed",  "Username must not be empty")
+        elif self.password.get() == "":
+            tkinter.messagebox.showinfo("Sign up failed",  "Password must not be empty")
+        else:
+            message = "LOGIN " + self.username.get() + " " + self.password.get()
+            s.sendall(message.encode())
+            response = s.recv(1024)
+            response_token = response.decode('utf-8').split('-')
+            if response_token[0] == "LOGINSUCCESS":
+                self.controller.show_frame(HomePage)
+            else:
+                tkinter.messagebox.showinfo("Login failed",  response_token[1])
 
 class SignupPage(Frame):
     def __init__(self, parent, controller):
@@ -94,21 +86,56 @@ class SignupPage(Frame):
 
         signup_button = Button(self, text= "Signup", command= self.signup)
         signup_button.pack()
-        back_button = Button(self, text= "Back", command= lambda:controller.show_frame(HomePage))
+        back_button = Button(self, text= "Back", command= lambda:controller.show_frame(StartPage))
         back_button.pack()
 
     def signup(self):
-        message = "SIGNUP " + self.username.get() + " " + self.password.get()
-        s.sendall(message.encode())
-        recv = s.recv(1024)
-        print(recv.decode('utf-8'))
+        if self.username.get() == "":
+            tkinter.messagebox.showinfo("Sign up failed",  "Username must not be empty")
+        elif self.password.get() == "":
+            tkinter.messagebox.showinfo("Sign up failed",  "Password must not be empty")
+        else:
+            message = "SIGNUP " + self.username.get() + " " + self.password.get()
+            s.sendall(message.encode())
+            response = s.recv(1024)
+            response_token = response.decode('utf-8').split('-')
+            if response_token[0] == "SIGNUPSUCCESS":
+                tkinter.messagebox.showinfo("Sign up",  "Welcome " + self.username.get() + " to BlackJack")
+                self.controller.show_frame(StartPage)
+            else:
+                tkinter.messagebox.showinfo("Sign up failed",  response_token[1])
 
-class GamePage(Frame):
+class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
-        label = Label(self, text= "This is game page")
+        label = Label(self, text= "This is home page")
         label.pack()
+
+        play_button = Button(self, text= "Play!", command= self.play)
+        play_button.pack()
+        acc_info_button = Button(self, text= "Account Information", command= self.view_acc_info)
+        acc_info_button.pack()
+        credits_button = Button(self, text= "Credits", command= self.view_credits)
+        credits_button.pack()
+        logout_button = Button(self, text= "Back", command= self.logout)
+        logout_button.pack()
+
+    def play(self):
+        print("play")
+        pass
+
+    def view_acc_info(self):
+        print("account info")
+        pass
+
+    def view_credits(self):
+        print("credits")
+        pass
+
+    def logout(self):
+        print("logout")
+        pass
 
 class MainMenu:
 	def __init__(self, master):

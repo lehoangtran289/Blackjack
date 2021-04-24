@@ -11,6 +11,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print('Connected by', addr)
         while True:
             data = conn.recv(1024)
+            msg = data.decode('utf-8')
+            arr = []
+            header = msg.split(" ")[0]
             if not data:
                 break
-            conn.sendall(data)
+            if header == "LOGIN":
+                conn.sendall(b'LOGINSUCCESS')
+            if header == "SIGNUP":
+                conn.sendall(b'SIGNUPSUCCESS')
