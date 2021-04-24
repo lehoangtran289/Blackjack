@@ -6,6 +6,7 @@ import com.hust.blackjack.model.RequestType;
 import com.hust.blackjack.repository.CreditCardRepository;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import com.hust.blackjack.repository.PlayerRepository;
+import com.hust.blackjack.repository.seed.dto.PlayerGameInfo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -123,6 +124,35 @@ public class RequestProcessingService {
                 log.info("Sign up success with player {}", newPlayer);
                 break;
             }
+            case INFO: {
+                if (!isRequestLengthValid(request)) {
+                    writeToChannel(channel, "FAIL - Invalid INFO request length");
+                    throw new RequestException("Invalid request length");
+                }
+                String playerName = request.get(1);
+                Optional<Player> optionalPlayer = playerRepository.getPlayerByName(playerName);
+                if (optionalPlayer.isEmpty()) {
+                    writeToChannel(channel, "INFOFAIL - Player not found");
+                    log.error("Invalid playerName {}", playerName);
+                    break;
+                }
+                Player player = optionalPlayer.get();
+                PlayerGameInfo playerGameInfo = matchHistoryRepository.getPlayerGameInfoByName(playerName);
+                String msg = String.join(" ", Arrays.asList(
+                        requestType.getValue(),
+                        playerGameInfo.getPlayerName(),
+                        String.valueOf(player.getBank()),
+                        String.valueOf(playerGameInfo.getMoneyEarn()),
+                        String.valueOf(playerGameInfo.getWin()),
+                        String.valueOf(playerGameInfo.getLose()),
+                        String.valueOf(playerGameInfo.getPush()),
+                        String.valueOf(playerGameInfo.getBust()),
+                        String.valueOf(playerGameInfo.getBlackjack())
+                ));
+                writeToChannel(channel, msg);
+                log.info("Game Info of player {}: {}", playerName, playerGameInfo);
+                break;
+            }
             default:
                 writeToChannel(channel, "FAIL - Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
@@ -135,6 +165,7 @@ public class RequestProcessingService {
             case SIGNUP:
                 return request.size() == 3;
             case LOGOUT:
+            case INFO:
                 return request.size() == 2;
             default:
                 throw new RequestException.InvalidRequestLengthException();

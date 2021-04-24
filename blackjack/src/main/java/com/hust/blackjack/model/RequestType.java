@@ -12,7 +12,8 @@ import java.util.Map;
 public enum RequestType {
     LOGIN("LOGIN"),
     LOGOUT("LOGOUT"),
-    SIGNUP("SIGNUP");
+    SIGNUP("SIGNUP"),
+    INFO("INFO");
 
     private final String value;
     private static final Map<String, RequestType> map = new HashMap<>();
