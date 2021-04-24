@@ -17,7 +17,6 @@ public class BlackjackApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(BlackjackApplication.class);
-//        app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
     }
 
