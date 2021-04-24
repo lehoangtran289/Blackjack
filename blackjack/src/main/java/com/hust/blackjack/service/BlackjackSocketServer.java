@@ -121,7 +121,6 @@ public class BlackjackSocketServer {
             String msg = sb.toString().trim();     // TODO: read message here
             log.info("Message received from {}: {}", client.getRemoteAddress(), msg);
 
-            //TODO: process request
             try {
                 processingService.process(client, msg);
             } catch (Exception e) {

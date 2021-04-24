@@ -14,7 +14,9 @@ public enum RequestType {
     LOGOUT("LOGOUT"),
     SIGNUP("SIGNUP"),
     INFO("INFO"),
-    RANKING("GETRANKING");
+    RANKING("GETRANKING"),
+    ADDMONEY("ADD"),
+    WITHDRAWMONEY("WDR");
 
     private final String value;
     private static final Map<String, RequestType> map = new HashMap<>();
