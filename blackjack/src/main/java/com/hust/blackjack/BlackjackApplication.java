@@ -23,6 +23,7 @@ public class BlackjackApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
+//            (new Thread(blackjackSocketServer)).start();
             blackjackSocketServer.run();
         } catch (Exception ex) {
             ex.printStackTrace();
