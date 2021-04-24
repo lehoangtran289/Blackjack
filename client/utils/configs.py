@@ -1,0 +1,14 @@
+
+# socket
+HOST = "127.0.0.1"
+PORT = 3000
+
+# window size
+WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 800
+
+
+# message header
+SIGNUP_SUCCESS = "SIGNUPSUCCESS"
+SIGNUP_FAIL = "SIGNUPFAIL"
+
