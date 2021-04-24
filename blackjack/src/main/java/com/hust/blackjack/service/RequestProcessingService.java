@@ -32,27 +32,29 @@ public class RequestProcessingService {
         this.matchHistoryRepository = matchHistoryRepository;
     }
 
-    //TODO: standardize Response to client :D
     public void process(SocketChannel channel, String requestMsg) throws RequestException, IOException {
         List<String> request = new ArrayList<>(Arrays.asList(requestMsg.split(" ")));
-        if (request.isEmpty())
-            throw new RequestException("Invalid request");
+        if (request.isEmpty()) {
+            writeToChannel(channel, "FAIL - Invalid request");
+            throw new RequestException("Invalid request, request empty");
+        }
 
         RequestType requestType;
         try {
             requestType = RequestType.from(request.get(0));
         } catch (RequestException ex) {
-            writeToChannel(channel, "INVALID REQUEST\n");
-            throw new RequestException("INVALID REQUEST");
+            writeToChannel(channel, "FAIL - Invalid request");
+            throw new RequestException("Invalid request type");
         }
 
         switch (requestType) {
             case LOGIN: {
                 if (!isRequestLengthValid(request)) {
+                    writeToChannel(channel, "FAIL - Invalid LOGIN request length");
                     throw new RequestException("Invalid request length");
                 }
                 if (playerRepository.existsByChannel(channel)) {
-                    writeToChannel(channel, "FAIL - THIS CHANNEL ALREADY LOGIN, MUST LOGOUT FIRST\n");
+                    writeToChannel(channel, "LOGINFAIL - Channel already login, logout first");
                     log.error("channel already login");
                     break;
                 }
@@ -60,66 +62,69 @@ public class RequestProcessingService {
                 String password = request.get(2);
                 Optional<Player> optionalPlayer = playerRepository.getPlayerByNameAndPassword(playerName, password);
                 if (optionalPlayer.isEmpty()) {
-                    writeToChannel(channel, "LOGIN FAIL\n");
+                    writeToChannel(channel, "LOGINFAIL - Username or password incorrect");
                     log.error("Invalid playerName password");
                     break;
                 }
                 Player player = optionalPlayer.get();
                 if (player.getChannel() != null) {
-                    writeToChannel(channel, "PLAYER ALREADY LOGIN\n");
+                    writeToChannel(channel, "LOGINFAIL - Player already login");
                     log.error("player already login");
                     break;
                 }
-
-                writeToChannel(channel, "LOGIN SUCCESS\n");
+                writeToChannel(channel, "LOGINSUCCESS " + player.getPlayerName() + " " + player.getBank());
+                log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
                 player.setChannel(channel);
                 break;
             }
             case LOGOUT: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "INVALID REQUEST LENGTH\n");
+                    writeToChannel(channel, "FAIL - Invalid LOGOUT request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
                 Optional<Player> optionalPlayer = playerRepository.getPlayerByName(playerName);
                 if (optionalPlayer.isEmpty()) {
-                    writeToChannel(channel, "INVALID PLAYERNAME\n");
-                    log.error("Invalid playerName");
+                    writeToChannel(channel, "LOGOUTFAIL- Username not found");
+                    log.error("Invalid playerName {}", playerName);
                     break;
                 }
                 Player player = optionalPlayer.get();
                 if (player.getChannel() == null) {
-                    writeToChannel(channel, "PLAYER HAVEN'T LOGIN\n");
-                    log.error("player haven't login");
+                    writeToChannel(channel, "LOGOUTFAIL - Player haven't login");
+                    log.error("player {} haven't login", player.getPlayerName());
                     break;
                 }
                 if (player.getChannel() != channel) {
-                    writeToChannel(channel, "INVALID CHANNEL\n");
+                    writeToChannel(channel, "LOGOUTFAIL - Invalid channel to logout");
                     log.error("invalid channel to logout");
                     break;
                 }
-                writeToChannel(channel, "LOGOUT SUCCESS\n");
+                writeToChannel(channel, "LOGOUTSUCCESS");
+                log.info("Player {} at channel {} logout success", player.getPlayerName(), player.getChannel());
                 player.setChannel(null);
                 break;
             }
             case SIGNUP: {
                 if (!isRequestLengthValid(request)) {
-                    break;
+                    writeToChannel(channel, "FAIL - Invalid SIGNUP request length");
+                    throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
                 String password = request.get(2);
                 if (playerRepository.isPlayerExists(playerName)) {
-                    writeToChannel(channel, "PLAYERNAME EXISTS\n");
+                    writeToChannel(channel, "SIGNUPFAIL - Username already exists");
                     log.error("playerName {} exists", playerName);
                     break;
                 }
                 Player newPlayer = new Player(playerName, password);
                 playerRepository.save(newPlayer);
-                writeToChannel(channel, "SIGNUPSUCCESS\n");
+                writeToChannel(channel, "SIGNUPSUCCESS");
+                log.info("Sign up success with player {}", newPlayer);
                 break;
             }
             default:
-                writeToChannel(channel, "INVALID REQUEST\n");
+                writeToChannel(channel, "FAIL - Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
         }
     }
@@ -137,6 +142,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
+        msg += "\n";
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
 
