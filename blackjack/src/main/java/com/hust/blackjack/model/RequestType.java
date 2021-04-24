@@ -13,7 +13,8 @@ public enum RequestType {
     LOGIN("LOGIN"),
     LOGOUT("LOGOUT"),
     SIGNUP("SIGNUP"),
-    INFO("INFO");
+    INFO("INFO"),
+    RANKING("GETRANKING");
 
     private final String value;
     private static final Map<String, RequestType> map = new HashMap<>();

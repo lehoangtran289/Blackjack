@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -60,5 +61,12 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     public boolean existsByChannel(SocketChannel channel) {
         return players.stream()
                 .anyMatch(p -> p.getChannel() == channel);
+    }
+
+    @Override
+    public List<String> getAllPlayerName() {
+        return players.stream()
+                .map(Player::getPlayerName)
+                .collect(Collectors.toList());
     }
 }

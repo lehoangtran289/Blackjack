@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hust.blackjack.model.CreditCard;
 import com.hust.blackjack.model.MatchHistory;
 import com.hust.blackjack.model.Player;
-import com.hust.blackjack.repository.seed.dto.PlayerDTO;
+import com.hust.blackjack.model.dto.PlayerDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

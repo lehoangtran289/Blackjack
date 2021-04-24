@@ -1,14 +1,17 @@
 package com.hust.blackjack.repository.impl;
 
 import com.hust.blackjack.model.MatchHistory;
+import com.hust.blackjack.model.dto.PlayerRanking;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import com.hust.blackjack.repository.seed.Seed;
-import com.hust.blackjack.repository.seed.dto.PlayerGameInfo;
+import com.hust.blackjack.model.dto.PlayerGameInfo;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +71,26 @@ public class MatchHistoryRepositoryImpl implements MatchHistoryRepository {
                 .push(push)
                 .bust(bust)
                 .blackjack(blackjack)
+                .build();
+    }
+
+    @Override
+    public List<PlayerRanking> getAllPlayerRanking(List<String> playerNames) {
+        List<PlayerRanking> rankings = playerNames.stream()
+                .map(this::getPlayerGameInfoByName)
+                .map(this::convertToPlayerRanking)
+                .sorted(Comparator.comparingDouble(PlayerRanking::getMoneyEarn).reversed())
+                .collect(Collectors.toList());
+        for (int i = 0; i < rankings.size(); ++i) {
+            rankings.get(i).setPlayerRank(i + 1);
+        }
+        return rankings;
+    }
+
+    private PlayerRanking convertToPlayerRanking(PlayerGameInfo playerGameInfo) {
+        return PlayerRanking.builder()
+                .playerName(playerGameInfo.getPlayerName())
+                .moneyEarn(playerGameInfo.getMoneyEarn())
                 .build();
     }
 }

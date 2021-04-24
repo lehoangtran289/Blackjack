@@ -3,10 +3,11 @@ package com.hust.blackjack.service;
 import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.RequestType;
+import com.hust.blackjack.model.dto.PlayerRanking;
 import com.hust.blackjack.repository.CreditCardRepository;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import com.hust.blackjack.repository.PlayerRepository;
-import com.hust.blackjack.repository.seed.dto.PlayerGameInfo;
+import com.hust.blackjack.model.dto.PlayerGameInfo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -48,6 +50,7 @@ public class RequestProcessingService {
             throw new RequestException("Invalid request type");
         }
 
+        // TODO: refactor repo - service
         switch (requestType) {
             case LOGIN: {
                 if (!isRequestLengthValid(request)) {
@@ -61,7 +64,8 @@ public class RequestProcessingService {
                 }
                 String playerName = request.get(1);
                 String password = request.get(2);
-                Optional<Player> optionalPlayer = playerRepository.getPlayerByNameAndPassword(playerName, password);
+                Optional<Player> optionalPlayer = playerRepository.getPlayerByNameAndPassword(playerName,
+                        password);
                 if (optionalPlayer.isEmpty()) {
                     writeToChannel(channel, "LOGINFAIL - Username or password incorrect");
                     log.error("Invalid playerName password");
@@ -124,7 +128,7 @@ public class RequestProcessingService {
                 log.info("Sign up success with player {}", newPlayer);
                 break;
             }
-            case INFO: {
+            case INFO: { // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
                 if (!isRequestLengthValid(request)) {
                     writeToChannel(channel, "FAIL - Invalid INFO request length");
                     throw new RequestException("Invalid request length");
@@ -153,6 +157,22 @@ public class RequestProcessingService {
                 log.info("Game Info of player {}: {}", playerName, playerGameInfo);
                 break;
             }
+            case RANKING: { // RANK [List of {ranking} {user_name} {money_gain/lose}]
+                if (!isRequestLengthValid(request)) {
+                    writeToChannel(channel, "FAIL - Invalid RANKING request length");
+                    throw new RequestException("Invalid request length");
+                }
+
+                List<String> playerNames = playerRepository.getAllPlayerName();
+                List<PlayerRanking> rankings = matchHistoryRepository.getAllPlayerRanking(playerNames);
+                String msg = "RANK [" +
+                        rankings.stream().map(PlayerRanking::toString)
+                                .collect(Collectors.joining(", ")) +
+                        "]";
+                writeToChannel(channel, msg);
+                log.info("Get rankings {}", rankings);
+                break;
+            }
             default:
                 writeToChannel(channel, "FAIL - Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
@@ -161,12 +181,14 @@ public class RequestProcessingService {
 
     private boolean isRequestLengthValid(List<String> request) throws RequestException {
         switch (RequestType.from(request.get(0))) {
-            case LOGIN:
-            case SIGNUP:
-                return request.size() == 3;
+            case RANKING:
+                return request.size() == 1;
             case LOGOUT:
             case INFO:
                 return request.size() == 2;
+            case LOGIN:
+            case SIGNUP:
+                return request.size() == 3;
             default:
                 throw new RequestException.InvalidRequestLengthException();
         }

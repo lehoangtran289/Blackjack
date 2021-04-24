@@ -18,4 +18,6 @@ public interface PlayerRepository {
     void save(Player newPlayer);
 
     boolean existsByChannel(SocketChannel channel);
+
+    List<String> getAllPlayerName();
 }

@@ -1,4 +1,4 @@
-package com.hust.blackjack.repository.seed.dto;
+package com.hust.blackjack.model.dto;
 
 import lombok.*;
 
