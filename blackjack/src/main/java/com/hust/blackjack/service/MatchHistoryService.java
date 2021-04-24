@@ -1,15 +1,18 @@
 package com.hust.blackjack.service;
 
+import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.model.MatchHistory;
+import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
 import com.hust.blackjack.model.dto.PlayerRanking;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -22,7 +25,12 @@ public class MatchHistoryService {
         this.playerService = playerService;
     }
 
-    public PlayerGameInfo getPlayerGameInfoByName(String playerName) {
+    public PlayerGameInfo getPlayerGameInfoByName(String playerName) throws PlayerException.PlayerNotFoundException {
+        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
+        if (optionalPlayer.isEmpty()) {
+            log.error("Invalid playerName {}", playerName);
+            throw new PlayerException.PlayerNotFoundException();
+        }
         List<MatchHistory> playerMatchHistory = matchHistoryRepository.findAllByPlayerName(playerName);
         int win = 0, lose = 0, push = 0, bust = 0, blackjack = 0;
         double moneyEarn = 0;
@@ -52,7 +60,7 @@ public class MatchHistoryService {
             }
         }
         return PlayerGameInfo.builder()
-                .playerName(playerName)
+                .player(optionalPlayer.get())
                 .moneyEarn(moneyEarn)
                 .win(win)
                 .lose(lose)
@@ -62,13 +70,16 @@ public class MatchHistoryService {
                 .build();
     }
 
-    public List<PlayerRanking> getAllPlayerRanking() {
+    public List<PlayerRanking> getAllPlayerRanking() throws PlayerException.PlayerNotFoundException {
         List<String> playerNames = playerService.getAllPlayerName();
-        List<PlayerRanking> rankings = playerNames.stream()
-                .map(this::getPlayerGameInfoByName)
-                .map(this::convertToPlayerRanking)
-                .sorted(Comparator.comparingDouble(PlayerRanking::getMoneyEarn).reversed())
-                .collect(Collectors.toList());
+        List<PlayerRanking> rankings = new ArrayList<>();
+        for (String playerName : playerNames) {
+            PlayerGameInfo playerGameInfo = getPlayerGameInfoByName(playerName);
+            rankings.add(convertToPlayerRanking(playerGameInfo));
+        }
+        rankings.sort(Comparator.comparingDouble(PlayerRanking::getMoneyEarn).reversed());
+
+        // update ranking
         for (int i = 0; i < rankings.size(); ++i) {
             rankings.get(i).setPlayerRank(i + 1);
         }
@@ -77,7 +88,7 @@ public class MatchHistoryService {
 
     private PlayerRanking convertToPlayerRanking(PlayerGameInfo playerGameInfo) {
         return PlayerRanking.builder()
-                .playerName(playerGameInfo.getPlayerName())
+                .playerName(playerGameInfo.getPlayer().getPlayerName())
                 .moneyEarn(playerGameInfo.getMoneyEarn())
                 .build();
     }

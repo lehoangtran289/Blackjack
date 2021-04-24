@@ -1,5 +1,6 @@
 package com.hust.blackjack.model.dto;
 
+import com.hust.blackjack.model.Player;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class PlayerGameInfo {
-    private String playerName;
+    private Player player;
     private double moneyEarn;
     private int win;
     private int lose;

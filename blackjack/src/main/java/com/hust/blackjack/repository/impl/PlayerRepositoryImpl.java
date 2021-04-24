@@ -53,8 +53,9 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public void save(Player newPlayer) {
+    public Player save(Player newPlayer) {
         players.add(newPlayer);
+        return newPlayer;
     }
 
     @Override

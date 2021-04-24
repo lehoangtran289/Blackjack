@@ -12,4 +12,18 @@ public class PlayerException extends Exception{
         public PlayerNotFoundException(String msg) { super(msg); }
         public PlayerNotFoundException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class PlayerAlreadyExistsException extends RequestException {
+        public PlayerAlreadyExistsException() { }
+        public PlayerAlreadyExistsException(Throwable throwable) { super(throwable); }
+        public PlayerAlreadyExistsException(String msg) { super(msg); }
+        public PlayerAlreadyExistsException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
+
+    public static class NotEnoughBankBalanceException extends RequestException{
+        public NotEnoughBankBalanceException() { }
+        public NotEnoughBankBalanceException(Throwable throwable) { super(throwable); }
+        public NotEnoughBankBalanceException(String msg) { super(msg); }
+        public NotEnoughBankBalanceException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }

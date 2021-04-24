@@ -1,5 +1,6 @@
 package com.hust.blackjack.service;
 
+import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.model.Player;
 import com.hust.blackjack.repository.PlayerRepository;
 import lombok.extern.log4j.Log4j2;
@@ -34,8 +35,13 @@ public class PlayerService {
         return playerRepository.isPlayerExists(playerName);
     }
 
-    public void saveNewPlayer(Player newPlayer) {
-        playerRepository.save(newPlayer);
+    public Player saveNewPlayer(String playerName, String password) throws PlayerException.PlayerAlreadyExistsException {
+        if (this.isPlayerExists(playerName)) {
+            log.error("PlayerName {} already exists", playerName);
+            throw new PlayerException.PlayerAlreadyExistsException();
+        }
+        Player newPlayer = new Player(playerName, password);
+        return playerRepository.save(newPlayer);
     }
 
     public List<String> getAllPlayerName() {

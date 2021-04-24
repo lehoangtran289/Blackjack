@@ -13,6 +13,15 @@ public class CreditCard {
     private String cardOwner;
     private double balance;
 
+    @Getter
+    @AllArgsConstructor
+    public enum Action {
+        ADD("ADD"),
+        WITHDRAW("WDR");
+
+        private final String value;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CreditCard) {

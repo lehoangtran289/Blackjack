@@ -117,15 +117,14 @@ public class RequestProcessingService {
                 }
                 String playerName = request.get(1);
                 String password = request.get(2);
-                if (playerService.isPlayerExists(playerName)) {
+                try {
+                    Player newPlayer = playerService.saveNewPlayer(playerName, password);
+                    writeToChannel(channel, "SIGNUPSUCCESS");
+                    log.info("Sign up success with player {}", newPlayer);
+                } catch (PlayerException.PlayerAlreadyExistsException e) {
                     writeToChannel(channel, "SIGNUPFAIL - Username already exists");
-                    log.error("playerName {} exists", playerName);
-                    break;
+                    throw e;
                 }
-                Player newPlayer = new Player(playerName, password);
-                playerService.saveNewPlayer(newPlayer);
-                writeToChannel(channel, "SIGNUPSUCCESS");
-                log.info("Sign up success with player {}", newPlayer);
                 break;
             }
             case INFO: { // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
@@ -134,27 +133,25 @@ public class RequestProcessingService {
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
-                Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-                if (optionalPlayer.isEmpty()) {
-                    writeToChannel(channel, "INFOFAIL - Player not found");
-                    log.error("Invalid playerName {}", playerName);
-                    break;
-                }
-                Player player = optionalPlayer.get();
-                PlayerGameInfo playerGameInfo = matchHistoryService.getPlayerGameInfoByName(playerName);
-                String msg = String.join(" ", Arrays.asList(
+                try {
+                    PlayerGameInfo playerGameInfo = matchHistoryService.getPlayerGameInfoByName(playerName);
+                    String msg = String.join(" ", Arrays.asList(
                         requestType.getValue(),
-                        playerGameInfo.getPlayerName(),
-                        String.valueOf(player.getBank()),
+                        playerGameInfo.getPlayer().getPlayerName(),
+                        String.valueOf(playerGameInfo.getPlayer().getBank()),
                         String.valueOf(playerGameInfo.getMoneyEarn()),
                         String.valueOf(playerGameInfo.getWin()),
                         String.valueOf(playerGameInfo.getLose()),
                         String.valueOf(playerGameInfo.getPush()),
                         String.valueOf(playerGameInfo.getBust()),
                         String.valueOf(playerGameInfo.getBlackjack())
-                ));
-                writeToChannel(channel, msg);
-                log.info("Game Info of player {}: {}", playerName, playerGameInfo);
+                    ));
+                    writeToChannel(channel, msg);
+                    log.info("Game Info of player {}: {}", playerName, playerGameInfo);
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "INFOFAIL - Player not found");
+                    throw e;
+                }
                 break;
             }
             case RANKING: { // RANK [List of {ranking} {user_name} {money_gain/lose}]
@@ -179,12 +176,14 @@ public class RequestProcessingService {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
                 double amount = Double.parseDouble(request.get(3));
-
                 try {
-                    Player player = creditCardService.addMoney(playerName, cardNumber, amount);
-                    writeToChannel(channel, "ADDSUCCESS" + player.getPlayerName() + " " + player.getBank());
+                    Player player = creditCardService.manageCreditCard(
+                            CreditCard.Action.ADD, playerName, cardNumber, amount
+                    );
+                    writeToChannel(channel, "ADDSUCCESS " + player.getPlayerName() + " " + player.getBank());
                     log.info("Add money from card {} to player {} success. New balance: {} ",
-                            cardNumber, playerName, player.getBank());
+                            cardNumber, playerName, player.getBank()
+                    );
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "ADDFAIL - Player not found");
                     throw e;
@@ -203,9 +202,26 @@ public class RequestProcessingService {
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
-                String creditCardId = request.get(2);
+                String cardNumber = request.get(2);
                 double amount = Double.parseDouble(request.get(3));
-                //TODO
+                try {
+                    Player player = creditCardService.manageCreditCard(
+                            CreditCard.Action.WITHDRAW, playerName, cardNumber, amount
+                    );
+                    writeToChannel(channel, "WDRSUCCESS " + player.getPlayerName() + " " + player.getBank());
+                    log.info("Withdrawn money from player {} to card {} success. New balance: {} ",
+                            playerName, cardNumber, player.getBank()
+                    );
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "WDRFAIL - Player not found");
+                    throw e;
+                } catch (CreditCardException.CreditCardNotFoundException e) {
+                    writeToChannel(channel, "WDRFAIL - credit card not found");
+                    throw e;
+                } catch (PlayerException.NotEnoughBankBalanceException e) {
+                    writeToChannel(channel, "WDRFAIL - Player bank balance not enough");
+                    throw e;
+                }
                 break;
             }
             default:

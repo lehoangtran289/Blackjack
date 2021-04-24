@@ -15,7 +15,7 @@ public interface PlayerRepository {
 
     boolean isPlayerExists(String playerName);
 
-    void save(Player newPlayer);
+    Player save(Player newPlayer);
 
     boolean existsByChannel(SocketChannel channel);
 
