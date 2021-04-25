@@ -98,7 +98,7 @@ public class BlackjackSocketServer {
         log.info("Registering new reading channel: {}", client);
 
         String address = client.getRemoteAddress().toString();
-        client.register(selector, SelectionKey.OP_READ, client);     // TODO: attach here
+        client.register(selector, SelectionKey.OP_READ, client);     // attach client channel
     }
 
     private void processReadingRequest(SelectionKey selectionKey) throws IOException {
@@ -118,18 +118,22 @@ public class BlackjackSocketServer {
             log.info("Closing channel {}", client);
             client.close();
         } else {
-            String msg = sb.toString().trim();     // TODO: read message here
+            String msg = sb.toString().trim();     // read message
             log.info("Message received from {}: {}", client.getRemoteAddress(), msg);
 
             try {
                 processingService.process(client, msg);
+            } catch (NumberFormatException e) {
+                processingService.writeToChannel(client, "FAIL-Wrong data format");
+                log.error("Wrong data format");
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            processWriting(msg);
         }
     }
 
+    // chatting purpose
     private void processWriting(String message) throws IOException {
         ByteBuffer messageBuffer = ByteBuffer.wrap(message.getBytes());
         for (SelectionKey key : selector.keys()) {
