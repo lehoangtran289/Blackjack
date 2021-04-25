@@ -1,6 +1,7 @@
 package com.hust.blackjack.service;
 
 import com.hust.blackjack.exception.CreditCardException;
+import com.hust.blackjack.exception.LoginException;
 import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.CreditCard;
@@ -35,10 +36,11 @@ public class RequestProcessingService {
         this.matchHistoryService = matchHistoryService;
     }
 
-    public void process(SocketChannel channel, String requestMsg) throws RequestException, IOException {
+    public void process(SocketChannel channel, String requestMsg)
+            throws RequestException, IOException, LoginException, PlayerException, CreditCardException {
         List<String> request = new ArrayList<>(Arrays.asList(requestMsg.split(" ")));
         if (request.isEmpty()) {
-            writeToChannel(channel, "FAIL - Invalid request");
+            writeToChannel(channel, "FAIL-Invalid request");
             throw new RequestException("Invalid request, request empty");
         }
 
@@ -47,72 +49,63 @@ public class RequestProcessingService {
             requestType = RequestType.from(request.get(0));
             log.info("Receive {} request", requestType.getValue());
         } catch (RequestException ex) {
-            writeToChannel(channel, "FAIL - Invalid request");
+            writeToChannel(channel, "FAIL-Invalid request");
             throw new RequestException("Invalid request type");
         }
 
-        // TODO: refactor repo - service
+        // TODO: refactor repo-service
         switch (requestType) {
             case LOGIN: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid LOGIN request length");
+                    writeToChannel(channel, "FAIL-Invalid LOGIN request length");
                     throw new RequestException("Invalid request length");
                 }
                 if (playerService.isChannelLoggedIn(channel)) {
-                    writeToChannel(channel, "LOGINFAIL - Channel already login, logout first");
-                    log.error("channel already login");
-                    break;
+                    writeToChannel(channel, "LOGINFAIL-Channel already login, logout first");
+                    log.error("channel {} already login", channel);
+                    throw new LoginException("channel already login");
                 }
                 String playerName = request.get(1);
                 String password = request.get(2);
-                Optional<Player> optionalPlayer = playerService.getPlayerByNameAndPassword(playerName, password);
-                if (optionalPlayer.isEmpty()) {
-                    writeToChannel(channel, "LOGINFAIL - Username or password incorrect");
-                    log.error("Invalid playerName password");
-                    break;
+                try {
+                    Player player = playerService.login(playerName, password);
+                    writeToChannel(channel, "LOGINSUCCESS-" + player.getPlayerName() + " " + player.getBank());
+                    log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
+                    player.setChannel(channel);
+                } catch(PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "LOGINFAIL-Username or password incorrect");
+                    throw e;
+                } catch (LoginException.PlayerAlreadyLoginException e) {
+                    writeToChannel(channel, "LOGINFAIL-Player already login");
+                    throw e;
                 }
-                Player player = optionalPlayer.get();
-                if (player.getChannel() != null) {
-                    writeToChannel(channel, "LOGINFAIL - Player already login");
-                    log.error("player already login");
-                    break;
-                }
-                writeToChannel(channel, "LOGINSUCCESS " + player.getPlayerName() + " " + player.getBank());
-                log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
-                player.setChannel(channel);
                 break;
             }
             case LOGOUT: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid LOGOUT request length");
+                    writeToChannel(channel, "FAIL-Invalid LOGOUT request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
-                Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-                if (optionalPlayer.isEmpty()) {
-                    writeToChannel(channel, "LOGOUTFAIL- Username not found");
-                    log.error("Invalid playerName {}", playerName);
-                    break;
+                try {
+                    Player player = playerService.logout(channel, playerName);
+                    writeToChannel(channel, "LOGOUTSUCCESS");
+                    log.info("Player {} at channel {} logout success", player.getPlayerName(), player.getChannel());
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "LOGOUTFAIL-Username not found");
+                    throw e;
+                } catch (LoginException.PlayerNotLoginException e) {
+                    writeToChannel(channel, "LOGOUTFAIL-Player haven't login");
+                    throw e;
+                } catch (LoginException.InvalidChannelToLogoutException e) {
+                    writeToChannel(channel, "LOGOUTFAIL-Invalid channel to logout");
+                    throw e;
                 }
-                Player player = optionalPlayer.get();
-                if (player.getChannel() == null) {
-                    writeToChannel(channel, "LOGOUTFAIL - Player haven't login");
-                    log.error("player {} haven't login", player.getPlayerName());
-                    break;
-                }
-                if (player.getChannel() != channel) {
-                    writeToChannel(channel, "LOGOUTFAIL - Invalid channel to logout");
-                    log.error("invalid channel to logout");
-                    break;
-                }
-                writeToChannel(channel, "LOGOUTSUCCESS");
-                log.info("Player {} at channel {} logout success", player.getPlayerName(), player.getChannel());
-                player.setChannel(null);
                 break;
             }
             case SIGNUP: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid SIGNUP request length");
+                    writeToChannel(channel, "FAIL-Invalid SIGNUP request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
@@ -122,14 +115,14 @@ public class RequestProcessingService {
                     writeToChannel(channel, "SIGNUPSUCCESS");
                     log.info("Sign up success with player {}", newPlayer);
                 } catch (PlayerException.PlayerAlreadyExistsException e) {
-                    writeToChannel(channel, "SIGNUPFAIL - Username already exists");
+                    writeToChannel(channel, "SIGNUPFAIL-Username already exists");
                     throw e;
                 }
                 break;
             }
             case INFO: { // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid INFO request length");
+                    writeToChannel(channel, "FAIL-Invalid INFO request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
@@ -149,28 +142,26 @@ public class RequestProcessingService {
                     writeToChannel(channel, msg);
                     log.info("Game Info of player {}: {}", playerName, playerGameInfo);
                 } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "INFOFAIL - Player not found");
+                    writeToChannel(channel, "INFOFAIL-Player not found");
                     throw e;
                 }
                 break;
             }
-            case RANKING: { // RANK [List of {ranking} {user_name} {money_gain/lose}]
+            case RANKING: { // RANK-{ranking1} {user_name1} {money_earn1}, ...
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid RANKING request length");
+                    writeToChannel(channel, "FAIL-Invalid RANKING request length");
                     throw new RequestException("Invalid request length");
                 }
                 List<PlayerRanking> rankings = matchHistoryService.getAllPlayerRanking();
-                String msg = "RANK [" +
-                        rankings.stream().map(PlayerRanking::toString)
-                                .collect(Collectors.joining(", ")) +
-                        "]";
+                String msg = "RANK-" + rankings.stream().map(PlayerRanking::toString)
+                                .collect(Collectors.joining(","));
                 writeToChannel(channel, msg);
                 log.info("Get rankings {}", rankings);
                 break;
             }
             case ADDMONEY: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid ADD request length");
+                    writeToChannel(channel, "FAIL-Invalid ADD request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
@@ -180,25 +171,25 @@ public class RequestProcessingService {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.ADD, playerName, cardNumber, amount
                     );
-                    writeToChannel(channel, "ADDSUCCESS " + player.getPlayerName() + " " + player.getBank());
+                    writeToChannel(channel, "ADDSUCCESS-" + player.getPlayerName() + " " + player.getBank());
                     log.info("Add money from card {} to player {} success. New balance: {} ",
                             cardNumber, playerName, player.getBank()
                     );
                 } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "ADDFAIL - Player not found");
+                    writeToChannel(channel, "ADDFAIL-Player not found");
                     throw e;
                 } catch (CreditCardException.CreditCardNotFoundException e) {
-                    writeToChannel(channel, "ADDFAIL - credit card not found");
+                    writeToChannel(channel, "ADDFAIL-credit card not found");
                     throw e;
                 } catch (CreditCardException.NotEnoughBalanceException e) {
-                    writeToChannel(channel, "ADDFAIL - Credit card balance not enough");
+                    writeToChannel(channel, "ADDFAIL-Credit card balance not enough");
                     throw e;
                 }
                 break;
             }
             case WITHDRAWMONEY: {
                 if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL - Invalid WDR request length");
+                    writeToChannel(channel, "FAIL-Invalid WDR request length");
                     throw new RequestException("Invalid request length");
                 }
                 String playerName = request.get(1);
@@ -208,24 +199,24 @@ public class RequestProcessingService {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.WITHDRAW, playerName, cardNumber, amount
                     );
-                    writeToChannel(channel, "WDRSUCCESS " + player.getPlayerName() + " " + player.getBank());
+                    writeToChannel(channel, "WDRSUCCESS-" + player.getPlayerName() + " " + player.getBank());
                     log.info("Withdrawn money from player {} to card {} success. New balance: {} ",
                             playerName, cardNumber, player.getBank()
                     );
                 } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "WDRFAIL - Player not found");
+                    writeToChannel(channel, "WDRFAIL-Player not found");
                     throw e;
                 } catch (CreditCardException.CreditCardNotFoundException e) {
-                    writeToChannel(channel, "WDRFAIL - credit card not found");
+                    writeToChannel(channel, "WDRFAIL-credit card not found");
                     throw e;
                 } catch (PlayerException.NotEnoughBankBalanceException e) {
-                    writeToChannel(channel, "WDRFAIL - Player bank balance not enough");
+                    writeToChannel(channel, "WDRFAIL-Player bank balance not enough");
                     throw e;
                 }
                 break;
             }
             default:
-                writeToChannel(channel, "FAIL - Invalid request");
+                writeToChannel(channel, "FAIL-Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
         }
     }
