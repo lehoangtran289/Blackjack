@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs
 import socket
-from view import StartPage, RankingPage, InfoPage
+from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, socket):
@@ -9,14 +9,6 @@ class homePage(QtWidgets.QWidget):
         uic.loadUi('./ui/home.ui', self)
         self.user = user
         self.s = socket
-        #self.setGeometry(100, 100, configs.WINDOW_WIDTH, configs.WINDOW_HEIGHT)
-
-        #play_button = QtWidgets.QPushButton('Play!')
-        #info_button = QtWidgets.QPushButton('Account Details')
-        #show_rank_button = QtWidgets.QPushButton('Ranking')
-        #add_funds_button = QtWidgets.QPushButton('Add funds')
-        #withdraw_button = QtWidgets.QPushButton('Withdraw')
-        #logout_button = QtWidgets.QPushButton('Log out')
 
         self.play_button.clicked.connect(self.play)
         self.info_button.clicked.connect(self.show_account_info)
@@ -25,26 +17,8 @@ class homePage(QtWidgets.QWidget):
         self.withdraw_button.clicked.connect(self.withdraw)
         self.logout_button.clicked.connect(self.logout)
 
-        self.username_label.setText(self.user.username)
-        self.balance_label.setText(str(self.user.balance))
-
-        #main_button_layout = QtWidgets.QVBoxLayout()
-        #main_button_layout.addWidget(play_button)
-        #main_button_layout.addWidget(info_button)
-        #main_button_layout.addWidget(add_funds_button)
-        #main_button_layout.addWidget(withdraw_button)
-        #main_button_layout.addWidget(logout_button)
-
-        #player_info_layout = QtWidgets.QVBoxLayout()
-        #player_info_layout.addWidget(QtWidgets.QLabel(self.user.username))
-        #player_info_layout.addWidget(QtWidgets.QLabel(str(self.user.balance) + '$'))
-
-        #layout = QtWidgets.QGridLayout()
-        #layout.addLayout(main_button_layout, 1, 1)
-        #layout.addLayout(player_info_layout, 0, 2)
-        #layout.addWidget(QtWidgets.QLabel("Welcome to BlackJack"), 0, 1)
-
-        #self.setLayout(layout)
+        self.username_label.setText("henlo, " + self.user.username)
+        self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):
         print('play')
@@ -60,10 +34,14 @@ class homePage(QtWidgets.QWidget):
         self.ranking_page.show()
     
     def withdraw(self):
-        print('withdraw')
+        self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.s)
+        self.close()
+        self.withdraw_page.show()
     
     def add(self):
-        print('add funds')
+        self.add_page = AddPage.addPage(self.user, self.s)
+        self.close()
+        self.add_page.show()
 
     def logout(self):
         print('logout')

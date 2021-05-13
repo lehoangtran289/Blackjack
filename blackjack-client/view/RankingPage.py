@@ -12,10 +12,10 @@ class rankingPage(QtWidgets.QWidget):
         self.home_page = home
         self.s.sendall(b'GETRANKING')
         print('send GETRANKING')
-        ranking_response = self.s.recv(1024)
-        print('received: ' + ranking_response.decode('utf-8'))
-        ranking_token = ranking_response.decode('utf-8').split('=')[1]
-        ranking_token = ranking_token.split(',')
+        response = self.s.recv(1024)
+        print('received: ' + response.decode('utf-8'))
+        header, message = response.decode('utf-8').split('=')
+        ranking_token = message.split(',')
 
         self.user_rank_label.setText(ranking_token[0].split(' ')[0])
         self.username_label.setText(ranking_token[0].split(' ')[1])

@@ -8,24 +8,8 @@ class signupPage(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi('./ui/signup.ui', self)
         self.s = socket
-        #self.username_entry = QtWidgets.QLineEdit()
-        #self.password_entry = QtWidgets.QLineEdit()
-        #self.password_entry.setEchoMode(QtWidgets.QLineEdit.Password)
-        #self.setGeometry(100, 100, configs.WINDOW_WIDTH, configs.WINDOW_HEIGHT)
-
-        #signup_button = QtWidgets.QPushButton('Signup')
         self.signup_button.clicked.connect(self.signup)
-        #back_button = QtWidgets.QPushButton('Back')
         self.back_button.clicked.connect(self.back_to_start_page)
-
-        #layout = QtWidgets.QGridLayout()
-        #layout.addWidget(QtWidgets.QLabel('username'), 0, 0)
-        #layout.addWidget(QtWidgets.QLabel('password'), 1, 0)
-        #layout.addWidget(self.username_entry, 0, 1)
-        #layout.addWidget(self.password_entry, 1, 1)
-        #layout.addWidget(signup_button, 2, 0)
-        #layout.addWidget(back_button, 2, 1)
-        #self.setLayout(layout)
 
     def signup(self):
         username = self.username_entry.text()

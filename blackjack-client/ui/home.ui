@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
   <widget class="QPushButton" name="play_button">
    <property name="geometry">
     <rect>
@@ -94,27 +97,33 @@
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>450</x>
      <y>10</y>
-     <width>81</width>
+     <width>171</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="balance_label">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>450</x>
      <y>40</y>
-     <width>60</width>
-     <height>16</height>
+     <width>171</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>TextLabel</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="withdraw_button">

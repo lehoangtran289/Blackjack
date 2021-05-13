@@ -9,28 +9,9 @@ class loginPage(QtWidgets.QMainWindow):
         super().__init__()
         uic.loadUi('./ui/login.ui', self)
         self.s = socket
-        #self.centralwidget = QtWidgets.QWidget()
-        #self.setCentralWidget(self.centralwidget)
-
-        #self.username_entry = QtWidgets.QLineEdit(self.centralwidget)
-        #self.username_entry.setGeometry()
-        #self.password_entry = QtWidgets.QLineEdit(self.centralwidget)
-        #self.password.setEchoMode(QtWidgets.QLineEdit.Password)
-        #self.setGeometry(100, 100, configs.WINDOW_WIDTH, configs.WINDOW_HEIGHT)
-
-        #login_button = QtWidgets.QPushButton('Login', self.centralwidget)
-        self.login_button.clicked.connect(self.login)
-        #back_button = QtWidgets.QPushButton('Back', self.centralwidget)
-        self.back_button.clicked.connect(self.back_to_start_page)
         
-        """
-        layout = QtWidgets.QGridLayout(self.centralwidget)
-        layout.addWidget(QtWidgets.QLabel('username'), 0, 0)
-        layout.addWidget(QtWidgets.QLabel('password'), 1, 0)
-        layout.addWidget(self.username_entry, 0, 1)
-        layout.addWidget(self.password_entry, 1, 1)
-        layout.addWidget(login_button, 2, 0)
-        layout.addWidget(back_button, 2, 1)"""
+        self.login_button.clicked.connect(self.login)
+        self.back_button.clicked.connect(self.back_to_start_page)
 
     def login(self):
         username = self.username_entry.text()

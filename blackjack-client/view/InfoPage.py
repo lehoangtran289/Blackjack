@@ -16,10 +16,10 @@ class infoPage(QtWidgets.QWidget):
         print('send ' + request)
         response = self.s.recv(1024).decode('utf-8')
         print('recieved: ' + response)
-        token = response.split('=')
-        if token[0] == 'INFO':
+        header, message = response.split('=')
+        if header == 'INFO':
             print("here")
-            stats = token[1].split(' ')
+            stats = message.split(' ')
             self.username.setText(stats[0])
             self.balance.setText(stats[1])
             self.gain_lose.setText(stats[2])
