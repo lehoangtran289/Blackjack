@@ -4,11 +4,12 @@ import socket
 from view import HomePage
 
 class rankingPage(QtWidgets.QWidget):
-    def __init__(self, socket, user):
+    def __init__(self, socket, user, home):
         super().__init__()
         uic.loadUi('./ui/ranking.ui', self)
         self.user = user
         self.s = socket
+        self.home_page = home
         self.s.sendall(b'GETRANKING')
         print('send GETRANKING')
         ranking_response = self.s.recv(1024)
@@ -33,7 +34,6 @@ class rankingPage(QtWidgets.QWidget):
         self.back_button.clicked.connect(self.back)
 
     def back(self):
-        self.home_page = HomePage.homePage(self.user, self.s)
         self.close()
         self.home_page.show()    
 

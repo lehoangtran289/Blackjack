@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs
 import socket
-from view import StartPage, RankingPage
+from view import StartPage, RankingPage, InfoPage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, socket):
@@ -50,11 +50,13 @@ class homePage(QtWidgets.QWidget):
         print('play')
 
     def show_account_info(self):
-        print('account info')
+        self.info_page = InfoPage.infoPage(self.user, self.s, self)
+        self.hide()
+        self.info_page.show()
         
     def show_ranking(self):
-        self.ranking_page = RankingPage.rankingPage(self.s, self.user)
-        self.close()
+        self.ranking_page = RankingPage.rankingPage(self.s, self.user, self)
+        self.hide()
         self.ranking_page.show()
     
     def withdraw(self):
