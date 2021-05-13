@@ -8,7 +8,7 @@ if __name__ ==  '__main__':
 
     stylesheet = """
         MainWindow {
-            background-image: url("D:/_Qt/img/cat.jpg"); 
+            background-image: url("./asset/home.png"); 
             background-repeat: no-repeat; 
             background-position: center;
         }
