@@ -19,20 +19,23 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>170</x>
      <y>240</y>
-     <width>60</width>
-     <height>16</height>
+     <width>81</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>password</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>240</x>
      <y>150</y>
      <width>281</width>
      <height>16</height>
@@ -45,21 +48,24 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>170</x>
      <y>200</y>
-     <width>60</width>
-     <height>16</height>
+     <width>81</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>username</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>380</y>
+     <x>370</x>
+     <y>310</y>
      <width>113</width>
      <height>32</height>
     </rect>
@@ -71,8 +77,8 @@
   <widget class="QPushButton" name="signup_button">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>380</y>
+     <x>260</x>
+     <y>310</y>
      <width>113</width>
      <height>32</height>
     </rect>
@@ -86,7 +92,7 @@
     <rect>
      <x>260</x>
      <y>240</y>
-     <width>171</width>
+     <width>221</width>
      <height>21</height>
     </rect>
    </property>
@@ -99,7 +105,7 @@
     <rect>
      <x>260</x>
      <y>200</y>
-     <width>171</width>
+     <width>221</width>
      <height>21</height>
     </rect>
    </property>
@@ -107,14 +113,17 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>110</x>
      <y>280</y>
-     <width>121</width>
+     <width>141</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>comfirm password</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLineEdit" name="confirm_entry">
@@ -122,7 +131,7 @@
     <rect>
      <x>260</x>
      <y>280</y>
-     <width>171</width>
+     <width>221</width>
      <height>21</height>
     </rect>
    </property>
