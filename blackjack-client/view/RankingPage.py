@@ -1,20 +1,17 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs
+from utils import configs, Connection
 import socket
 from view import HomePage
 
 class rankingPage(QtWidgets.QWidget):
-    def __init__(self, socket, user, home):
+    def __init__(self, connection, user, home):
         super().__init__()
         uic.loadUi('./ui/ranking.ui', self)
         self.user = user
-        self.s = socket
+        self.connection = connection
         self.home_page = home
-        self.s.sendall(b'GETRANKING')
-        print('send GETRANKING')
-        response = self.s.recv(1024)
-        print('received: ' + response.decode('utf-8'))
-        header, message = response.decode('utf-8').split('=')
+        response = self.connection.send_request('GETRANKING')
+        header, message = response.split('=')
         ranking_token = message.split(',')
 
         self.user_rank_label.setText(ranking_token[0].split(' ')[0])

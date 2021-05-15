@@ -1,14 +1,14 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs
+from utils import configs, Connection
 import socket
 from view import HomePage
 
 class withdrawPage(QtWidgets.QWidget):
-    def __init__(self, user, socket):
+    def __init__(self, user, connection):
         super().__init__()
         uic.loadUi('./ui/withdraw.ui', self)
         self.user = user
-        self.s = socket
+        self.connection = connection
         self.back_button.clicked.connect(self.back)
         self.withdraw_button.clicked.connect(self.withdraw)
 
@@ -23,9 +23,7 @@ class withdrawPage(QtWidgets.QWidget):
             return
 
         request = 'WDR ' + self.user.username + ' ' + credit_card_number + ' ' + amount
-        print('send: ' + request)
-        self.s.sendall(request.encode())
-        response = self.s.recv(1024).decode('utf-8')
+        response = self.connection.send_request(request)
         print('recieved: ' + response)
         header, message = response.split('=')
 
@@ -38,6 +36,6 @@ class withdrawPage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, 'Add Failed', message)
 
     def back(self): 
-        self.home_page = HomePage.homePage(self.user, self.s)
+        self.home_page = HomePage.homePage(self.user, self.connection)
         self.close()
         self.home_page.show()

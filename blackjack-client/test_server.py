@@ -28,3 +28,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'ADDSUCCESS=palizu 20000')
             if header == "WDR":
                 conn.sendall(b'WDRSUCCESS=palizu 1000')
+            if header == "LOGOUT":
+                conn.sendall(b'LOGOUTSUCCESS')

@@ -1,14 +1,14 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs
+from utils import configs, Connection
 import socket
 from view import HomePage
 
 class addPage(QtWidgets.QWidget):
-    def __init__(self, user, socket):
+    def __init__(self, user, connection):
         super().__init__()
         uic.loadUi('./ui/add.ui', self)
+        self.connection = connection
         self.user = user
-        self.s = socket
         self.back_button.clicked.connect(self.back)
         self.add_button.clicked.connect(self.add)
 
@@ -23,10 +23,7 @@ class addPage(QtWidgets.QWidget):
             return
 
         request = 'ADD ' + self.user.username + ' ' + credit_card_number + ' ' + amount
-        print('send: ' + request)
-        self.s.sendall(request.encode())
-        response = self.s.recv(1024).decode('utf-8')
-        print('recieved: ' + response)
+        response = self.connection.send_request(request)
         header, message = response.split('=')
 
         if header == 'ADDSUCCESS':
@@ -38,6 +35,6 @@ class addPage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, 'Add Failed', message)
 
     def back(self): 
-        self.home_page = HomePage.homePage(self.user, self.s)
+        self.home_page = HomePage.homePage(self.user, self.connection)
         self.close()
         self.home_page.show()

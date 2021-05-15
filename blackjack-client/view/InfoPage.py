@@ -1,21 +1,18 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs
+from utils import configs, Connection
 import socket
 from view import HomePage
 
 class infoPage(QtWidgets.QWidget):
-    def __init__(self, user, socket, home):
+    def __init__(self, user, connection, home):
         super().__init__()
         uic.loadUi('./ui/player_info.ui', self)
         self.user = user
-        self.s = socket
+        self.connection = connection
         self.home_page = home
         
         request = 'INFO ' + self.user.username
-        self.s.sendall(request.encode())
-        print('send ' + request)
-        response = self.s.recv(1024).decode('utf-8')
-        print('recieved: ' + response)
+        response = self.connection.send_request(request)
         header, message = response.split('=')
         if header == 'INFO':
             stats = message.split(' ')
