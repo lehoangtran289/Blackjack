@@ -7,7 +7,6 @@ import com.hust.blackjack.repository.PlayerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +25,11 @@ public class PlayerService {
     }
 
     public Optional<Player> getPlayerByNameAndPassword(String playerName, String password) {
-        return playerRepository.getPlayerByNameAndPassword(playerName, password);
+        return playerRepository.findPlayerByNameAndPassword(playerName, password);
     }
 
     public Optional<Player> getPlayerByName(String playerName) {
-        return playerRepository.getPlayerByName(playerName);
+        return playerRepository.findPlayerByName(playerName);
     }
 
     public boolean isPlayerExists(String playerName) {
@@ -47,7 +46,7 @@ public class PlayerService {
     }
 
     public List<String> getAllPlayerName() {
-        return playerRepository.getAllPlayerName();
+        return playerRepository.findAllPlayerName();
     }
 
     public Player login(String playerName, String password)

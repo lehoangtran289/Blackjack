@@ -1,6 +1,5 @@
 package com.hust.blackjack.service;
 
-import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.repository.CreditCardRepository;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import com.hust.blackjack.repository.PlayerRepository;

@@ -7,16 +7,19 @@ import com.hust.blackjack.model.dto.PlayerGameInfo;
 import com.hust.blackjack.model.dto.PlayerRanking;
 import com.hust.blackjack.repository.MatchHistoryRepository;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
 public class MatchHistoryService {
+    private final int PAGING = 3;
+
     private final MatchHistoryRepository matchHistoryRepository;
     private final PlayerService playerService;
 
@@ -70,20 +73,68 @@ public class MatchHistoryService {
                 .build();
     }
 
-    public List<PlayerRanking> getAllPlayerRanking() throws PlayerException.PlayerNotFoundException {
-        List<String> playerNames = playerService.getAllPlayerName();
-        List<PlayerRanking> rankings = new ArrayList<>();
-        for (String playerName : playerNames) {
-            PlayerGameInfo playerGameInfo = getPlayerGameInfoByName(playerName);
-            rankings.add(convertToPlayerRanking(playerGameInfo));
+    public List<PlayerRanking> getAllPlayerRanking(String requestPlayerName) throws PlayerException.PlayerNotFoundException {
+        PlayerRanking requestPlayer = null;
+
+        // get all rankings from match histories
+        List<String> playerNames = matchHistoryRepository.findAllPlayedPlayer();
+        List<PlayerRanking> rankings = playerNames.stream()
+                .map(name -> PlayerRanking.builder().playerName(name).build())
+                .collect(Collectors.toList());
+
+        List<MatchHistory> matchHistories = matchHistoryRepository.findAll();
+        for (PlayerRanking playerRank : rankings) {
+            for (MatchHistory match : matchHistories) {
+                if (StringUtils.equals(playerRank.getPlayerName(), match.getPlayerName())) {
+                    switch (match.getResultState()) {
+                        case WIN:
+                            playerRank.setMoneyEarn(playerRank.getMoneyEarn() + match.getBet());
+                            break;
+                        case LOSE:
+                        case BUST:
+                            playerRank.setMoneyEarn(playerRank.getMoneyEarn() - match.getBet());
+                            break;
+                        case BLACKJACK:
+                            playerRank.setMoneyEarn(playerRank.getMoneyEarn() + match.getBet() * 1.5);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
         rankings.sort(Comparator.comparingDouble(PlayerRanking::getMoneyEarn).reversed());
 
         // update ranking
         for (int i = 0; i < rankings.size(); ++i) {
-            rankings.get(i).setPlayerRank(i + 1);
+            PlayerRanking p = rankings.get(i);
+            p.setPlayerRank(i + 1);
+
+            // get request player
+            if (StringUtils.equals(p.getPlayerName(), requestPlayerName)) {
+                requestPlayer = p;
+            }
         }
+
+        // get first 20 players
+        if (rankings.size() > PAGING) {
+            rankings = rankings.subList(0, PAGING);
+        }
+
+        // add request player to top of return list
+        if (requestPlayer == null) {    // if player hasn't played any match
+            requestPlayer = PlayerRanking.builder()
+                    .playerName(requestPlayerName)
+                    .playerRank(-1)
+                    .moneyEarn(0)
+                    .build();
+        }
+        rankings.add(0, requestPlayer);
         return rankings;
+    }
+
+    public List<MatchHistory> getPlayerHistory(String playerName) {
+        return matchHistoryRepository.findAllByPlayerName(playerName);
     }
 
     private PlayerRanking convertToPlayerRanking(PlayerGameInfo playerGameInfo) {

@@ -9,9 +9,9 @@ import java.util.Optional;
 public interface PlayerRepository {
     List<Player> findAll();
 
-    Optional<Player> getPlayerByNameAndPassword(String playerName, String password);
+    Optional<Player> findPlayerByNameAndPassword(String playerName, String password);
 
-    Optional<Player> getPlayerByName(String playerName);
+    Optional<Player> findPlayerByName(String playerName);
 
     boolean isPlayerExists(String playerName);
 
@@ -19,5 +19,5 @@ public interface PlayerRepository {
 
     boolean existsByChannel(SocketChannel channel);
 
-    List<String> getAllPlayerName();
+    List<String> findAllPlayerName();
 }
