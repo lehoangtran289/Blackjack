@@ -18,7 +18,6 @@ class infoPage(QtWidgets.QWidget):
         print('recieved: ' + response)
         header, message = response.split('=')
         if header == 'INFO':
-            print("here")
             stats = message.split(' ')
             self.username.setText(stats[0])
             self.balance.setText(stats[1])
