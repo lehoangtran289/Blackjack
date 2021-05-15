@@ -10,7 +10,7 @@ class rankingPage(QtWidgets.QWidget):
         self.user = user
         self.connection = connection
         self.home_page = home
-        request = 'GETRANK ' + self.user.usename 
+        request = 'GETRANKING ' + self.user.username 
         response = self.connection.send_request(request)
         header, message = response.split('=')
         ranking_token = message.split(',')
