@@ -30,7 +30,7 @@ class loginPage(QtWidgets.QMainWindow):
             self.close()
             self.home_page.show()
         elif token[0] == configs.LOGIN_FAIL:
-            QtWidgets.QMessageBox.about('Log in Failed', token[1])
+            QtWidgets.QMessageBox.about(self, 'Log in Failed', token[1])
         else:
             print("Wrong message")
 
