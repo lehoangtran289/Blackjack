@@ -7,8 +7,8 @@ import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.CreditCard;
 import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.RequestType;
-import com.hust.blackjack.model.dto.PlayerRanking;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
+import com.hust.blackjack.model.dto.PlayerRanking;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -67,9 +67,9 @@ public class RequestProcessingService {
                 String password = request.get(2);
                 try {
                     Player player = playerService.login(playerName, password);
+                    player.setChannel(channel);
                     writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
                     log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
-                    player.setChannel(channel);
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "LOGINFAIL=Username or password incorrect");
                     throw e;
@@ -89,7 +89,7 @@ public class RequestProcessingService {
                     Player player = playerService.logout(channel, playerName);
                     writeToChannel(channel, "LOGOUTSUCCESS");
                     log.info("Player {} at channel {} logout success",
-                            player.getPlayerName(), player.getChannel()
+                            player.getPlayerName(), channel
                     );
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "LOGOUTFAIL=Username not found");
@@ -152,7 +152,8 @@ public class RequestProcessingService {
                     writeToChannel(channel, "FAIL=Invalid RANKING request length");
                     throw new RequestException("Invalid request length");
                 }
-                List<PlayerRanking> rankings = matchHistoryService.getAllPlayerRanking();
+                String playerName = request.get(1);
+                List<PlayerRanking> rankings = matchHistoryService.getAllPlayerRanking(playerName);
                 String msg = "RANK=" + rankings.stream().map(PlayerRanking::toString)
                         .collect(Collectors.joining(","));
                 writeToChannel(channel, msg);
@@ -224,7 +225,6 @@ public class RequestProcessingService {
     private boolean isRequestLengthValid(List<String> request) throws RequestException {
         switch (RequestType.from(request.get(0))) {
             case RANKING:
-                return request.size() == 1;
             case LOGOUT:
             case INFO:
                 return request.size() == 2;
@@ -240,7 +240,8 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-        msg += "\n";
+//        msg += "\n"; // terminal testing purposes
+        log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
 

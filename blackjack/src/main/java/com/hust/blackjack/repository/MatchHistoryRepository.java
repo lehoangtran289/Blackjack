@@ -8,4 +8,6 @@ public interface MatchHistoryRepository {
     List<MatchHistory> findAll();
 
     List<MatchHistory> findAllByPlayerName(String playerName);
+
+    List<String> findAllPlayedPlayer();
 }

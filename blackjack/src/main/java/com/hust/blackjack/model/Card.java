@@ -1,7 +1,10 @@
 package com.hust.blackjack.model;
 
 import com.hust.blackjack.exception.CardException;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
