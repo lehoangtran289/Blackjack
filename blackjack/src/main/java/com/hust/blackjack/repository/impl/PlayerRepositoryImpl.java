@@ -30,7 +30,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public Optional<Player> getPlayerByNameAndPassword(String playerName, String password) {
+    public Optional<Player> findPlayerByNameAndPassword(String playerName, String password) {
         return players.stream()
                 .filter(p ->
                         StringUtils.equals(playerName, p.getPlayerName()) &&
@@ -40,7 +40,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public Optional<Player> getPlayerByName(String playerName) {
+    public Optional<Player> findPlayerByName(String playerName) {
         return players.stream()
                 .filter(p -> StringUtils.equals(playerName, p.getPlayerName()))
                 .findFirst();
@@ -65,7 +65,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public List<String> getAllPlayerName() {
+    public List<String> findAllPlayerName() {
         return players.stream()
                 .map(Player::getPlayerName)
                 .collect(Collectors.toList());

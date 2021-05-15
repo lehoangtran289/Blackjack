@@ -5,6 +5,7 @@ import com.hust.blackjack.exception.LoginException;
 import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.CreditCard;
+import com.hust.blackjack.model.MatchHistory;
 import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.RequestType;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
@@ -147,6 +148,18 @@ public class RequestProcessingService {
                 }
                 break;
             }
+            case HISTORY: {
+                if (!isRequestLengthValid(request)) {
+                    writeToChannel(channel, "FAIL=Invalid HISTORY request length");
+                    throw new RequestException("Invalid request length");
+                }
+                String playerName = request.get(1);
+                List<MatchHistory> histories = matchHistoryService.getPlayerHistory(playerName);
+                String msg = "HISTORY=" + histories.stream().map(MatchHistory::toString)
+                        .collect(Collectors.joining(","));
+                writeToChannel(channel, msg);
+                break;
+            }
             case RANKING: { // RANK={ranking1} {user_name1} {money_earn1}, ...
                 if (!isRequestLengthValid(request)) {
                     writeToChannel(channel, "FAIL=Invalid RANKING request length");
@@ -227,6 +240,7 @@ public class RequestProcessingService {
             case RANKING:
             case LOGOUT:
             case INFO:
+            case HISTORY:
                 return request.size() == 2;
             case LOGIN:
             case SIGNUP:

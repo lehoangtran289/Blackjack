@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 public class ObjectMapperConfig {
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.setDateFormat(new SimpleDateFormat("dd/MM/yyyy"));
-        return objectMapper;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setDateFormat(new SimpleDateFormat("dd/MM/yyyy"));
+        return mapper;
     }
 }

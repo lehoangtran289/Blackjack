@@ -14,6 +14,7 @@ public enum RequestType {
     LOGOUT("LOGOUT"),
     SIGNUP("SIGNUP"),
     INFO("INFO"),
+    HISTORY("HISTORY"),
     RANKING("GETRANKING"),
     ADDMONEY("ADD"),
     WITHDRAWMONEY("WDR");
