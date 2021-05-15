@@ -15,7 +15,7 @@ class loginPage(QtWidgets.QMainWindow):
         username = self.username_entry.text()
         password = self.password_entry.text()
         if username == '' or password == '':
-            QtWidgets.QMessageBox.about('Sign up Failed', 'Username and Password must not be empty!')
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Username and Password must not be empty!')
             return
 
         request = 'LOGIN ' + username + ' ' + password
