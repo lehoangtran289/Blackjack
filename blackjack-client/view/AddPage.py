@@ -31,7 +31,7 @@ class addPage(QtWidgets.QWidget):
 
         if header == 'ADDSUCCESS':
             _, balance = message.split(' ')
-            self.user.balance = int(balance)
+            self.user.balance = float(balance)
             QtWidgets.QMessageBox.about(self, 'Add Successful', 'Successful')
             self.back()
         else:
