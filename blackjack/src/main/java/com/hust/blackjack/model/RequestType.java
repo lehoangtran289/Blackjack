@@ -13,6 +13,7 @@ public enum RequestType {
     LOGIN("LOGIN"),
     LOGOUT("LOGOUT"),
     SIGNUP("SIGNUP"),
+    SEARCHINFO("SEARCHINFO"),
     INFO("INFO"),
     HISTORY("HISTORY"),
     RANKING("GETRANKING"),

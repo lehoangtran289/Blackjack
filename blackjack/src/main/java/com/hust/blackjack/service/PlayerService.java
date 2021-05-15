@@ -32,6 +32,10 @@ public class PlayerService {
         return playerRepository.findPlayerByName(playerName);
     }
 
+    public List<Player> getPlayerByNameLIKE(String playerName) {
+        return playerRepository.findPlayerByNameLIKE(playerName);
+    }
+
     public boolean isPlayerExists(String playerName) {
         return playerRepository.isPlayerExists(playerName);
     }

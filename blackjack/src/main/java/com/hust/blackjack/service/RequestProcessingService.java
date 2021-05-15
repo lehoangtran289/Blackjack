@@ -36,6 +36,7 @@ public class RequestProcessingService {
         this.matchHistoryService = matchHistoryService;
     }
 
+    // TODO: handle each request-type separately
     public void process(SocketChannel channel, String requestMsg)
             throws RequestException, IOException, LoginException, PlayerException, CreditCardException {
         List<String> request = new ArrayList<>(Arrays.asList(requestMsg.split(" ")));
@@ -70,7 +71,8 @@ public class RequestProcessingService {
                     Player player = playerService.login(playerName, password);
                     player.setChannel(channel);
                     writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
+                    log.info("Player {} login success at channel {}", player.getPlayerName(),
+                            player.getChannel());
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "LOGINFAIL=Username or password incorrect");
                     throw e;
@@ -117,6 +119,36 @@ public class RequestProcessingService {
                     log.info("Sign up success with player {}", newPlayer);
                 } catch (PlayerException.PlayerAlreadyExistsException e) {
                     writeToChannel(channel, "SIGNUPFAIL=Username already exists");
+                    throw e;
+                }
+                break;
+            }
+            case SEARCHINFO: {
+                if (!isRequestLengthValid(request)) {
+                    writeToChannel(channel, "FAIL=Invalid SEARCHINFO request length");
+                    throw new RequestException("Invalid request length");
+                }
+                String playerName = request.get(1);
+                try {
+                    List<PlayerGameInfo> playerGameInfos =
+                            matchHistoryService.searchPlayerGameInfoByName(playerName);
+                    String msg = "SEARCHSUCCESS=" + playerGameInfos.stream()
+                            .map(playerGameInfo -> String.join(" ", Arrays.asList(
+                                    playerGameInfo.getPlayer().getPlayerName(),
+                                    String.valueOf(playerGameInfo.getPlayer().getBank()),
+                                    String.valueOf(playerGameInfo.getMoneyEarn()),
+                                    String.valueOf(playerGameInfo.getWin()),
+                                    String.valueOf(playerGameInfo.getLose()),
+                                    String.valueOf(playerGameInfo.getPush()),
+                                    String.valueOf(playerGameInfo.getBust()),
+                                    String.valueOf(playerGameInfo.getBlackjack())
+                                    )
+                            ))
+                            .collect(Collectors.joining(","));
+                    writeToChannel(channel, msg);
+                    log.info("Game Info of player {}: {}", playerName, playerGameInfos);
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "SEARCHFAIL");
                     throw e;
                 }
                 break;
@@ -239,6 +271,7 @@ public class RequestProcessingService {
         switch (RequestType.from(request.get(0))) {
             case RANKING:
             case LOGOUT:
+            case SEARCHINFO:
             case INFO:
             case HISTORY:
                 return request.size() == 2;

@@ -20,4 +20,6 @@ public interface PlayerRepository {
     boolean existsByChannel(SocketChannel channel);
 
     List<String> findAllPlayerName();
+
+    List<Player> findPlayerByNameLIKE(String playerName);
 }

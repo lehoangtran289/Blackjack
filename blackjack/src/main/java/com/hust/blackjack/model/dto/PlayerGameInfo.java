@@ -17,4 +17,17 @@ public class PlayerGameInfo {
     private int push;
     private int bust;
     private int blackjack;
+
+    @Override
+    public String toString() {
+        return "PlayerGameInfo{" +
+                "player=" + player.getPlayerName() +
+                ", moneyEarn=" + moneyEarn +
+                ", win=" + win +
+                ", lose=" + lose +
+                ", push=" + push +
+                ", bust=" + bust +
+                ", blackjack=" + blackjack +
+                '}';
+    }
 }

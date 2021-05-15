@@ -47,6 +47,13 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
+    public List<Player> findPlayerByNameLIKE(String playerName) {
+        return players.stream()
+                .filter(p -> StringUtils.contains(p.getPlayerName(), playerName))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public boolean isPlayerExists(String playerName) {
         return players.stream()
                 .anyMatch(p -> StringUtils.equals(playerName, p.getPlayerName()));

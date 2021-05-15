@@ -25,19 +25,10 @@ public class BlackjackSocketServer {
     private final Selector selector;
     private final ByteBuffer commonBuffer = ByteBuffer.allocate(10000);
 
-    private final CreditCardRepository creditCardRepository;
-    private final PlayerRepository playerRepository;
-    private final MatchHistoryRepository matchHistoryRepository;
     private final RequestProcessingService processingService;
 
-    public BlackjackSocketServer(CreditCardRepository creditCardRepository,
-                                 PlayerRepository playerRepository,
-                                 MatchHistoryRepository matchHistoryRepository,
-                                 RequestProcessingService processingService,
+    public BlackjackSocketServer(RequestProcessingService processingService,
                                  @Value("${server-port}") int port) throws IOException {
-        this.creditCardRepository = creditCardRepository;
-        this.playerRepository = playerRepository;
-        this.matchHistoryRepository = matchHistoryRepository;
         this.processingService = processingService;
 
         //Create TCP server channel
@@ -121,7 +112,7 @@ public class BlackjackSocketServer {
             log.info("Message received from {}: {}", client.getRemoteAddress(), msg);
 
             try {
-                processingService.process(client, msg);
+                processingService.process(client, msg);     // process request HERE
             } catch (NumberFormatException e) {
                 processingService.writeToChannel(client, "FAIL-Wrong data format");
                 log.error("Wrong data format");
