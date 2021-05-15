@@ -12,7 +12,7 @@ class connection():
         except socket.erro.e:
             print('Error sending message')
             QtWidgets.QMessageBox.about(self, 'Request Failed', 'Error sending message')
-        print(request)
+        print('send: ' + request)
 
         try:
             response = self.s.recv(1024).decode('utf-8')
@@ -20,6 +20,7 @@ class connection():
             print('Error receiving message')
             QtWidgets.QMessageBox.about(self, 'Request Failed', 'Error recieving message')
         response = response.strip()
+        print('received: ' + response)
         if response.split(' ')[0] == 'FAIL':
             QtWidgets.QMessageBox.about(self, 'Request Failed', response.split(' ')[1])
             sys.exit(1)

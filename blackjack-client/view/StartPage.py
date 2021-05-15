@@ -15,11 +15,9 @@ class startPage(QtWidgets.QMainWindow):
         self.signup_button.clicked.connect(self.show_signup)
 
     def show_login(self):
-        print("go to login page")
         self.close()
         self.login_page.show()
 
     def show_signup(self):
-        print("go to sign up page")
         self.close()
         self.signup_page.show()

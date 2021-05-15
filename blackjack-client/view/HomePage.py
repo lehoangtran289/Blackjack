@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
-from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage
+from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, connection):
@@ -16,6 +16,7 @@ class homePage(QtWidgets.QWidget):
         self.add_button.clicked.connect(self.add)
         self.withdraw_button.clicked.connect(self.withdraw)
         self.logout_button.clicked.connect(self.logout)
+        self.history_button.clicked.connect(self.show_history)
 
         self.username_label.setText("henlo, " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
@@ -29,9 +30,14 @@ class homePage(QtWidgets.QWidget):
         self.info_page.show()
         
     def show_ranking(self):
-        self.ranking_page = RankingPage.rankingPage(self.connection, self.user, self)
+        self.ranking_page = RankingPage.rankingPage(self.user, self.connection, self)
         self.hide()
         self.ranking_page.show()
+
+    def show_history(self):
+        self.history_page = HistoryPage.historyPage(self.user, self.connection, self)
+        self.hide()
+        self.history_page.show()
     
     def withdraw(self):
         self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.connection)
