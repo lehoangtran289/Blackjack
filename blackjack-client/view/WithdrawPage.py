@@ -31,7 +31,7 @@ class withdrawPage(QtWidgets.QWidget):
 
         if header == 'WDRSUCCESS':
             _, balance = message.split(' ')
-            self.user.balance = int(balance)
+            self.user.balance = float(balance)
             QtWidgets.QMessageBox.about(self, 'Add Successful', 'Successful')
             self.back()
         else:

@@ -34,7 +34,7 @@ class signupPage(QtWidgets.QWidget):
             self.back_to_start_page()
         elif msg_token[0] == configs.SIGNUP_FAIL:
             print("Sign up failed")
-            QtWidgets.QMessageBox.about('Sign up Failed', msg_token[1])
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', msg_token[1])
         else:
             print("Wrong message")
 
