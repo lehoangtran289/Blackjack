@@ -10,6 +10,16 @@ class infoPage(QtWidgets.QWidget):
         self.user = user
         self.connection = connection
         self.home_page = home
+        self.result_table.setColumnWidth(0, 73)
+        self.result_table.setColumnWidth(1, 73)
+        self.result_table.setColumnWidth(2, 73)
+        self.result_table.setColumnWidth(3, 73)
+        self.result_table.setColumnWidth(4, 73)
+        self.result_table.setColumnWidth(5, 73)
+        self.result_table.setColumnWidth(6, 73)
+        self.result_table.setColumnWidth(7, 73)
+        self.search_button.clicked.connect(self.search)
+        self.search_entry.returnPressed.connect(self.search_button.click)
         
         request = 'INFO ' + self.user.username
         response = self.connection.send_request(request)
@@ -25,9 +35,29 @@ class infoPage(QtWidgets.QWidget):
             self.bust.setText(stats[6])
             self.blackjack.setText(stats[7])
         else:
-            QtWidgets.QMessageBox.about(self, 'Failed', token[1])
+            QtWidgets.QMessageBox.about(self, 'Failed', message)
 
         self.back_button.clicked.connect(self.back)
+
+    def search(self):
+        keyword = self.search_entry.text()
+        request = 'SEARCHINFO ' + keyword
+        response = self.connection.send_request(request)
+        header = response.split('=')
+        self.result_table.setRowCount(0)
+        if header == 'SEARCHSUCCESS':
+            rowCount = 0
+            _, message = response.split('=')
+            for token in message.split(','):
+                stats = token.split(' ')
+                self.result_table.insertRow(rowCount)
+                rowCount += 1
+                for i in range(len(stats)):
+                    self.result_table.setItem(rowCount, i, QtWidgets.QTableWidgetItem(stats[i]))
+        else:
+            self.result_table.insertRow(0)
+            self.result_table.setSpan(0, 0, 1, 8)
+            self.result_table.setItem(0, 0, QtWidgets.QTableWidgetItem('Username not found'))
 
     def back(self): 
         self.close()

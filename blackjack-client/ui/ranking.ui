@@ -16,29 +16,39 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>200</y>
-     <width>161</width>
-     <height>16</height>
+     <x>0</x>
+     <y>190</y>
+     <width>111</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
-    <string>Global Ranking</string>
+    <string>Global
+Ranking</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QTableWidget" name="ranking_table">
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>90</y>
-     <width>481</width>
+     <y>80</y>
+     <width>450</width>
      <height>261</height>
     </rect>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
    </property>
    <property name="showGrid">
     <bool>false</bool>
    </property>
    <attribute name="horizontalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderHighlightSections">
@@ -46,6 +56,9 @@
    </attribute>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>30</number>
    </attribute>
    <row>
     <property name="text">
@@ -71,23 +84,26 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>360</y>
-     <width>60</width>
-     <height>16</height>
+     <x>30</x>
+     <y>350</y>
+     <width>81</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>Your rank:</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="user_rank_label">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>360</y>
+     <x>120</x>
+     <y>350</y>
      <width>60</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -97,10 +113,10 @@
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>360</y>
+     <x>180</x>
+     <y>350</y>
      <width>60</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -110,53 +126,14 @@
   <widget class="QLabel" name="user_gain_label">
    <property name="geometry">
     <rect>
-     <x>510</x>
-     <y>360</y>
+     <x>380</x>
+     <y>350</y>
      <width>60</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>60</y>
-     <width>60</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Ranking</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>60</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Username</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>500</x>
-     <y>60</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Money gain</string>
    </property>
   </widget>
   <widget class="QPushButton" name="back_button">

@@ -1,7 +1,7 @@
 import socket
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 3000        # Port to listen on (non-privileged ports are > 1023)
+PORT = 1234     # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -30,3 +30,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'WDRSUCCESS=palizu 1000')
             if header == "LOGOUT":
                 conn.sendall(b'LOGOUTSUCCESS')
+            if header == 'SEARCHINFO':
+                conn.sendall(b'SEARCHFAIL')
+            if header == 'HISTORY':
+                conn.sendall(b'HISTORY=1/1/2020 win 100,1/1/2020 win 30')
