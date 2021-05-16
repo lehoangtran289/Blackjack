@@ -45,21 +45,25 @@ public class RequestProcessingService {
             throw new RequestException("Invalid request, request empty");
         }
 
+        // get request type
         RequestType requestType;
         try {
             requestType = RequestType.from(request.get(0));
             log.info("Receive {} request", requestType.getValue());
         } catch (RequestException ex) {
             writeToChannel(channel, "FAIL=Invalid request");
-            throw new RequestException("Invalid request type");
+            throw new RequestException("Invalid request type " + request.get(0));
         }
 
+        // check request length
+        if (!isRequestLengthValid(request)) {
+            writeToChannel(channel, "FAIL=Invalid " + requestType.getValue() + " request length");
+            throw new RequestException.InvalidRequestLengthException(requestType.getValue() + "=" + request.size());
+        }
+
+        // process request
         switch (requestType) {
             case LOGIN: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid LOGIN request length");
-                    throw new RequestException("Invalid request length");
-                }
                 if (playerService.isChannelLoggedIn(channel)) {
                     writeToChannel(channel, "LOGINFAIL=Channel already login, logout first");
                     log.error("channel {} already login", channel);
@@ -83,10 +87,6 @@ public class RequestProcessingService {
                 break;
             }
             case LOGOUT: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid LOGOUT request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 try {
                     Player player = playerService.logout(channel, playerName);
@@ -107,10 +107,6 @@ public class RequestProcessingService {
                 break;
             }
             case SIGNUP: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid SIGNUP request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 String password = request.get(2);
                 try {
@@ -124,10 +120,6 @@ public class RequestProcessingService {
                 break;
             }
             case SEARCHINFO: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid SEARCHINFO request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 try {
                     List<PlayerGameInfo> playerGameInfos =
@@ -154,10 +146,6 @@ public class RequestProcessingService {
                 break;
             }
             case INFO: { // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid INFO request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 try {
                     PlayerGameInfo playerGameInfo = matchHistoryService.getPlayerGameInfoByName(playerName);
@@ -181,10 +169,6 @@ public class RequestProcessingService {
                 break;
             }
             case HISTORY: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid HISTORY request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 List<MatchHistory> histories = matchHistoryService.getPlayerHistory(playerName);
                 String msg = "HISTORY=" + histories.stream().map(MatchHistory::toString)
@@ -193,10 +177,6 @@ public class RequestProcessingService {
                 break;
             }
             case RANKING: { // RANK={ranking1} {user_name1} {money_earn1}, ...
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid RANKING request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 List<PlayerRanking> rankings = matchHistoryService.getAllPlayerRanking(playerName);
                 String msg = "RANK=" + rankings.stream().map(PlayerRanking::toString)
@@ -206,10 +186,6 @@ public class RequestProcessingService {
                 break;
             }
             case ADDMONEY: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid ADD request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
                 double amount = Double.parseDouble(request.get(3));
@@ -234,10 +210,6 @@ public class RequestProcessingService {
                 break;
             }
             case WITHDRAWMONEY: {
-                if (!isRequestLengthValid(request)) {
-                    writeToChannel(channel, "FAIL=Invalid WDR request length");
-                    throw new RequestException("Invalid request length");
-                }
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
                 double amount = Double.parseDouble(request.get(3));
