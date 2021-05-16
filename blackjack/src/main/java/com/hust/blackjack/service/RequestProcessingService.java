@@ -239,18 +239,27 @@ public class RequestProcessingService {
                     List<Player> playersInTable = table.getPlayers();
 
                     // build response string and send to each players in table
-                    String msg = "SUCCESS=" + table.getTableId() + " ";
-                    StringBuilder players = new StringBuilder();
+                    String msg = "SUCCESS=" + table.getTableId() + " " +
+                            playersInTable.stream()
+                            .map(Player::getPlayerName)
+                            .collect(Collectors.joining(" "));
+
+                    /*StringBuilder players = new StringBuilder();
                     for (int i = 0; i < playersInTable.size() - 1; i++) {
                         players.append(playersInTable.get(i).getPlayerName());
                         if (i != playersInTable.size() - 2) {
                             players.append(" ");
                         }
                     }
-                    msg += players.toString();
+                    msg += players.toString();*/
 
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
+                    }
+                    if (playersInTable.size() == Table.TABLE_SIZE) {
+                        for (Player player : playersInTable) {
+                            writeToChannel(player.getChannel(), "START=" + table.getTableId());
+                        }
                     }
                     log.info("Player {} join table {}. Players {}",
                             playerName, table.getTableId(), table.getPlayers()
@@ -296,7 +305,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-        msg += "\n"; // terminal testing purposes
+//        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
