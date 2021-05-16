@@ -43,17 +43,18 @@ class infoPage(QtWidgets.QWidget):
         keyword = self.search_entry.text()
         request = 'SEARCHINFO ' + keyword
         response = self.connection.send_request(request)
-        header = response.split('=')
+        header = response.split('=')[0]
         self.result_table.setRowCount(0)
         if header == 'SEARCHSUCCESS':
-            rowCount = 0
+            row = 0
             _, message = response.split('=')
+            print(message)
             for token in message.split(','):
                 stats = token.split(' ')
-                self.result_table.insertRow(rowCount)
-                rowCount += 1
+                self.result_table.insertRow(row)
                 for i in range(len(stats)):
-                    self.result_table.setItem(rowCount, i, QtWidgets.QTableWidgetItem(stats[i]))
+                    self.result_table.setItem(row, i, QtWidgets.QTableWidgetItem(stats[i]))
+                row += 1
         else:
             self.result_table.insertRow(0)
             self.result_table.setSpan(0, 0, 1, 8)

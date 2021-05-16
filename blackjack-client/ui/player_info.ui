@@ -245,9 +245,15 @@
     <rect>
      <x>30</x>
      <y>230</y>
-     <width>581</width>
+     <width>584</width>
      <height>192</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::NoEditTriggers</set>

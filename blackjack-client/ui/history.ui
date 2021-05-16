@@ -35,6 +35,12 @@
      <height>341</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="editTriggers">
     <set>QAbstractItemView::NoEditTriggers</set>
    </property>
@@ -92,6 +98,10 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>history_table</tabstop>
+  <tabstop>back_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
