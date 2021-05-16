@@ -16,9 +16,9 @@
   <widget class="QPushButton" name="add_button">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>240</x>
      <y>220</y>
-     <width>100</width>
+     <width>120</width>
      <height>32</height>
     </rect>
    </property>
@@ -29,9 +29,9 @@
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>370</x>
      <y>220</y>
-     <width>100</width>
+     <width>120</width>
      <height>32</height>
     </rect>
    </property>
@@ -42,35 +42,41 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>189</x>
-     <y>150</y>
-     <width>71</width>
+     <x>109</x>
+     <y>160</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>CreditCard</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>180</y>
-     <width>60</width>
+     <x>110</x>
+     <y>190</y>
+     <width>120</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>Amount</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLineEdit" name="credit_card_entry">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>150</y>
-     <width>201</width>
+     <x>240</x>
+     <y>160</y>
+     <width>240</width>
      <height>21</height>
     </rect>
    </property>
@@ -78,9 +84,9 @@
   <widget class="QLineEdit" name="amount_entry">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>180</y>
-     <width>201</width>
+     <x>240</x>
+     <y>190</y>
+     <width>240</width>
      <height>21</height>
     </rect>
    </property>

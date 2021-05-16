@@ -16,6 +16,7 @@ class gamePage(QtWidgets.QWidget):
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         self.room_id_label.setText('Room: ' + room_id)
+        self.player1_label.setText(self.user.username)
         
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
@@ -23,7 +24,7 @@ class gamePage(QtWidgets.QWidget):
         self.chat_entry.returnPressed.connect(self.chat)
         self.bet_button.clicked.connect(self.bet)
         self.reset_bet_button.clicked.connect(self.reset_bet)
-        self.add_5_button.clicked.connect(self.add_5)
+        self.add_100_button.clicked.connect(self.add_100)
         self.add_10_button.clicked.connect(self.add_10)
         self.add_20_button.clicked.connect(self.add_20)
         self.add_50_button.clicked.connect(self.add_50)
@@ -109,8 +110,8 @@ class gamePage(QtWidgets.QWidget):
         self.bet_value = 0
         self.bet_label.setText('$' + str(self.bet_value))
 
-    def add_5(self):
-        self.bet_value += 5
+    def add_100(self):
+        self.bet_value += 100
         self.bet_label.setText('$' + str(self.bet_value))
     
     def add_10(self):
@@ -127,7 +128,7 @@ class gamePage(QtWidgets.QWidget):
         self.bet_label.setText('$' + str(self.bet_value))
   
     def set_enable_bet_button(self, flag):
-        self.add_5_button.setEnabled(flag)
+        self.add_100_button.setEnabled(flag)
         self.add_10_button.setEnabled(flag)
         self.add_20_button.setEnabled(flag)
         self.add_50_button.setEnabled(flag)

@@ -18,7 +18,7 @@ class homePage(QtWidgets.QWidget):
         self.logout_button.clicked.connect(self.logout)
         self.history_button.clicked.connect(self.show_history)
 
-        self.username_label.setText("henlo, " + self.user.username)
+        self.username_label.setText("Henlo " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):
