@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs, Connection
+from utils import configs, Connection, PlayingThread
 import socket
 from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage
 

@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs, Connection
+from utils import configs, Connection, PlayingThread
 import socket
 from view import HomePage
+import threading
 
 class gamePage(QtWidgets.QWidget):
     def __init__(self, user, connection, room_id):
@@ -30,6 +31,20 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_bet_button(False)
         self.set_enable_play_button(False)
 
+        t1 = threading.Thread(target=self.polling_start)
+        t1.start()
+
+    def polling_start(self):
+        while True:
+            response = self.connection.polling_response()
+            header = self.connection.get_header(response)
+            if header == 'START':
+                self.set_enable_bet_button(True)
+                return
+            elif header == 'CHAT':
+                message = self.connection.get_message(response)
+                uname = message.split(' ')[0]
+                self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
 
     def hit(self):
         request = 'HIT ' + self.room_id + ' ' + self.user.username
@@ -86,7 +101,7 @@ class gamePage(QtWidgets.QWidget):
         if self.connection.get_header(response) == 'BET':
             self.user.balance -= self.bet_value
             self.balance_label.setText('$' + str(self.user.balance))
-            self.set_enable_bet_button()
+            self.set_enable_bet_button(False)
         else:
             QtWidgets.QMessageBox.about(self, 'Bet Failed', self.connection.get_message(response))
 

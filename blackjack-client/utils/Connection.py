@@ -27,8 +27,9 @@ class connection():
         return response
 
     def polling_response(self):
-        response = self.s.recv(1024)
-        return response.decode('utf-8')
+        response = self.s.recv(1024).decode('utf-8')
+        print('received: ' + response)
+        return response
 
     def get_header(self, response):
         return response.split('=')[0]
