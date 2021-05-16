@@ -3,10 +3,9 @@
 HOST = "127.0.0.1"
 PORT = 1234
 
-# window size
-WINDOW_HEIGHT = 600
-WINDOW_WIDTH = 800
-
+#Card suits
+suits = ['\u2666', '\u2665', '\u2663', '\u2660']
+cards = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
 # message header
 LOGIN_SUCCESS = 'LOGINSUCCESS'

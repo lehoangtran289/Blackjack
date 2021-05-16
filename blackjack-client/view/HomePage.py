@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
-from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage
+from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, connection):
@@ -22,7 +22,16 @@ class homePage(QtWidgets.QWidget):
         self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):
-        print('play')
+        request = 'PLAY ' + self.user.username
+        response = self.connection.send_request(request)
+        header, message = response.split('=')
+        if header == 'SUCCESS':
+            room_id, _ = message.split(' ')
+            self.game_page = GamePage.gamePage(self.user, self.connection, room_id)
+            self.close()
+            self.game_page.show()
+        else:
+            QtWidgets.QMessageBox.about(self, 'Failed', message)
 
     def show_account_info(self):
         self.info_page = InfoPage.infoPage(self.user, self.connection, self)

@@ -2,5 +2,5 @@ class Player():
     def __init__(self, username, password, balance):
         self.username = username
         self.password = password
-        self.balance = balance
+        self.balance = float(balance)
         

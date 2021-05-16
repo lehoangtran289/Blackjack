@@ -34,3 +34,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'SEARCHSUCCESS=hoangtl1 1500.0 500.0 4 1 0 0 0')
             if header == 'HISTORY':
                 conn.sendall(b'HISTORY=1/1/2020 win 100,1/1/2020 win 30')
+            if header == 'CHAT':
+                conn.sendall(b'CHAT=palizu message')
+            if header == 'PLAY':
+                conn.sendall(b'SUCCESS=1 palizu')
+            if header == 'BET':
+                conn.sendall(b'BET=1 palizu 1000')

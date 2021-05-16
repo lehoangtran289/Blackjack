@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets, QtGui, uic, Qt
+from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
 from view import HomePage

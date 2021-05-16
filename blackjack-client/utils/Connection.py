@@ -25,3 +25,9 @@ class connection():
             QtWidgets.QMessageBox.about(self, 'Request Failed', response.split(' ')[1])
             sys.exit(1)
         return response
+
+    def get_header(self, response):
+        return response.split('=')[0]
+
+    def get_message(self, response):
+        return response.split('=')[1]
