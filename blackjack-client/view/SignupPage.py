@@ -27,12 +27,12 @@ class signupPage(QtWidgets.QWidget):
         self.validate_signup(response)
 
     def validate_signup(self, response):
-        token = response.split('=')
-        if token[0] == configs.SIGNUP_SUCCESS:
+        header = self.connection.get_header(response)
+        if header == configs.SIGNUP_SUCCESS:
             QtWidgets.QMessageBox.about(self, 'Successful', 'Sign up Successful')
             self.back_to_start_page()
-        elif token[0] == configs.SIGNUP_FAIL:
-            QtWidgets.QMessageBox.about(self, 'Sign up Failed', token[1])
+        elif header == configs.SIGNUP_FAIL:
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', self.connection.get_message(response))
         else:
             print("Wrong message")
 

@@ -23,7 +23,9 @@ class infoPage(QtWidgets.QWidget):
         
         request = 'INFO ' + self.user.username
         response = self.connection.send_request(request)
-        header, message = response.split('=')
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
+        
         if header == 'INFO':
             stats = message.split(' ')
             self.username.setText(stats[0])

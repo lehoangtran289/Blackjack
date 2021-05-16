@@ -38,5 +38,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'CHAT=palizu message')
             if header == 'PLAY':
                 conn.sendall(b'SUCCESS=1 palizu')
+                conn.sendall(b'START=1')
             if header == 'BET':
                 conn.sendall(b'BET=1 palizu 1000')

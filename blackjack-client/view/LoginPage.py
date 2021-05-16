@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from models.player import Player
+from models.User import user
 from utils import configs, Connection
 from view import StartPage, HomePage
 
@@ -23,14 +23,16 @@ class loginPage(QtWidgets.QMainWindow):
         self.validate_login(response, username, password)
 
     def validate_login(self, response, username, password):
-        token = response.split('=')
-        if token[0] == configs.LOGIN_SUCCESS:
-            username, balance = token[1].split(' ')
-            self.home_page = HomePage.homePage(Player(username, password, balance), self.connection)
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
+
+        if header == configs.LOGIN_SUCCESS:
+            username, balance = message.split(' ')
+            self.home_page = HomePage.homePage(user(username, password, balance), self.connection)
             self.close()
             self.home_page.show()
-        elif token[0] == configs.LOGIN_FAIL:
-            QtWidgets.QMessageBox.about(self, 'Log in Failed', token[1])
+        elif header == configs.LOGIN_FAIL:
+            QtWidgets.QMessageBox.about(self, 'Log in Failed', message)
         else:
             print("Wrong message")
 

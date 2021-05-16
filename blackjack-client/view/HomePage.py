@@ -24,14 +24,17 @@ class homePage(QtWidgets.QWidget):
     def play(self):
         request = 'PLAY ' + self.user.username
         response = self.connection.send_request(request)
-        header, message = response.split('=')
-        if header == 'SUCCESS':
-            room_id, _ = message.split(' ')
-            self.game_page = GamePage.gamePage(self.user, self.connection, room_id)
-            self.close()
-            self.game_page.show()
-        else:
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
+        
+        if header != 'SUCCESS':
             QtWidgets.QMessageBox.about(self, 'Failed', message)
+            return
+
+        room_id, _ = message.split(' ')
+        self.game_page = GamePage.gamePage(self.user, self.connection, room_id)
+        self.close()
+        self.game_page.show()
 
     def show_account_info(self):
         self.info_page = InfoPage.infoPage(self.user, self.connection, self)

@@ -15,7 +15,8 @@ class rankingPage(QtWidgets.QWidget):
         self.ranking_table.setColumnWidth(2, 200)
         request = 'GETRANKING ' + self.user.username 
         response = self.connection.send_request(request)
-        header, message = response.split('=')
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
         ranking_token = message.split(',')
 
         self.user_rank_label.setText(ranking_token[0].split(' ')[0])

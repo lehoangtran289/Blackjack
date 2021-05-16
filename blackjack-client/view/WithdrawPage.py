@@ -25,7 +25,8 @@ class withdrawPage(QtWidgets.QWidget):
         request = 'WDR ' + self.user.username + ' ' + credit_card_number + ' ' + amount
         response = self.connection.send_request(request)
         print('recieved: ' + response)
-        header, message = response.split('=')
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
 
         if header == 'WDRSUCCESS':
             _, balance = message.split(' ')

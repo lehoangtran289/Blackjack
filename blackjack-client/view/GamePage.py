@@ -11,10 +11,10 @@ class gamePage(QtWidgets.QWidget):
         self.connection = connection
         self.room_id = room_id
         self.bet_value = 0
-        self.bet_phase = 1
 
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
+        self.room_id_label.setText('Room: ' + room_id)
         
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
@@ -27,15 +27,51 @@ class gamePage(QtWidgets.QWidget):
         self.add_20_button.clicked.connect(self.add_20)
         self.add_50_button.clicked.connect(self.add_50)
 
+        self.set_enable_bet_button(False)
+        self.set_enable_play_button(False)
+
 
     def hit(self):
-        pass
+        request = 'HIT ' + self.room_id + ' ' + self.user.username
+        response = self.connection.send_request(request)
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
+        if header == 'HIT':
+            uname, card, suit = message.split(' ')
+            # todo: display card
+        elif header == 'BLACKJACK':
+            uname, card, suit = message.split(' ')
+            # todo: display card'
+            self.set_enable_play_button(False)
+            if uname == self.user.username:
+                self.chat_history.insertItem(0, 'You got a Blackjack!')
+            else:   
+                self.chat_history.insertItem(0, uname + ' got a Blackjack!')
+        elif header == 'BUST':
+            uname, card, suit = message.split(' ')
+            # todo: display card
+            self.set_enable_play_button(False)
+            if uname == self.user.username:
+                self.chat_history.insertItem(0, 'You got a Bust!')
+            else:   
+                self.chat_history.insertItem(0, uname + ' got a Bust!')
+        else:
+            print('Wrong response')
 
     def stand(self):
-        pass
+        request = 'STAND ' + self.room_id + ' ' + self.user.username
+        response = self.connection.send_request(request)
+        self.set_enable_play_button(False)
 
     def quit(self):
-        pass
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit? If you quit, you will lose your bet money', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            response = self.connection.send_request(request)
+            self.home_page = HomePage.homePage(self.user, self.connection)
+            self.close()
+            self.home_page.show()
 
     def chat(self):
         message = self.chat_entry.text()
@@ -45,15 +81,14 @@ class gamePage(QtWidgets.QWidget):
         response = self.connection.send_request(request)
 
     def bet(self):
-        if self.bet_phase == 1:
-            request = 'BET ' + str(self.room_id) + ' ' + self.user.username + ' ' + str(self.bet_value)
-            response = self.connection.send_request(request)
-            if self.connection.get_header(response) == 'BET':
-                self.user.balance -= self.bet_value
-                self.balance_label.setText('$' + str(self.user.balance))
-                self.set_enable_bet_button()
-            else:
-                QtWidgets.QMessageBox.about(self, 'Bet Failed', self.connection.get_message(response))
+        request = 'BET ' + str(self.room_id) + ' ' + self.user.username + ' ' + str(self.bet_value)
+        response = self.connection.send_request(request)
+        if self.connection.get_header(response) == 'BET':
+            self.user.balance -= self.bet_value
+            self.balance_label.setText('$' + str(self.user.balance))
+            self.set_enable_bet_button()
+        else:
+            QtWidgets.QMessageBox.about(self, 'Bet Failed', self.connection.get_message(response))
 
     def reset_bet(self):
         self.bet_value = 0
@@ -76,11 +111,14 @@ class gamePage(QtWidgets.QWidget):
         self.bet_value += 50
         self.bet_label.setText('$' + str(self.bet_value))
   
-    def set_enable_bet_button(self):
-        self.bet_phase = 1 - self.bet_phase
-        self.add_5_button.setEnabled(self.bet_phase)
-        self.add_10_button.setEnabled(self.bet_phase)
-        self.add_20_button.setEnabled(self.bet_phase)
-        self.add_50_button.setEnabled(self.bet_phase)
-        self.reset_bet_button.setEnabled(self.bet_phase)
-        self.bet_button.setEnabled(self.bet_phase)
+    def set_enable_bet_button(self, flag):
+        self.add_5_button.setEnabled(flag)
+        self.add_10_button.setEnabled(flag)
+        self.add_20_button.setEnabled(flag)
+        self.add_50_button.setEnabled(flag)
+        self.reset_bet_button.setEnabled(flag)
+        self.bet_button.setEnabled(flag)
+
+    def set_enable_play_button(self, flag):
+        self.hit_button.setEnabled(flag)
+        self.stand_button.setEnabled(flag)

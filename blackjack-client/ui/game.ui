@@ -81,7 +81,7 @@
   <widget class="QLabel" name="player1_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>50</x>
      <y>120</y>
      <width>100</width>
      <height>25</height>
@@ -97,7 +97,7 @@
   <widget class="QLabel" name="plyer2_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>50</x>
      <y>160</y>
      <width>100</width>
      <height>25</height>
@@ -113,7 +113,7 @@
   <widget class="QLabel" name="player3_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>50</x>
      <y>200</y>
      <width>100</width>
      <height>25</height>
@@ -129,7 +129,7 @@
   <widget class="QLabel" name="player4_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>50</x>
      <y>240</y>
      <width>100</width>
      <height>25</height>
@@ -145,7 +145,7 @@
   <widget class="QLabel" name="dealer_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>50</x>
      <y>80</y>
      <width>100</width>
      <height>25</height>
@@ -314,7 +314,7 @@
     <string>Quit</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="room_id_label">
    <property name="geometry">
     <rect>
      <x>150</x>

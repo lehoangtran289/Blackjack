@@ -24,8 +24,9 @@ class addPage(QtWidgets.QWidget):
 
         request = 'ADD ' + self.user.username + ' ' + credit_card_number + ' ' + amount
         response = self.connection.send_request(request)
-        header, message = response.split('=')
-
+        header = self.connection.get_header(response)
+        message = self.connection.get_message(response)
+        
         if header == 'ADDSUCCESS':
             _, balance = message.split(' ')
             self.user.balance = float(balance)

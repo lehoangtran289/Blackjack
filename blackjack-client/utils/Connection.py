@@ -26,6 +26,10 @@ class connection():
             sys.exit(1)
         return response
 
+    def polling_response(self):
+        response = self.s.recv(1024)
+        return response.decode('utf-8')
+
     def get_header(self, response):
         return response.split('=')[0]
 
