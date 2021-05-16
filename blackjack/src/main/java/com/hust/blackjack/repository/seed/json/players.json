@@ -18,5 +18,31 @@
     "playerName": "hoangtl4",
     "password": "123",
     "bank": 1760
+  },
+
+  {
+    "playerName": "a",
+    "password": "a",
+    "bank": 1000
+  },
+  {
+    "playerName": "b",
+    "password": "b",
+    "bank": 1000
+  },
+  {
+    "playerName": "c",
+    "password": "c",
+    "bank": 1000
+  },
+  {
+    "playerName": "d",
+    "password": "d",
+    "bank": 1000
+  },
+  {
+    "playerName": "e",
+    "password": "e",
+    "bank": 1000
   }
 ]

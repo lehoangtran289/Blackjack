@@ -18,7 +18,10 @@ public enum RequestType {
     HISTORY("HISTORY"),
     RANKING("GETRANKING"),
     ADDMONEY("ADD"),
-    WITHDRAWMONEY("WDR");
+    WITHDRAWMONEY("WDR"),
+    PLAY("PLAY"),
+    BET("BET"),
+    CHAT("CHAT");
 
     private final String value;
     private static final Map<String, RequestType> map = new HashMap<>();

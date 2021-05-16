@@ -1,13 +1,7 @@
 package com.hust.blackjack.service;
 
-import com.hust.blackjack.exception.CreditCardException;
-import com.hust.blackjack.exception.LoginException;
-import com.hust.blackjack.exception.PlayerException;
-import com.hust.blackjack.exception.RequestException;
-import com.hust.blackjack.model.CreditCard;
-import com.hust.blackjack.model.MatchHistory;
-import com.hust.blackjack.model.Player;
-import com.hust.blackjack.model.RequestType;
+import com.hust.blackjack.exception.*;
+import com.hust.blackjack.model.*;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
 import com.hust.blackjack.model.dto.PlayerRanking;
 import lombok.extern.log4j.Log4j2;
@@ -27,18 +21,22 @@ public class RequestProcessingService {
     private final CreditCardService creditCardService;
     private final PlayerService playerService;
     private final MatchHistoryService matchHistoryService;
+    private final TableService tableService;
 
     public RequestProcessingService(CreditCardService creditCardService,
                                     PlayerService playerService,
-                                    MatchHistoryService matchHistoryService) {
+                                    MatchHistoryService matchHistoryService,
+                                    TableService tableService) {
         this.creditCardService = creditCardService;
         this.playerService = playerService;
         this.matchHistoryService = matchHistoryService;
+        this.tableService = tableService;
     }
 
     // TODO: handle each request-type separately
     public void process(SocketChannel channel, String requestMsg)
-            throws RequestException, IOException, LoginException, PlayerException, CreditCardException {
+            throws RequestException, IOException, LoginException, PlayerException, CreditCardException,
+            TableException {
         List<String> request = new ArrayList<>(Arrays.asList(requestMsg.split(" ")));
         if (request.isEmpty()) {
             writeToChannel(channel, "FAIL=Invalid request");
@@ -233,6 +231,42 @@ public class RequestProcessingService {
                 }
                 break;
             }
+
+            case PLAY: {
+                String playerName = request.get(1);
+                try {
+                    Table table = tableService.play(playerName);
+                    List<Player> playersInTable = table.getPlayers();
+
+                    // build response string and send to each players in table
+                    String msg = "SUCCESS=" + table.getTableId() + " ";
+                    StringBuilder players = new StringBuilder();
+                    for (int i = 0; i < playersInTable.size() - 1; i++) {
+                        players.append(playersInTable.get(i).getPlayerName());
+                        if (i != playersInTable.size() - 2) {
+                            players.append(" ");
+                        }
+                    }
+                    msg += players.toString();
+
+                    for (Player player : playersInTable) {
+                        writeToChannel(player.getChannel(), msg);
+                    }
+                    log.info("Player {} join table {}. Players {}",
+                            playerName, table.getTableId(), table.getPlayers()
+                    );
+                } catch (TableException.NotEnoughBankBalanceException e) {
+                    writeToChannel(channel, "FAIL=Balance not enough");
+                    throw e;
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Player not found");
+                    throw e;
+                } catch (LoginException.PlayerNotLoginException e) {
+                    writeToChannel(channel, "FAIL=Player not login");
+                    throw e;
+                }
+                break;
+            }
             default:
                 writeToChannel(channel, "FAIL=Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
@@ -246,12 +280,15 @@ public class RequestProcessingService {
             case SEARCHINFO:
             case INFO:
             case HISTORY:
+            case PLAY:
                 return request.size() == 2;
             case LOGIN:
             case SIGNUP:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:
+            case CHAT:
+            case BET:
                 return request.size() == 4;
             default:
                 throw new RequestException.InvalidRequestLengthException();
@@ -259,7 +296,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-//        msg += "\n"; // terminal testing purposes
+        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
