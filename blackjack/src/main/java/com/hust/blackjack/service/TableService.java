@@ -51,4 +51,25 @@ public class TableService {
         table.getPlayers().add(player);
         return table;
     }
+
+    public Table removePlayer(String tableId, String playerName) throws PlayerException, TableException {
+        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
+        if (optionalPlayer.isEmpty()) {
+            log.error("Invalid playerName {}", playerName);
+            throw new PlayerException.PlayerNotFoundException();
+        }
+        Optional<Table> optionalTable = tableRepository.findTableById(Integer.parseInt(tableId));
+        if (optionalTable.isEmpty()) {
+            log.error("Invalid tableId {}", tableId);
+            throw new TableException.TableNotFoundException();
+        }
+        Player player = optionalPlayer.get();
+        Table table = optionalTable.get();
+
+        table.getPlayers().remove(player);
+        player.setTable(null);
+        log.info("Player {} is removed from the table {}", player, table);
+
+        return table;
+    }
 }

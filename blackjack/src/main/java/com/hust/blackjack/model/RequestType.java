@@ -20,6 +20,7 @@ public enum RequestType {
     ADDMONEY("ADD"),
     WITHDRAWMONEY("WDR"),
     PLAY("PLAY"),
+    QUIT("QUIT"),
     BET("BET"),
     CHAT("CHAT");
 
