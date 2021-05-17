@@ -17,12 +17,12 @@ public class Table {
     public static final double MAXIMUM_BET = 200;
     public static final double MINIMUM_BET = 10;
 
-    private int tableId;
+    private String tableId;
     private List<Player> players;
     private boolean isDealerHasBlackjack;
     private boolean continuePlaying;
 
-    public Table(int tableId) {
+    public Table(String tableId) {
         this.tableId = tableId;
         players = new ArrayList<>();
     }

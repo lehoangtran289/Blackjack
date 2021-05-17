@@ -34,8 +34,8 @@ public class TableService {
             log.error("Player {} not login", playerName);
             throw new LoginException.PlayerNotLoginException();
         }
-        if (player.getTable() != null) {
-            log.error("Player {} in another table, id = {}", playerName, player.getTable().getTableId());
+        if (player.getTableId() != null) {
+            log.error("Player {} in another table, id = {}", playerName, player.getTableId());
             throw new TableException.PlayerInAnotherTableException();
         }
         if (player.getBank() < 10) {
@@ -47,7 +47,7 @@ public class TableService {
         Table table = tableRepository.findAvailableTable();
 
         // place player into table
-        player.setTable(table);
+        player.setTableId(table.getTableId());
         table.getPlayers().add(player);
         return table;
     }
@@ -58,7 +58,7 @@ public class TableService {
             log.error("Invalid playerName {}", playerName);
             throw new PlayerException.PlayerNotFoundException();
         }
-        Optional<Table> optionalTable = tableRepository.findTableById(Integer.parseInt(tableId));
+        Optional<Table> optionalTable = tableRepository.findTableById(tableId);
         if (optionalTable.isEmpty()) {
             log.error("Invalid tableId {}", tableId);
             throw new TableException.TableNotFoundException();
@@ -66,8 +66,17 @@ public class TableService {
         Player player = optionalPlayer.get();
         Table table = optionalTable.get();
 
+        if (player.getTableId() == null) {
+            log.error("Player {} not in any table", player);
+            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any table");
+        }
+        if (!table.getPlayers().contains(player)) {
+            log.error("Table {} not contain player {}", tableId, player);
+            throw new TableException.PlayerNotFoundInTableException("Table not contain player");
+        }
+
         table.getPlayers().remove(player);
-        player.setTable(null);
+        player.setTableId(null);
         log.info("Player {} is removed from the table {}", player, table);
 
         return table;

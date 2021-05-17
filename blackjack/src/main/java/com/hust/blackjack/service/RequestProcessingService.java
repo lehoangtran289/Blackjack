@@ -278,6 +278,9 @@ public class RequestProcessingService {
                 } catch (LoginException.PlayerNotLoginException e) {
                     writeToChannel(channel, "FAIL=Player not login");
                     throw e;
+                } catch (TableException.PlayerInAnotherTableException e) {
+                    writeToChannel(channel, "FAIL=Player in another table");
+                    throw e;
                 }
                 break;
             }
@@ -300,6 +303,12 @@ public class RequestProcessingService {
                     throw e;
                 } catch (TableException.TableNotFoundException e) {
                     writeToChannel(channel, "FAIL=Table not found");
+                    throw e;
+                } catch (PlayerException.PlayerNotInAnyTableException e) {
+                    writeToChannel(channel, "FAIL=Player not in any table");
+                    throw e;
+                } catch (TableException.PlayerNotFoundInTableException e) {
+                    writeToChannel(channel, "FAIL=table not contain request player");
                     throw e;
                 }
                 break;

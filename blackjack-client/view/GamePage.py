@@ -32,8 +32,9 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_bet_button(False)
         self.set_enable_play_button(False)
 
-        t1 = threading.Thread(target=self.polling_start)
-        t1.start()
+
+        #t1 = threading.Thread(target=self.polling_start)
+        #t1.start()
 
     def polling_start(self):
         while True:

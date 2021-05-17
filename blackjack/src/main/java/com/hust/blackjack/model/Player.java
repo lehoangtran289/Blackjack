@@ -10,7 +10,6 @@ import java.nio.channels.SocketChannel;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@ToString
 public class Player {
     private static final int MAXIMUM_SCORE = 21;                            // maximum score before bust
     private static final double BLACKJACK_PAYOUT_MULTIPLIER = 1.5;
@@ -22,7 +21,7 @@ public class Player {
     private SocketChannel channel;
 
     //
-    private Table table;
+    private String tableId;
     private Hand hand;
     private double bet;
     private boolean hasBlackjack;
@@ -47,5 +46,16 @@ public class Player {
         hasBlackjack = false;
         isChoiceReceived = false;
         continuePlaying = false;
+    }
+
+    @SneakyThrows
+    @Override
+    public String toString() {
+        return "Player{" +
+                "playerName='" + playerName + '\'' +
+                ", bank=" + bank +
+                ", channel=" + channel.getRemoteAddress() +
+                ", tableId=" + tableId +
+                '}';
     }
 }

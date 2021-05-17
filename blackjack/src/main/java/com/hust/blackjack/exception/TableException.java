@@ -26,4 +26,11 @@ public class TableException extends Exception{
         public PlayerInAnotherTableException(String msg) { super(msg); }
         public PlayerInAnotherTableException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class PlayerNotFoundInTableException extends TableException {
+        public PlayerNotFoundInTableException() { }
+        public PlayerNotFoundInTableException(Throwable throwable) { super(throwable); }
+        public PlayerNotFoundInTableException(String msg) { super(msg); }
+        public PlayerNotFoundInTableException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }

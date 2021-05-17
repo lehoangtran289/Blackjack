@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface TableRepository {
     Table findAvailableTable();
 
-    Optional<Table> findTableById(int tableId);
+    Optional<Table> findTableById(String tableId);
 }
