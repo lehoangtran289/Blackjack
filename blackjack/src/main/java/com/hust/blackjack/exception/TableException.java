@@ -6,6 +6,13 @@ public class TableException extends Exception{
     public TableException(String msg) { super(msg); }
     public TableException(String msg, Throwable throwable) { super(msg, throwable); }
 
+    public static class TableNotFoundException extends TableException {
+        public TableNotFoundException() { }
+        public TableNotFoundException(Throwable throwable) { super(throwable); }
+        public TableNotFoundException(String msg) { super(msg); }
+        public TableNotFoundException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
+
     public static class NotEnoughBankBalanceException extends TableException {
         public NotEnoughBankBalanceException() { }
         public NotEnoughBankBalanceException(Throwable throwable) { super(throwable); }
@@ -18,5 +25,12 @@ public class TableException extends Exception{
         public PlayerInAnotherTableException(Throwable throwable) { super(throwable); }
         public PlayerInAnotherTableException(String msg) { super(msg); }
         public PlayerInAnotherTableException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
+
+    public static class PlayerNotFoundInTableException extends TableException {
+        public PlayerNotFoundInTableException() { }
+        public PlayerNotFoundInTableException(Throwable throwable) { super(throwable); }
+        public PlayerNotFoundInTableException(String msg) { super(msg); }
+        public PlayerNotFoundInTableException(String msg, Throwable throwable) { super(msg, throwable); }
     }
 }

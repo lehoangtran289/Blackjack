@@ -118,6 +118,11 @@ public class RequestProcessingService {
                 break;
             }
             case SEARCHINFO: {
+                if (request.size() == 1) {
+                    log.error("searchinfo playername empty");
+                    writeToChannel(channel, "SEARCHFAIL");
+                    throw new PlayerException.PlayerNotFoundException();
+                }
                 String playerName = request.get(1);
                 try {
                     List<PlayerGameInfo> playerGameInfos =
@@ -239,18 +244,27 @@ public class RequestProcessingService {
                     List<Player> playersInTable = table.getPlayers();
 
                     // build response string and send to each players in table
-                    String msg = "SUCCESS=" + table.getTableId() + " ";
-                    StringBuilder players = new StringBuilder();
+                    String msg = "SUCCESS=" + table.getTableId() + " " +
+                            playersInTable.stream()
+                            .map(Player::getPlayerName)
+                            .collect(Collectors.joining(" "));
+
+                    /*StringBuilder players = new StringBuilder();
                     for (int i = 0; i < playersInTable.size() - 1; i++) {
                         players.append(playersInTable.get(i).getPlayerName());
                         if (i != playersInTable.size() - 2) {
                             players.append(" ");
                         }
                     }
-                    msg += players.toString();
+                    msg += players.toString();*/
 
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
+                    }
+                    if (playersInTable.size() == Table.TABLE_SIZE) {
+                        for (Player player : playersInTable) {
+                            writeToChannel(player.getChannel(), "START=" + table.getTableId());
+                        }
                     }
                     log.info("Player {} join table {}. Players {}",
                             playerName, table.getTableId(), table.getPlayers()
@@ -264,6 +278,38 @@ public class RequestProcessingService {
                 } catch (LoginException.PlayerNotLoginException e) {
                     writeToChannel(channel, "FAIL=Player not login");
                     throw e;
+                } catch (TableException.PlayerInAnotherTableException e) {
+                    writeToChannel(channel, "FAIL=Player in another table");
+                    throw e;
+                }
+                break;
+            }
+            case QUIT: {
+                String tableId = request.get(1);
+                String playerName = request.get(2);
+                try {
+                    Table table = tableService.removePlayer(tableId, playerName);
+                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
+
+                    // write to requested channel
+                    writeToChannel(channel, msg);
+
+                    // write to players in current table
+                    for (Player player : table.getPlayers()) {
+                        writeToChannel(player.getChannel(), msg);
+                    }
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Player not found");
+                    throw e;
+                } catch (TableException.TableNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Table not found");
+                    throw e;
+                } catch (PlayerException.PlayerNotInAnyTableException e) {
+                    writeToChannel(channel, "FAIL=Player not in any table");
+                    throw e;
+                } catch (TableException.PlayerNotFoundInTableException e) {
+                    writeToChannel(channel, "FAIL=table not contain request player");
+                    throw e;
                 }
                 break;
             }
@@ -275,15 +321,17 @@ public class RequestProcessingService {
 
     private boolean isRequestLengthValid(List<String> request) throws RequestException {
         switch (RequestType.from(request.get(0))) {
+            case SEARCHINFO:
+                return request.size() == 2 || request.size() == 1;
             case RANKING:
             case LOGOUT:
-            case SEARCHINFO:
             case INFO:
             case HISTORY:
             case PLAY:
                 return request.size() == 2;
             case LOGIN:
             case SIGNUP:
+            case QUIT:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:
@@ -296,7 +344,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-        msg += "\n"; // terminal testing purposes
+//        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }

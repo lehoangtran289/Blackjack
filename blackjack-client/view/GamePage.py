@@ -33,10 +33,16 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_bet_button(False)
         self.set_enable_play_button(False)
 
+<<<<<<< HEAD
         self.polling_start_thread = StopableThread.stopableThread(target=self.polling_start, args=())
         #self.polling_start_proc = multiprocessing.Process(target=self.polling_start, args=())
         self.polling_start_thread.start()
         #self.set_enable_bet_button(True)
+=======
+
+        #t1 = threading.Thread(target=self.polling_start)
+        #t1.start()
+>>>>>>> d1bb83ab37f124aa32cc3440e2013dd7993a80fa
 
     def polling_start(self):
         while True:

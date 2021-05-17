@@ -26,4 +26,11 @@ public class PlayerException extends Exception{
         public NotEnoughBankBalanceException(String msg) { super(msg); }
         public NotEnoughBankBalanceException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class PlayerNotInAnyTableException extends PlayerException {
+        public PlayerNotInAnyTableException() { }
+        public PlayerNotInAnyTableException(Throwable throwable) { super(throwable); }
+        public PlayerNotInAnyTableException(String msg) { super(msg); }
+        public PlayerNotInAnyTableException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }
