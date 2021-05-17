@@ -81,4 +81,14 @@ public class TableService {
 
         return table;
     }
+
+    public Table getTableById(String tableId) throws TableException{
+        Optional<Table> optionalPlayer = tableRepository.findTableById(tableId);
+        if (optionalPlayer.isPresent()) {
+            return optionalPlayer.get();
+        } else {
+            log.error("Invalid tableId {}", tableId);
+            throw new TableException.TableNotFoundException();
+        }
+    }
 }

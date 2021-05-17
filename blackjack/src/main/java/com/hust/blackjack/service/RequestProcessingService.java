@@ -284,6 +284,24 @@ public class RequestProcessingService {
                 }
                 break;
             }
+            case CHAT: {
+                String tableId = request.get(1);
+                String playerName = request.get(2);
+                String msgRcv = request.stream()
+                        .skip(3)
+                        .collect(Collectors.joining(" "));
+                String msgSend = "CHAT=" + playerName + " " + msgRcv;
+                try {
+                    Table table = tableService.getTableById(tableId);
+                    for (Player player : table.getPlayers()) {
+                        writeToChannel(player.getChannel(), msgSend);
+                    }
+                } catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", tableId);
+                }
+
+                break;
+            }
             case QUIT: {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
@@ -321,6 +339,8 @@ public class RequestProcessingService {
 
     private boolean isRequestLengthValid(List<String> request) throws RequestException {
         switch (RequestType.from(request.get(0))) {
+            case CHAT:
+                return request.size() > 3;
             case SEARCHINFO:
                 return request.size() == 2 || request.size() == 1;
             case RANKING:
@@ -335,7 +355,6 @@ public class RequestProcessingService {
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:
-            case CHAT:
             case BET:
                 return request.size() == 4;
             default:
