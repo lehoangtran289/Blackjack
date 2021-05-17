@@ -88,5 +88,47 @@
     "resultState": "BLACKJACK",
     "bet": 40,
     "date": "19/12/2020"
+  },
+  {
+    "playerName": "palizu",
+    "resultState": "WIN",
+    "bet": 100,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "palizu",
+    "resultState": "LOSE",
+    "bet": 100,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "palizu",
+    "resultState": "WIN",
+    "bet": 200,
+    "date": "20/01/2021"
+  },
+  {
+    "playerName": "eriksen",
+    "resultState": "BLACKJACK",
+    "bet": 100,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "eriksen",
+    "resultState": "BLACKJACK",
+    "bet": 100,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "eriksen",
+    "resultState": "WIN",
+    "bet": 500,
+    "date": "19/12/2020"
+  },
+  {
+    "playerName": "eriksen",
+    "resultState": "LOSE",
+    "bet": 300,
+    "date": "19/12/2020"
   }
 ]

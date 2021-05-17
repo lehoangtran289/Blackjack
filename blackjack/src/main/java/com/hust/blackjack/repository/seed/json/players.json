@@ -19,7 +19,16 @@
     "password": "123",
     "bank": 1760
   },
-
+  {
+    "playerName": "palizu",
+    "password": "123",
+    "bank": 1200
+  },
+  {
+    "playerName": "eriksen",
+    "password": "123",
+    "bank": 1500
+  },
   {
     "playerName": "a",
     "password": "a",
