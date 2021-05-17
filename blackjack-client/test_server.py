@@ -43,3 +43,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'START=1')
             if header == 'BET':
                 conn.sendall(b'BET=1 palizu 1000')
+            if header == 'QUIT':
+                conn.sendall(b'QUIt=1 palizu')

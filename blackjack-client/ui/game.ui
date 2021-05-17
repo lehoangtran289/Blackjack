@@ -94,7 +94,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="plyer2_label">
+  <widget class="QLabel" name="player2_label">
    <property name="geometry">
     <rect>
      <x>0</x>

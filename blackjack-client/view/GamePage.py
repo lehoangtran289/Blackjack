@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from utils import configs, Connection, PlayingThread
+from utils import configs, Connection, StopableThread
 import socket
 from view import HomePage
+import multiprocessing
 import threading
 
 class gamePage(QtWidgets.QWidget):
@@ -32,20 +33,34 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_bet_button(False)
         self.set_enable_play_button(False)
 
-        t1 = threading.Thread(target=self.polling_start)
-        t1.start()
+        self.polling_start_thread = StopableThread.stopableThread(target=self.polling_start, args=())
+        #self.polling_start_proc = multiprocessing.Process(target=self.polling_start, args=())
+        self.polling_start_thread.start()
+        #self.set_enable_bet_button(True)
 
     def polling_start(self):
         while True:
             response = self.connection.polling_response()
             header = self.connection.get_header(response)
+            message = self.connection.get_message(response)
             if header == 'START':
                 self.set_enable_bet_button(True)
+                self.polling_start_thread.stop()
+                print('here')
                 return
             elif header == 'CHAT':
-                message = self.connection.get_message(response)
                 uname = message.split(' ')[0]
                 self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
+            elif header == 'SUCCESS':
+                username_list = message.split(' ')[1:].remove(self.user.username)
+                if len(username_list) < 3:
+                    username_list.append('Waiting for player')
+                self.player2.setText(username_list[0])
+                self.player3.setText(username_list[1])
+                self.player4.setText(username_list[2])
+            else:
+                print('Wrong response')
+
 
     def hit(self):
         request = 'HIT ' + self.room_id + ' ' + self.user.username
@@ -88,6 +103,7 @@ class gamePage(QtWidgets.QWidget):
             self.home_page = HomePage.homePage(self.user, self.connection)
             self.close()
             self.home_page.show()
+            self.polling_start_thread.stop()
 
     def chat(self):
         message = self.chat_entry.text()
