@@ -17,13 +17,13 @@ class gamePage(QtWidgets.QWidget):
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         self.room_id_label.setText('Room: ' + room_id)
-        self.player1_label.setText(self.user.username)
-        username_list.remove(self.user.username)
-        while len(username_list) < 3:
+        #self.player1_label.setText(self.user.username)
+        while len(username_list) < 4:
             username_list.append('Waiting for player')
-        self.player2_label.setText(username_list[0])
-        self.player3_label.setText(username_list[1])
-        self.player4_label.setText(username_list[2])
+        self.player1_label.setText(username_list[0])
+        self.player2_label.setText(username_list[1])
+        self.player3_label.setText(username_list[2])
+        self.player4_label.setText(username_list[3])
         
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
@@ -57,12 +57,13 @@ class gamePage(QtWidgets.QWidget):
                 uname = message.split(' ')[0]
                 self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
             elif header == 'SUCCESS':
-                username_list = message.split(' ')[1:].remove(self.user.username)
-                while len(username_list) < 3:
+                username_list = message.split(' ')[1:]
+                while len(username_list) < 4:
                     username_list.append('Waiting for player')
-                self.player2_label.setText(username_list[0])
-                self.player3_label.setText(username_list[1])
-                self.player4_label.setText(username_list[2])
+                self.player1_label.setText(username_list[0])
+                self.player2_label.setText(username_list[1])
+                self.player3_label.setText(username_list[2])
+                self.player4_label.setText(username_list[3])
             else:
                 print('Wrong response')
 
