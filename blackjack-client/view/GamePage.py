@@ -57,7 +57,8 @@ class gamePage(QtWidgets.QWidget):
                 uname = message.split(' ')[0]
                 self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
             elif header == 'SUCCESS':
-                username_list = message.split(' ')[1:].remove(self.user.username)
+                username_list = message.split(' ')[1:]#.remove(self.user.username)
+                print(username_list)
                 while len(username_list) < 3:
                     username_list.append('Waiting for player')
                 self.player2_label.setText(username_list[0])

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 public class MatchHistoryService {
-    private final int PAGING = 3;
+    private final int PAGING = 10;
 
     private final MatchHistoryRepository matchHistoryRepository;
     private final PlayerService playerService;
