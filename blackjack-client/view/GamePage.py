@@ -6,7 +6,7 @@ import multiprocessing
 import threading
 
 class gamePage(QtWidgets.QWidget):
-    def __init__(self, user, connection, room_id):
+    def __init__(self, user, connection, room_id, username_list):
         super().__init__()
         uic.loadUi('./ui/game.ui', self)
         self.user = user
@@ -18,6 +18,12 @@ class gamePage(QtWidgets.QWidget):
         self.bet_label.setText('$' + str(self.bet_value))
         self.room_id_label.setText('Room: ' + room_id)
         self.player1_label.setText(self.user.username)
+        username_list.remove(self.user.username)
+        while len(username_list) < 3:
+            username_list.append('Waiting for player')
+        self.player2_label.setText(username_list[0])
+        self.player3_label.setText(username_list[1])
+        self.player4_label.setText(username_list[2])
         
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
@@ -33,16 +39,9 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_bet_button(False)
         self.set_enable_play_button(False)
 
-<<<<<<< HEAD
         self.polling_start_thread = StopableThread.stopableThread(target=self.polling_start, args=())
-        #self.polling_start_proc = multiprocessing.Process(target=self.polling_start, args=())
         self.polling_start_thread.start()
-        #self.set_enable_bet_button(True)
-=======
 
-        #t1 = threading.Thread(target=self.polling_start)
-        #t1.start()
->>>>>>> d1bb83ab37f124aa32cc3440e2013dd7993a80fa
 
     def polling_start(self):
         while True:
@@ -59,11 +58,11 @@ class gamePage(QtWidgets.QWidget):
                 self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
             elif header == 'SUCCESS':
                 username_list = message.split(' ')[1:].remove(self.user.username)
-                if len(username_list) < 3:
+                while len(username_list) < 3:
                     username_list.append('Waiting for player')
-                self.player2.setText(username_list[0])
-                self.player3.setText(username_list[1])
-                self.player4.setText(username_list[2])
+                self.player2_label.setText(username_list[0])
+                self.player3_label.setText(username_list[1])
+                self.player4_label.setText(username_list[2])
             else:
                 print('Wrong response')
 

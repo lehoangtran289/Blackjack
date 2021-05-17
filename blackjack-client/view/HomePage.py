@@ -31,8 +31,9 @@ class homePage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, 'Failed', message)
             return
 
-        room_id, _ = message.split(' ')
-        self.game_page = GamePage.gamePage(self.user, self.connection, room_id)
+        room_id = message.split(' ')[0]
+        uname_list = message.split(' ')[1:]
+        self.game_page = GamePage.gamePage(self.user, self.connection, room_id, uname_list)
         self.close()
         self.game_page.show()
 
