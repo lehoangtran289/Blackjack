@@ -19,11 +19,14 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>220</y>
+     <x>80</x>
+     <y>280</y>
      <width>120</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>password</string>
@@ -35,24 +38,34 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>130</y>
+     <x>180</x>
+     <y>190</y>
      <width>281</width>
      <height>16</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);
+font: 22pt &quot;Arial&quot;;</string>
+   </property>
    <property name="text">
     <string>Sign up for a new account</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>180</y>
+     <x>80</x>
+     <y>240</y>
      <width>120</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>username</string>
@@ -64,8 +77,8 @@
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>290</y>
+     <x>330</x>
+     <y>350</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -77,8 +90,8 @@
   <widget class="QPushButton" name="signup_button">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>290</y>
+     <x>210</x>
+     <y>350</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -90,8 +103,8 @@
   <widget class="QLineEdit" name="password_entry">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>220</y>
+     <x>210</x>
+     <y>280</y>
      <width>240</width>
      <height>21</height>
     </rect>
@@ -103,8 +116,8 @@
   <widget class="QLineEdit" name="username_entry">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>180</y>
+     <x>210</x>
+     <y>240</y>
      <width>240</width>
      <height>21</height>
     </rect>
@@ -113,11 +126,14 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>260</y>
+     <x>50</x>
+     <y>320</y>
      <width>150</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>comfirm password</string>
@@ -129,8 +145,8 @@
   <widget class="QLineEdit" name="confirm_entry">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>260</y>
+     <x>210</x>
+     <y>320</y>
      <width>240</width>
      <height>21</height>
     </rect>
@@ -139,6 +155,32 @@
     <enum>QLineEdit::Password</enum>
    </property>
   </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <zorder>label_5</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>back_button</zorder>
+  <zorder>signup_button</zorder>
+  <zorder>password_entry</zorder>
+  <zorder>username_entry</zorder>
+  <zorder>label_4</zorder>
+  <zorder>confirm_entry</zorder>
  </widget>
  <resources/>
  <connections/>

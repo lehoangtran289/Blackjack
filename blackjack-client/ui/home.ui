@@ -81,22 +81,6 @@
     <string>Ranking</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>120</y>
-     <width>191</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Welcome to BlackJack</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
@@ -106,8 +90,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -122,8 +109,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -155,6 +145,32 @@
     <string>History</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <zorder>label_5</zorder>
+  <zorder>play_button</zorder>
+  <zorder>logout_button</zorder>
+  <zorder>add_button</zorder>
+  <zorder>info_button</zorder>
+  <zorder>show_rank_button</zorder>
+  <zorder>username_label</zorder>
+  <zorder>balance_label</zorder>
+  <zorder>withdraw_button</zorder>
+  <zorder>history_button</zorder>
  </widget>
  <resources/>
  <connections/>

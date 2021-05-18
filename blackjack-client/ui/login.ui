@@ -16,8 +16,8 @@
   <widget class="QLineEdit" name="username_entry">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>180</y>
+     <x>220</x>
+     <y>250</y>
      <width>240</width>
      <height>21</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QLineEdit" name="password_entry">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>210</y>
+     <x>220</x>
+     <y>280</y>
      <width>240</width>
      <height>21</height>
     </rect>
@@ -45,11 +45,14 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>180</y>
+     <x>90</x>
+     <y>250</y>
      <width>120</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>username</string>
@@ -61,11 +64,14 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>210</y>
+     <x>90</x>
+     <y>280</y>
      <width>120</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>password</string>
@@ -77,8 +83,8 @@
   <widget class="QPushButton" name="login_button">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>240</y>
+     <x>220</x>
+     <y>310</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -90,8 +96,8 @@
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>240</y>
+     <x>340</x>
+     <y>310</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -100,6 +106,29 @@
     <string>Back</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <zorder>label_5</zorder>
+  <zorder>username_entry</zorder>
+  <zorder>password_entry</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>login_button</zorder>
+  <zorder>back_button</zorder>
  </widget>
  <resources/>
  <connections/>

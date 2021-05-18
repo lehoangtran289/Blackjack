@@ -10,6 +10,12 @@
     <height>480</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -20,10 +26,31 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>260</y>
+     <y>290</y>
      <width>200</width>
      <height>50</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Marker Felt</family>
+     <pointsize>30</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 30pt &quot;Marker Felt&quot;;</string>
    </property>
    <property name="text">
     <string>Login</string>
@@ -33,10 +60,23 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>320</y>
+     <y>350</y>
      <width>200</width>
      <height>50</height>
     </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+font: 30pt &quot;Marker Felt&quot;;</string>
    </property>
    <property name="text">
     <string>Sign up</string>
@@ -45,19 +85,22 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>140</y>
-     <width>241</width>
-     <height>16</height>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Welcome to BlackJack</string>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
+  <zorder>label</zorder>
+  <zorder>login_button</zorder>
+  <zorder>signup_button</zorder>
  </widget>
  <resources/>
  <connections/>

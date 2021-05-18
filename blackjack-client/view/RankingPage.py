@@ -26,11 +26,11 @@ class rankingPage(QtWidgets.QWidget):
         ranking_token = ranking_token[1:]
         row = 0
         for token in ranking_token:
-            rank, username, money = token.split(' ') 
+            stats = token.split(' ') 
             self.ranking_table.insertRow(row)
-            self.ranking_table.setItem(row, 0, QtWidgets.QTableWidgetItem(rank)) 
-            self.ranking_table.setItem(row, 1, QtWidgets.QTableWidgetItem(username)) 
-            self.ranking_table.setItem(row, 2, QtWidgets.QTableWidgetItem(money)) 
+            for i in range(len(stats)):
+                self.ranking_table.setItem(row, i, QtWidgets.QTableWidgetItem(stats[i])) 
+                self.ranking_table.item(row, i).setTextAlignment(QtCore.Qt.AlignCenter)
             row = row + 1
 
         self.back_button.clicked.connect(self.back)

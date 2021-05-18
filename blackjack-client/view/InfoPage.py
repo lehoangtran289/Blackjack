@@ -17,7 +17,7 @@ class infoPage(QtWidgets.QWidget):
         self.result_table.setColumnWidth(4, 80)
         self.result_table.setColumnWidth(5, 80)
         self.result_table.setColumnWidth(6, 80)
-        self.result_table.setColumnWidth(7, 80)
+        self.result_table.setColumnWidth(7, 78)
         self.search_button.clicked.connect(self.search)
         self.search_entry.returnPressed.connect(self.search_button.click)
         
@@ -56,6 +56,7 @@ class infoPage(QtWidgets.QWidget):
                 self.result_table.insertRow(row)
                 for i in range(len(stats)):
                     self.result_table.setItem(row, i, QtWidgets.QTableWidgetItem(stats[i]))
+                    self.result_table.item(row, i).setTextAlignment(QtCore.Qt.AlignCenter)
                 row += 1
         else:
             self.result_table.insertRow(0)
