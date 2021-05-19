@@ -25,11 +25,17 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>password</string>
+    <string>Password</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -41,12 +47,20 @@
      <x>180</x>
      <y>190</y>
      <width>281</width>
-     <height>16</height>
+     <height>30</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>22</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-font: 22pt &quot;Arial&quot;;</string>
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Sign up for a new account</string>
@@ -64,11 +78,17 @@ font: 22pt &quot;Arial&quot;;</string>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>username</string>
+    <string>Username</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -83,6 +103,12 @@ font: 22pt &quot;Arial&quot;;</string>
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Back</string>
    </property>
@@ -95,6 +121,12 @@ font: 22pt &quot;Arial&quot;;</string>
      <width>120</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Sign up</string>
@@ -132,11 +164,17 @@ font: 22pt &quot;Arial&quot;;</string>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>comfirm password</string>
+    <string>Comfirm password</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -163,6 +201,12 @@ font: 22pt &quot;Arial&quot;;</string>
      <width>640</width>
      <height>480</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>

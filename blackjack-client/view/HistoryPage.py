@@ -27,6 +27,7 @@ class historyPage(QtWidgets.QWidget):
                 data = token.split(' ')
                 for i in range(len(data)):
                     self.history_table.setItem(row, i, QtWidgets.QTableWidgetItem(data[i]))
+                    self.history_table.item(row, i).setTextAlignment(QtCore.Qt.AlignCenter)
 
 
     def back(self):

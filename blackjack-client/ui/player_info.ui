@@ -17,10 +17,16 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>30</y>
-     <width>371</width>
-     <height>16</height>
+     <y>20</y>
+     <width>370</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>20</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 255, 255);</string>
@@ -35,17 +41,36 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>70</y>
-     <width>581</width>
+     <width>614</width>
      <height>80</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item row="1" column="2">
      <widget class="QLabel" name="gain_lose">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -57,8 +82,16 @@
     </item>
     <item row="1" column="3">
      <widget class="QLabel" name="win">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -70,8 +103,16 @@
     </item>
     <item row="1" column="4">
      <widget class="QLabel" name="lose">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -83,8 +124,16 @@
     </item>
     <item row="1" column="5">
      <widget class="QLabel" name="push">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -96,8 +145,16 @@
     </item>
     <item row="1" column="6">
      <widget class="QLabel" name="bust">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -109,8 +166,16 @@
     </item>
     <item row="1" column="7">
      <widget class="QLabel" name="blackjack">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -122,8 +187,16 @@
     </item>
     <item row="0" column="2">
      <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Gain/Lose</string>
@@ -135,8 +208,16 @@
     </item>
     <item row="0" column="5">
      <widget class="QLabel" name="label_8">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Push</string>
@@ -148,8 +229,16 @@
     </item>
     <item row="0" column="4">
      <widget class="QLabel" name="label_7">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Lose</string>
@@ -161,8 +250,16 @@
     </item>
     <item row="0" column="6">
      <widget class="QLabel" name="label_9">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Bust</string>
@@ -174,8 +271,16 @@
     </item>
     <item row="0" column="3">
      <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Win</string>
@@ -187,8 +292,16 @@
     </item>
     <item row="0" column="1">
      <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Balance</string>
@@ -200,8 +313,16 @@
     </item>
     <item row="0" column="7">
      <widget class="QLabel" name="label_10">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>BlackJack</string>
@@ -213,8 +334,16 @@
     </item>
     <item row="1" column="1">
      <widget class="QLabel" name="balance">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -226,8 +355,16 @@
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>Username</string>
@@ -239,8 +376,16 @@
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="username">
+      <property name="font">
+       <font>
+        <family>Papyrus</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -261,6 +406,14 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="text">
     <string>Back</string>
    </property>
@@ -268,11 +421,19 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>150</x>
      <y>170</y>
-     <width>301</width>
-     <height>21</height>
+     <width>350</width>
+     <height>25</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 255, 255);</string>
@@ -293,6 +454,12 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="placeholderText">
     <string>Enter player's username here...</string>
    </property>
@@ -301,9 +468,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>230</y>
+     <y>260</y>
      <width>640</width>
-     <height>190</height>
+     <height>150</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -312,12 +479,16 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);
-gridline-color: rgba(255, 255, 255, 0);
-alternate-background-color: rgba(255, 255, 255, 0);
-border-color: rgba(255, 255, 255, 0);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
    </property>
    <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -338,7 +509,7 @@ border-color: rgba(255, 255, 255, 0);</string>
     <enum>Qt::NoPen</enum>
    </property>
    <attribute name="horizontalHeaderVisible">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>
@@ -435,6 +606,14 @@ border-color: rgba(255, 255, 255, 0);</string>
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="text">
     <string>Search</string>
    </property>
@@ -455,6 +634,222 @@ border-color: rgba(255, 255, 255, 0);</string>
     <string>TextLabel</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Username</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Balance</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Gain/Lose</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Win</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Lose</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_17">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Push</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_18">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>Bust</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_19">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>230</y>
+     <width>80</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Papyrus</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+   </property>
+   <property name="text">
+    <string>BlackJack</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>label_11</zorder>
   <zorder>label</zorder>
   <zorder>gridLayoutWidget</zorder>
@@ -463,6 +858,14 @@ border-color: rgba(255, 255, 255, 0);</string>
   <zorder>search_entry</zorder>
   <zorder>result_table</zorder>
   <zorder>search_button</zorder>
+  <zorder>label_12</zorder>
+  <zorder>label_13</zorder>
+  <zorder>label_15</zorder>
+  <zorder>label_14</zorder>
+  <zorder>label_16</zorder>
+  <zorder>label_17</zorder>
+  <zorder>label_18</zorder>
+  <zorder>label_19</zorder>
  </widget>
  <resources/>
  <connections/>
