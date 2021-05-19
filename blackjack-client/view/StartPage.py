@@ -13,6 +13,7 @@ class startPage(QtWidgets.QMainWindow):
         self.signup_page = SignupPage.signupPage(self.connection)
         self.login_button.clicked.connect(self.show_login)
         self.signup_button.clicked.connect(self.show_signup)
+        self.background_label.setStyleSheet("border-image : url(./asset/home.png) 0 0 0 0 stretch stretch;")
 
     def show_login(self):
         self.close()

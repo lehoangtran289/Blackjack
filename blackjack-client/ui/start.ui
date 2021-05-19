@@ -88,7 +88,7 @@
     <string>Sign up</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="background_label">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -104,7 +104,7 @@
     <string>TextLabel</string>
    </property>
   </widget>
-  <zorder>label</zorder>
+  <zorder>background_label</zorder>
   <zorder>login_button</zorder>
   <zorder>signup_button</zorder>
  </widget>
