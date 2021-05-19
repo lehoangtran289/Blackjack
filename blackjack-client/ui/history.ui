@@ -24,8 +24,9 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -130,7 +131,6 @@ background-color: rgba(0, 0, 0, 50);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -165,7 +165,6 @@ background-color: rgba(0, 0, 0, 50);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -192,7 +191,6 @@ background-color: rgba(0, 0, 0, 50);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -219,7 +217,6 @@ background-color: rgba(0, 0, 0, 50);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>

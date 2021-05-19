@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>648</width>
     <height>480</height>
    </rect>
   </property>
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>301</y>
-     <width>241</width>
-     <height>181</height>
+     <y>290</y>
+     <width>240</width>
+     <height>191</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -27,6 +27,11 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="frameShape">
     <enum>QFrame::HLine</enum>
@@ -58,7 +63,7 @@
     <rect>
      <x>0</x>
      <y>270</y>
-     <width>241</width>
+     <width>240</width>
      <height>25</height>
     </rect>
    </property>
@@ -67,6 +72,11 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
@@ -87,6 +97,11 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>player1</string>
    </property>
@@ -102,6 +117,11 @@
      <width>150</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Waiting for player</string>
@@ -119,6 +139,11 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Waiting for player</string>
    </property>
@@ -134,6 +159,11 @@
      <width>150</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Waiting for player</string>
@@ -151,6 +181,11 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Dealer</string>
    </property>
@@ -167,6 +202,11 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Hit</string>
    </property>
@@ -179,6 +219,11 @@
      <width>113</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Stand</string>
@@ -193,6 +238,11 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>$20</string>
    </property>
@@ -205,6 +255,11 @@
      <width>113</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>$100</string>
@@ -219,6 +274,11 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>$10</string>
    </property>
@@ -231,6 +291,11 @@
      <width>113</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Reset Bet</string>
@@ -245,6 +310,11 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Balance</string>
    </property>
@@ -257,6 +327,11 @@
      <width>101</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>balance_value</string>
@@ -271,6 +346,11 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Bet</string>
    </property>
@@ -283,6 +363,11 @@
      <width>101</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>bet_value</string>
@@ -297,6 +382,11 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>$50</string>
    </property>
@@ -310,6 +400,11 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -320,8 +415,14 @@
      <x>150</x>
      <y>30</y>
      <width>341</width>
-     <height>16</height>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>20</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>room id</string>
@@ -339,10 +440,53 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Bet</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 191, 0);</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <zorder>label_2</zorder>
+  <zorder>chat_history</zorder>
+  <zorder>chat_entry</zorder>
+  <zorder>player1_label</zorder>
+  <zorder>player2_label</zorder>
+  <zorder>player3_label</zorder>
+  <zorder>player4_label</zorder>
+  <zorder>dealer_label</zorder>
+  <zorder>hit_button</zorder>
+  <zorder>stand_button</zorder>
+  <zorder>add_20_button</zorder>
+  <zorder>add_100_button</zorder>
+  <zorder>add_10_button</zorder>
+  <zorder>reset_bet_button</zorder>
+  <zorder>label</zorder>
+  <zorder>balance_label</zorder>
+  <zorder>label_3</zorder>
+  <zorder>bet_label</zorder>
+  <zorder>add_50_button</zorder>
+  <zorder>quit_button</zorder>
+  <zorder>room_id_label</zorder>
+  <zorder>bet_button</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection, StopableThread
+from models import User, Card
 import socket
 from view import HomePage
 import multiprocessing
@@ -17,13 +18,9 @@ class gamePage(QtWidgets.QWidget):
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         self.room_id_label.setText('Room: ' + room_id)
-        #self.player1_label.setText(self.user.username)
-        while len(username_list) < 4:
-            username_list.append('Waiting for player')
-        self.player1_label.setText(username_list[0])
-        self.player2_label.setText(username_list[1])
-        self.player3_label.setText(username_list[2])
-        self.player4_label.setText(username_list[3])
+        self.username_list = username_list
+        self.label_list = [self.player1_label, self.player2_label, self.player3_label, self.player4_label]
+        #to do update player label
         
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
@@ -42,7 +39,7 @@ class gamePage(QtWidgets.QWidget):
         self.polling_start_thread = StopableThread.stopableThread(target=self.polling_start, args=())
         self.polling_start_thread.start()
 
-
+    # waiting for start signal
     def polling_start(self):
         while True:
             response = self.connection.polling_response()
@@ -54,19 +51,37 @@ class gamePage(QtWidgets.QWidget):
                 print('here')
                 return
             elif header == 'CHAT':
-                uname = message.split(' ')[0]
-                self.chat_history.insertItem(0, uname + ': ' + ' '.join(message.split(' ')[1:]))
+                self.display_chat(message.split(' ')[0], ' '.join(message.split(' ')[1:]))
             elif header == 'SUCCESS':
-                username_list = message.split(' ')[1:]
-                while len(username_list) < 4:
-                    username_list.append('Waiting for player')
-                self.player1_label.setText(username_list[0])
-                self.player2_label.setText(username_list[1])
-                self.player3_label.setText(username_list[2])
-                self.player4_label.setText(username_list[3])
+                self.username_list = message.split(' ')[1:]
+                #to do update player label
+            elif header == 'QUIT':
+                _, uname = message.split(' ')
+                self.username_list.remove(uname)
+                self.username_list.append('Waiting for player')
+                self.set_player_label()
             else:
                 print('Wrong response')
 
+    #playing phase
+    def playing(self):
+        while True:
+            response = self.connection.polling_response()
+            header = self.connection.get_header(response)
+            message = self.connection.get_message(response)
+            if header == 'CHAT':
+                self.display_chat(message.split(' ')[0], ' '.join(message.split(' ')[1:]))
+            if header == 'DEAL':
+                dealer_hand = message.split(' ')[0]
+                player_hands = message.split(' ')[1:]
+
+
+    def display_chat(self, uname, msg):
+        self.chat_history.insertItem(0, uname + ': ' + msg)
+
+    def set_player_label(self):
+        for i in range(4):
+            self.label_list[i].text() == self.username_list[i]
 
     def hit(self):
         request = 'HIT ' + self.room_id + ' ' + self.user.username
@@ -109,7 +124,8 @@ class gamePage(QtWidgets.QWidget):
             self.home_page = HomePage.homePage(self.user, self.connection)
             self.close()
             self.home_page.show()
-            self.polling_start_thread.stop()
+            if self.polling_start_thread.is_alive():
+                self.polling_start_thread.stop()
 
     def chat(self):
         message = self.chat_entry.text()

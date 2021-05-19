@@ -53,7 +53,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -78,7 +77,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -103,7 +101,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -122,7 +119,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -157,7 +153,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
      <weight>75</weight>
      <bold>true</bold>

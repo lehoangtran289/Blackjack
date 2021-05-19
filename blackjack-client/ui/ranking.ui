@@ -24,7 +24,7 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
+     <family>.AppleSystemUIFont</family>
      <pointsize>14</pointsize>
      <weight>50</weight>
      <italic>false</italic>
@@ -32,8 +32,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-font: 14pt &quot;Papyrus&quot;;</string>
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Global
@@ -60,10 +59,7 @@ Ranking</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -146,10 +142,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -173,10 +166,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -200,10 +190,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -227,10 +214,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -254,7 +238,6 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -273,7 +256,6 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
      <weight>50</weight>
      <italic>false</italic>
@@ -281,8 +263,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-font: 20pt &quot;Papyrus&quot;;</string>
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>RANKING</string>
@@ -324,7 +305,6 @@ font: 20pt &quot;Papyrus&quot;;</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -349,7 +329,6 @@ font: 20pt &quot;Papyrus&quot;;</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -374,7 +353,6 @@ font: 20pt &quot;Papyrus&quot;;</string>
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>

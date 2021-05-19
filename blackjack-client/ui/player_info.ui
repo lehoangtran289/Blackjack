@@ -24,8 +24,9 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -63,7 +64,6 @@
      <widget class="QLabel" name="gain_lose">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -84,7 +84,6 @@
      <widget class="QLabel" name="win">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -105,7 +104,6 @@
      <widget class="QLabel" name="lose">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -126,7 +124,6 @@
      <widget class="QLabel" name="push">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -147,7 +144,6 @@
      <widget class="QLabel" name="bust">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -168,7 +164,6 @@
      <widget class="QLabel" name="blackjack">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -189,7 +184,6 @@
      <widget class="QLabel" name="label_5">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -210,7 +204,6 @@
      <widget class="QLabel" name="label_8">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -231,7 +224,6 @@
      <widget class="QLabel" name="label_7">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -252,7 +244,6 @@
      <widget class="QLabel" name="label_9">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -273,7 +264,6 @@
      <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -294,7 +284,6 @@
      <widget class="QLabel" name="label_4">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -315,7 +304,6 @@
      <widget class="QLabel" name="label_10">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -336,7 +324,6 @@
      <widget class="QLabel" name="balance">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -357,7 +344,6 @@
      <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -378,7 +364,6 @@
      <widget class="QLabel" name="username">
       <property name="font">
        <font>
-        <family>Papyrus</family>
         <pointsize>14</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -408,7 +393,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -429,7 +413,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -456,7 +439,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -481,7 +463,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -608,7 +589,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -645,7 +625,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -672,7 +651,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -699,7 +677,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -726,7 +703,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -753,7 +729,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -780,7 +755,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -807,7 +781,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -834,7 +807,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>

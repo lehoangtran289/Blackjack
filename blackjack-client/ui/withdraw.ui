@@ -24,7 +24,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -43,7 +42,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -62,7 +60,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -87,7 +84,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -106,9 +102,14 @@
     <rect>
      <x>240</x>
      <y>240</y>
-     <width>240</width>
+     <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
   </widget>
   <widget class="QLineEdit" name="amount_entry">
@@ -120,6 +121,11 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
@@ -129,12 +135,6 @@
      <width>640</width>
      <height>480</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Papyrus</family>
-     <pointsize>14</pointsize>
-    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
@@ -154,7 +154,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Papyrus</family>
      <pointsize>20</pointsize>
     </font>
    </property>
