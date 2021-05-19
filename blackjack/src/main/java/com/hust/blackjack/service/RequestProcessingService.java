@@ -299,6 +299,20 @@ public class RequestProcessingService {
                 } catch (TableException.TableNotFoundException ex) {
                     log.error("Table {} Not found", tableId);
                 }
+                break;
+            }
+            case BET: {
+                String tableId = request.get(1);
+                String playerName = request.get(2);
+                double amount = Double.parseDouble(request.get(3));
+
+                tableService.getBet(tableId, playerName, amount);
+
+                try {
+                    Table table = tableService.getTableById(tableId);
+                } catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", tableId);
+                }
 
                 break;
             }

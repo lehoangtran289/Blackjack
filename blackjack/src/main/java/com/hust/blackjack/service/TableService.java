@@ -22,14 +22,18 @@ public class TableService {
         this.playerService = playerService;
     }
 
+    public Table getTableById(String tableId) throws TableException {
+        Optional<Table> optionalPlayer = tableRepository.findTableById(tableId);
+        if (optionalPlayer.isEmpty()) {
+            log.error("Invalid tableId {}", tableId);
+            throw new TableException.TableNotFoundException();
+        }
+        return optionalPlayer.get();
+    }
+
     public Table play(String playerName) throws TableException, PlayerException, LoginException {
         // get user
-        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Invalid playerName {}", playerName);
-            throw new PlayerException.PlayerNotFoundException();
-        }
-        Player player = optionalPlayer.get();
+        Player player = playerService.getPlayerByName(playerName);
         if (player.getChannel() == null) {
             log.error("Player {} not login", playerName);
             throw new LoginException.PlayerNotLoginException();
@@ -53,26 +57,19 @@ public class TableService {
     }
 
     public Table removePlayer(String tableId, String playerName) throws PlayerException, TableException {
-        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Invalid playerName {}", playerName);
-            throw new PlayerException.PlayerNotFoundException();
-        }
-        Optional<Table> optionalTable = tableRepository.findTableById(tableId);
-        if (optionalTable.isEmpty()) {
-            log.error("Invalid tableId {}", tableId);
-            throw new TableException.TableNotFoundException();
-        }
-        Player player = optionalPlayer.get();
-        Table table = optionalTable.get();
+        Player player = playerService.getPlayerByName(playerName);
+        Table table = this.getTableById(tableId);
 
         if (player.getTableId() == null) {
             log.error("Player {} not in any table", player);
-            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any table");
+            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any " + "table");
         }
         if (!table.getPlayers().contains(player)) {
             log.error("Table {} not contain player {}", tableId, player);
             throw new TableException.PlayerNotFoundInTableException("Table not contain player");
+        }
+        if (player.getBet() != 0) {
+            player.setBank(player.getBank() - player.getBet());
         }
 
         table.getPlayers().remove(player);
@@ -82,13 +79,8 @@ public class TableService {
         return table;
     }
 
-    public Table getTableById(String tableId) throws TableException{
-        Optional<Table> optionalPlayer = tableRepository.findTableById(tableId);
-        if (optionalPlayer.isPresent()) {
-            return optionalPlayer.get();
-        } else {
-            log.error("Invalid tableId {}", tableId);
-            throw new TableException.TableNotFoundException();
-        }
+    public void getBet(String tableId, String playerName, double amount) throws PlayerException, TableException {
+        Player player = playerService.getPlayerByName(playerName);
+        Table table = this.getTableById(tableId);
     }
 }

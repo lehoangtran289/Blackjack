@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -46,13 +45,9 @@ public class MatchHistoryService {
     }
 
     public PlayerGameInfo getPlayerGameInfoByName(String playerName) throws PlayerException.PlayerNotFoundException {
-        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Invalid playerName {}", playerName);
-            throw new PlayerException.PlayerNotFoundException();
-        }
+        Player player = playerService.getPlayerByName(playerName);
         List<MatchHistory> playerMatchHistory = matchHistoryRepository.findAllByPlayerName(playerName);
-        return calculateGameInfoFromMatchHistory(optionalPlayer.get(), playerMatchHistory);
+        return calculateGameInfoFromMatchHistory(player, playerMatchHistory);
     }
 
     private PlayerGameInfo calculateGameInfoFromMatchHistory(Player player, List<MatchHistory> playerMatchHistory) {

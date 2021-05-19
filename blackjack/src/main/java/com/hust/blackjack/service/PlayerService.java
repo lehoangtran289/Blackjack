@@ -24,12 +24,22 @@ public class PlayerService {
         return playerRepository.existsByChannel(channel);
     }
 
-    public Optional<Player> getPlayerByNameAndPassword(String playerName, String password) {
-        return playerRepository.findPlayerByNameAndPassword(playerName, password);
+    public Player getPlayerByNameAndPassword(String playerName, String password) throws PlayerException.PlayerNotFoundException {
+        Optional<Player> optionalPlayer = playerRepository.findPlayerByNameAndPassword(playerName, password);
+        if (optionalPlayer.isEmpty()) {
+            log.error("Invalid playerName {}", playerName);
+            throw new PlayerException.PlayerNotFoundException();
+        }
+        return optionalPlayer.get();
     }
 
-    public Optional<Player> getPlayerByName(String playerName) {
-        return playerRepository.findPlayerByName(playerName);
+    public Player getPlayerByName(String playerName) throws PlayerException.PlayerNotFoundException {
+        Optional<Player> optionalPlayer = playerRepository.findPlayerByName(playerName);
+        if (optionalPlayer.isEmpty()) {
+            log.error("Invalid playerName {}", playerName);
+            throw new PlayerException.PlayerNotFoundException();
+        }
+        return optionalPlayer.get();
     }
 
     public List<Player> getPlayerByNameLIKE(String playerName) {
@@ -53,30 +63,18 @@ public class PlayerService {
         return playerRepository.findAllPlayerName();
     }
 
-    public Player login(String playerName, String password)
-            throws PlayerException.PlayerNotFoundException,
-            LoginException.PlayerAlreadyLoginException {
-        Optional<Player> optionalPlayer = this.getPlayerByNameAndPassword(playerName, password);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Invalid playerName password");
-            throw new PlayerException.PlayerNotFoundException();
-        }
-        Player player = optionalPlayer.get();
+    public Player login(String playerName, String password) throws PlayerException, LoginException {
+        Player player = this.getPlayerByNameAndPassword(playerName, password);
         if (player.getChannel() != null) {
             log.error("player already login");
             throw new LoginException.PlayerAlreadyLoginException();
         }
-        return optionalPlayer.get();
+        return player;
     }
 
     public Player logout(SocketChannel channel, String playerName)
             throws LoginException, PlayerException {
-        Optional<Player> optionalPlayer = this.getPlayerByName(playerName);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Invalid playerName {}", playerName);
-            throw new PlayerException.PlayerNotFoundException();
-        }
-        Player player = optionalPlayer.get();
+        Player player = this.getPlayerByName(playerName);
         if (player.getChannel() == null) {
             log.error("player {} haven't login", player.getPlayerName());
             throw new LoginException.PlayerNotLoginException();

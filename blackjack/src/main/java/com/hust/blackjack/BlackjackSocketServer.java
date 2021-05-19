@@ -1,5 +1,6 @@
-package com.hust.blackjack.service;
+package com.hust.blackjack;
 
+import com.hust.blackjack.service.RequestProcessingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -116,19 +117,6 @@ public class BlackjackSocketServer {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    // chatting purpose
-    private void processWriting(String message) throws IOException {
-        ByteBuffer messageBuffer = ByteBuffer.wrap(message.getBytes());
-        for (SelectionKey key : selector.keys()) {
-            if (key.isValid() && key.channel() instanceof SocketChannel) {
-                SocketChannel client = (SocketChannel) key.channel();
-                log.info("Writing to channel {}", key);
-                client.write(messageBuffer);
-                messageBuffer.rewind();
             }
         }
     }

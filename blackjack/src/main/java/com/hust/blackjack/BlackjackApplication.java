@@ -1,6 +1,5 @@
 package com.hust.blackjack;
 
-import com.hust.blackjack.service.BlackjackSocketServer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

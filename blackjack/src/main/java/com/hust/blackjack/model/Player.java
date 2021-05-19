@@ -14,18 +14,18 @@ public class Player {
     private static final int MAXIMUM_SCORE = 21;                            // maximum score before bust
     private static final double BLACKJACK_PAYOUT_MULTIPLIER = 1.5;
 
-    //
+    // player's info
     private String playerName;
     private String password;
     private double bank;
     private SocketChannel channel;
 
-    //
+    // game state properties
     private String tableId;
     private Hand hand;
     private double bet;
     private boolean hasBlackjack;
-    private String choice;
+    private Action choice;
     private boolean isChoiceReceived;
     private boolean continuePlaying;
 
@@ -40,10 +40,11 @@ public class Player {
         this.bank = 1000;
     }
 
-    public void setupPlayer() {
+    public void refresh() {
         hand.clear();
         bet = 0.0;
         hasBlackjack = false;
+        choice = null;
         isChoiceReceived = false;
         continuePlaying = false;
     }

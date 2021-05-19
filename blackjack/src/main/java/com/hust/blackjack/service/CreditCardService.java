@@ -22,28 +22,20 @@ public class CreditCardService {
         this.playerService = playerService;
     }
 
-    public Optional<CreditCard> getCreditCard(String creditCardId) {
-        return creditCardRepository.findByCardNumber(creditCardId);
+    public CreditCard getCreditCard(String creditCardId) throws CreditCardException {
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(creditCardId);
+        if (optionalCreditCard.isEmpty()) {
+            log.error("credit card {} not found", creditCardId);
+            throw new CreditCardException.CreditCardNotFoundException();
+        }
+        return optionalCreditCard.get();
     }
 
     @Transactional
     public Player manageCreditCard(CreditCard.Action action, String playerName, String cardNumber, double amount)
-            throws CreditCardException.NotEnoughBalanceException,
-            PlayerException.PlayerNotFoundException,
-            PlayerException.NotEnoughBankBalanceException,
-            CreditCardException.CreditCardNotFoundException {
-        Optional<Player> optionalPlayer = playerService.getPlayerByName(playerName);
-        if (optionalPlayer.isEmpty()) {
-            log.error("Player {} not found", playerName);
-            throw new PlayerException.PlayerNotFoundException();
-        }
-        Optional<CreditCard> optionalCreditCard = this.getCreditCard(cardNumber);
-        if (optionalCreditCard.isEmpty()) {
-            log.error("credit card {} not found", cardNumber);
-            throw new CreditCardException.CreditCardNotFoundException();
-        }
-        Player player = optionalPlayer.get();
-        CreditCard creditCard = optionalCreditCard.get();
+            throws CreditCardException, PlayerException {
+        Player player = playerService.getPlayerByName(playerName);
+        CreditCard creditCard = this.getCreditCard(cardNumber);
 
         // handle request
         if (action == CreditCard.Action.ADD) {
