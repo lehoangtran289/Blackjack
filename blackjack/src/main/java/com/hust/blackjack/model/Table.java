@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Builder
 public class Table {
-    public static final int TABLE_SIZE = 3;
+    public static final int TABLE_SIZE = 4;
     public static final int MAXIMUM_SCORE = 21;
     public static final int DEALER_HIT_THRESHOLD = 17;
     public static final double MAXIMUM_BET = 200;
