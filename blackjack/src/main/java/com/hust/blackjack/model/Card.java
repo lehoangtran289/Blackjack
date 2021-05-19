@@ -38,14 +38,14 @@ public class Card {
         EIGHT(8),
         NINE(9),
         TEN(10),
-        QUEEN(10),
-        KING(10),
-        JACK(10);
+        JACK(11),
+        QUEEN(12),
+        KING(13);
 
         private final int value;
 
         public static boolean isValid(int value) {
-            return value < 1 || value > 10;
+            return value >= 1 && value <= 13;
         }
 
         @Override
@@ -57,12 +57,13 @@ public class Card {
     @AllArgsConstructor
     @Getter
     public enum Suit {
-        CLUBS("club"),
-        DIAMONDS("diamonds"),
-        HEARTS("hearts"),
-        SPADES("spades");
+        CLUBS("clubs", 0),
+        DIAMONDS("diamonds", 1),
+        HEARTS("hearts", 2),
+        SPADES("spades", 3);
 
         private final String value;
+        private final int intVal;
 
         private static final List<String> suits = new ArrayList<>();
         static {

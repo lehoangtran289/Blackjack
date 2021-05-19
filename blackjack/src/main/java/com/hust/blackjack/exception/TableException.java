@@ -33,4 +33,11 @@ public class TableException extends Exception{
         public PlayerNotFoundInTableException(String msg) { super(msg); }
         public PlayerNotFoundInTableException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class GameNotStartException extends TableException {
+        public GameNotStartException() { }
+        public GameNotStartException(Throwable throwable) { super(throwable); }
+        public GameNotStartException(String msg) { super(msg); }
+        public GameNotStartException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }

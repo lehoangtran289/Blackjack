@@ -24,10 +24,9 @@ public class Player {
     private String tableId;
     private Hand hand;
     private double bet;
-    private boolean hasBlackjack;
+    private int hasBlackjack;
+    private int hasBust;
     private Action choice;
-    private boolean isChoiceReceived;
-    private boolean continuePlaying;
 
     public Player(String playerName) {
         this.playerName = playerName;
@@ -43,10 +42,14 @@ public class Player {
     public void refresh() {
         hand.clear();
         bet = 0.0;
-        hasBlackjack = false;
+        hasBlackjack = 0;
+        hasBust = 0;
         choice = null;
-        isChoiceReceived = false;
-        continuePlaying = false;
+    }
+
+    public void placeBet(double bet) {
+        setBet(bet);
+        setBank(getBank() - bet);
     }
 
     @SneakyThrows

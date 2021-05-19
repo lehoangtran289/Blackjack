@@ -1,5 +1,6 @@
 package com.hust.blackjack.service;
 
+import com.hust.blackjack.common.tuple.Tuple2;
 import com.hust.blackjack.exception.*;
 import com.hust.blackjack.model.*;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
@@ -246,8 +247,8 @@ public class RequestProcessingService {
                     // build response string and send to each players in table
                     String msg = "SUCCESS=" + table.getTableId() + " " +
                             playersInTable.stream()
-                            .map(Player::getPlayerName)
-                            .collect(Collectors.joining(" "));
+                                    .map(Player::getPlayerName)
+                                    .collect(Collectors.joining(" "));
 
                     /*StringBuilder players = new StringBuilder();
                     for (int i = 0; i < playersInTable.size() - 1; i++) {
@@ -262,6 +263,7 @@ public class RequestProcessingService {
                         writeToChannel(player.getChannel(), msg);
                     }
                     if (playersInTable.size() == Table.TABLE_SIZE) {
+                        table.initDeck();
                         for (Player player : playersInTable) {
                             writeToChannel(player.getChannel(), "START=" + table.getTableId());
                         }
@@ -298,22 +300,84 @@ public class RequestProcessingService {
                     }
                 } catch (TableException.TableNotFoundException ex) {
                     log.error("Table {} Not found", tableId);
+                    throw ex;
                 }
                 break;
             }
             case BET: {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
-                double amount = Double.parseDouble(request.get(3));
-
-                tableService.getBet(tableId, playerName, amount);
+                double bet = Double.parseDouble(request.get(3));
 
                 try {
+                    Player player = tableService.getBet(tableId, playerName, bet);
                     Table table = tableService.getTableById(tableId);
+
+                    // send BET response to players in room
+                    String msgSend = "BET=" + tableId + " " + playerName + " " + player.getBank();
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), msgSend);
+                    }
+
+                    // if all players bet -> DEAL + TURN
+                    if (tableService.isAllBet(table)) {
+                        Tuple2<Hand, List<Player>> tuple = tableService.dealCards(table);
+                        Hand dealerHand = tuple.getA0();
+                        List<Player> players = tuple.getA1();
+
+                        // build response message
+                        StringBuilder msgBuilder = new StringBuilder("DEAL=");
+                        List<Card> dealerCards = dealerHand.getCards();
+                        for (int i = 0; i < dealerCards.size(); i++) {
+                            Card card = dealerCards.get(i);   // dealer's hand
+                            msgBuilder.append(card.rank().getValue())
+                                    .append(" ")
+                                    .append(card.getSuit().getIntVal());
+                            if (i == dealerHand.size() - 1) {
+                                msgBuilder.append(",");
+                            } else {
+                                msgBuilder.append(" ");
+                            }
+                        }
+
+                        for (Player p : players) {  // players' hand
+                            msgBuilder.append(p.getPlayerName()).append(" ");
+                            List<Card> playerCards = p.getHand().getCards();
+                            for (int i = 0; i < playerCards.size(); ++i) {
+                                Card card = playerCards.get(i);
+                                msgBuilder.append(card.rank().getValue())
+                                        .append(" ")
+                                        .append(card.getSuit().getIntVal());
+                                if (i == playerCards.size() - 1) {
+                                    msgBuilder.append(",");
+                                } else {
+                                    msgBuilder.append(" ");
+                                }
+                            }
+                        }
+                        String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm last ','
+                        log.info("DEAL msg: {}", dealMsg);
+                        // send DEAL
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), dealMsg);
+                        }
+
+                        // send TURN
+                        sleep(1000);
+                        Player firstPlayer = players.get(0);
+                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getHasBlackjack();
+                        log.info("TURN msg: {}", turnMsg);
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), turnMsg);
+                        }
+                    }
                 } catch (TableException.TableNotFoundException ex) {
                     log.error("Table {} Not found", tableId);
+                    throw ex;
+                } catch (TableException.NotEnoughBankBalanceException ex) {
+                    writeToChannel(channel, "BETFAIL=Invalid bet from player " + playerName);
+                    throw ex;
                 }
-
                 break;
             }
             case QUIT: {
@@ -377,9 +441,17 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-//        msg += "\n"; // terminal testing purposes
+        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
+    }
+
+    private void sleep(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
