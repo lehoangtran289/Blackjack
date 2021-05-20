@@ -152,10 +152,14 @@ class gamePage(QtWidgets.QWidget):
                     QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 self.playing_thread.stop()
                 if reply == QtWidgets.QMessageBox.Yes:
-                    self.playing_thread.stop()
+                    request = 'CONTINUE ' + self.room_id + ' ' + self.user.username
                     self.polling_start_thread.start()
+                    self.playing_thread.stop()
+                    response = self.connection.send_request(request)
                     return
                 else:
+                    request = 'QUIT ' + self.room_id + ' ' + self.user.username
+                    response = self.connection.send_request(request)
                     self.home_page = HomePage.homePage(self.user, self.connection)
                     self.close()
                     self.home_page.show()
