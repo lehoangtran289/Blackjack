@@ -1,10 +1,8 @@
 package com.hust.blackjack.model;
 
-import com.hust.blackjack.exception.CardException;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -27,12 +25,6 @@ public class Hand {
         cards.add(newCard);
     }
 
-    public int value() {
-        return cards.stream()
-                .map(Card::value)
-                .reduce(0, Integer::sum);
-    }
-
     public int size() {
         return cards.size();
     }
@@ -42,14 +34,14 @@ public class Hand {
     }
 
     public boolean isBlackJack() {
-        return this.totalSum() == Table.MAXIMUM_SCORE;
+        return this.value() == Table.MAXIMUM_SCORE;
     }
 
     public boolean isBust() {
-        return this.totalSum() > Table.MAXIMUM_SCORE;
+        return this.value() > Table.MAXIMUM_SCORE;
     }
 
-    public int totalSum() {
+    public int value() {
         int sum = 0;
         List<Card> aces = new ArrayList<>();
         for (Card c : cards) {

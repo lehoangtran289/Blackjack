@@ -263,8 +263,10 @@ public class RequestProcessingService {
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
                     }
+                    sleep(1001);
                     if (playersInTable.size() == Table.TABLE_SIZE) {
                         table.initDeck();
+                        table.setIsPlaying(1);
                         for (Player player : playersInTable) {
                             writeToChannel(player.getChannel(), "START=" + table.getTableId());
                         }
@@ -449,6 +451,38 @@ public class RequestProcessingService {
                 }
                 break;
             }
+            case CONTINUE: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+                if (player.getBank() < Table.MINIMUM_BET) {
+                    log.error("Invalid balance of player {} to start game, bl = {}"
+                            , player.getPlayerName(), player.getBank());
+                    tableService.removePlayer(table.getTableId(), player.getPlayerName());
+                    writeToChannel(channel, "FAIL=Balance not enough");
+                    throw new TableException.NotEnoughBankBalanceException();
+                }
+
+                List<Player> playersInTable = table.getPlayers();
+
+                // build response string and send to each players in table
+                String msg = "SUCCESS=" + table.getTableId() + " " +
+                        playersInTable.stream()
+                                .map(Player::getPlayerName)
+                                .collect(Collectors.joining(" "));
+
+                for (Player p : playersInTable) {
+                    writeToChannel(p.getChannel(), msg);
+                }
+                sleep(1000);
+                if (playersInTable.size() == Table.TABLE_SIZE) {
+                    table.initDeck();
+                    table.setIsPlaying(1);
+                    for (Player p : playersInTable) {
+                        writeToChannel(p.getChannel(), "START=" + table.getTableId());
+                    }
+                }
+                break;
+            }
             default:
                 writeToChannel(channel, "FAIL=Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
@@ -472,6 +506,7 @@ public class RequestProcessingService {
             case HIT:
             case STAND:
             case QUIT:
+            case CONTINUE:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:

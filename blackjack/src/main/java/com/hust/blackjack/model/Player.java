@@ -52,7 +52,7 @@ public class Player {
     }
 
     public ResultState checkPlayerFinalState(int dealerHand) {
-        int total = getHand().totalSum();
+        int total = getHand().value();
         if (total > Table.MAXIMUM_SCORE) return ResultState.BUST;
         if (total == Table.MAXIMUM_SCORE) return ResultState.BLACKJACK;
         if (total < dealerHand) return ResultState.LOSE;

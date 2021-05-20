@@ -26,8 +26,7 @@ public class Table {
     private Hand dealerHand;
     private List<Player> players;
     private String playerTurn;      // name of current turn's player
-    private boolean isDealerHasBlackjack;
-    private boolean continuePlaying;
+    private int isPlaying;
 
     public Table(String tableId) {
         this.tableId = tableId;
@@ -40,6 +39,19 @@ public class Table {
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+    }
+
+    public void refresh() {
+        try {
+            deck = new Deck();
+            players = new ArrayList<>();
+            dealerHand = null;
+            playerTurn = null;
+            isPlaying = 0;
+        } catch (CardException.InvalidCardException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

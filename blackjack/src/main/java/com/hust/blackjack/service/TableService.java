@@ -1,7 +1,6 @@
 package com.hust.blackjack.service;
 
 import com.hust.blackjack.common.tuple.Tuple2;
-import com.hust.blackjack.common.tuple.Tuple3;
 import com.hust.blackjack.exception.LoginException;
 import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.exception.TableException;
@@ -34,6 +33,10 @@ public class TableService {
         return optionalPlayer.get();
     }
 
+    public boolean isAllBet(Table table) {
+        return table.getPlayers().stream().allMatch(p -> p.getBet() != 0);
+    }
+
     public Table play(String playerName) throws TableException, PlayerException, LoginException {
         // get user
         Player player = playerService.getPlayerByName(playerName);
@@ -45,7 +48,7 @@ public class TableService {
             log.error("Player {} in another table, id = {}", playerName, player.getTableId());
             throw new TableException.PlayerInAnotherTableException();
         }
-        if (player.getBank() < 10) {
+        if (player.getBank() < Table.MINIMUM_BET) {
             log.error("Invalid balance of player {} to start game, bl = {}", playerName, player.getBank());
             throw new TableException.NotEnoughBankBalanceException();
         }
@@ -65,18 +68,16 @@ public class TableService {
 
         if (player.getTableId() == null) {
             log.error("Player {} not in any table", player);
-            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any " +
-                    "table");
+            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any " + "table");
         }
         if (!table.getPlayers().contains(player)) {
             log.error("Table {} not contain player {}", tableId, player);
             throw new TableException.PlayerNotFoundInTableException("Table not contain player");
         }
-        if (player.getBet() != 0) {
-            player.setBank(0);
-        }
 
+        // process QUIT
         table.getPlayers().remove(player);
+        player.refresh();
         player.setTableId(null);
         log.info("Player {} is removed from the table {}", player, table);
 
@@ -105,10 +106,6 @@ public class TableService {
         }
         player.placeBet(bet);
         return player;
-    }
-
-    public boolean isAllBet(Table table) {
-        return table.getPlayers().stream().allMatch(p -> p.getBet() != 0);
     }
 
     public Tuple2<Hand, List<Player>> dealCards(Table table) {
@@ -144,7 +141,7 @@ public class TableService {
         Card newCard = table.getDeck().dealCard();
         log.info("New card hit = {}", newCard);
         player.getHand().addCard(newCard);
-        System.out.println(player.getHand() + " " + player.getHand().totalSum());
+        System.out.println(player.getHand() + " " + player.getHand().value());
 
         // check hand and return
         // in case of BLACKJACK
@@ -156,7 +153,7 @@ public class TableService {
         // in case of BUST
         if (player.getHand().isBust()) {
             player.setIsBust(1);
-            log.info("Player {} in table {} is BUST. total = {}", player.getPlayerName() , table.getTableId(), player.getHand().totalSum());
+            log.info("Player {} in table {} is BUST. total = {}", player.getPlayerName() , table.getTableId(), player.getHand().value());
             return "BUST=" + player.getPlayerName()  + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
         }
         // normal HIT case
@@ -198,7 +195,7 @@ public class TableService {
 
         // process HIT of dealer
         Hand dealerHand = table.getDealerHand();
-        while (dealerHand.totalSum() < Table.DEALER_HIT_THRESHOLD) {
+        while (dealerHand.value() < Table.DEALER_HIT_THRESHOLD) {
             Card newCard = table.getDeck().dealCard();
             dealerHand.getCards().add(newCard);
         }
@@ -219,7 +216,7 @@ public class TableService {
             Player p = table.getPlayers().get(i);
 
             // get player final state
-            ResultState state = p.checkPlayerFinalState(dealerHand.totalSum());
+            ResultState state = p.checkPlayerFinalState(dealerHand.value());
 
             // process Bet after a game
             double gain = 0;
@@ -246,6 +243,7 @@ public class TableService {
                 msgBuilder.append(",");
             }
         }
+        table.setIsPlaying(0);
         return msgBuilder.toString();
     }
 }
