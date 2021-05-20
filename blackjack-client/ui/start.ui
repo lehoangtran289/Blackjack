@@ -33,7 +33,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>30</pointsize>
+     <pointsize>20</pointsize>
      <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
@@ -49,10 +49,16 @@
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Login</string>
+   </property>
+   <property name="default">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="signup_button">
@@ -66,7 +72,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>30</pointsize>
+     <pointsize>20</pointsize>
      <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
@@ -82,10 +88,16 @@
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Sign up</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="background_label">
@@ -101,10 +113,33 @@
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
   <zorder>background_label</zorder>
+  <zorder>label_4</zorder>
   <zorder>login_button</zorder>
   <zorder>signup_button</zorder>
  </widget>

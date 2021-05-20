@@ -18,14 +18,20 @@
     <rect>
      <x>240</x>
      <y>300</y>
-     <width>120</width>
-     <height>32</height>
+     <width>110</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Add</string>
@@ -36,14 +42,20 @@
     <rect>
      <x>370</x>
      <y>300</y>
-     <width>120</width>
-     <height>32</height>
+     <width>110</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Back</string>
@@ -106,6 +118,11 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
   </widget>
   <widget class="QLineEdit" name="amount_entry">
    <property name="geometry">
@@ -115,6 +132,11 @@
      <width>240</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -135,7 +157,7 @@
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -150,6 +172,8 @@
    <property name="font">
     <font>
      <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">

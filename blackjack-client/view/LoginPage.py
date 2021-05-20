@@ -28,7 +28,9 @@ class loginPage(QtWidgets.QMainWindow):
 
         if header == configs.LOGIN_SUCCESS:
             username, balance = message.split(' ')
-            self.home_page = HomePage.homePage(user(username, password, balance), self.connection)
+            user_ = user(username)
+            user_.balance = balance 
+            self.home_page = HomePage.homePage(user_, self.connection)
             self.close()
             self.home_page.show()
         elif header == configs.LOGIN_FAIL:

@@ -10,14 +10,14 @@ class infoPage(QtWidgets.QWidget):
         self.user = user
         self.connection = connection
         self.home_page = home
-        self.result_table.setColumnWidth(0, 80)
-        self.result_table.setColumnWidth(1, 80)
-        self.result_table.setColumnWidth(2, 80)
-        self.result_table.setColumnWidth(3, 80)
-        self.result_table.setColumnWidth(4, 80)
-        self.result_table.setColumnWidth(5, 80)
-        self.result_table.setColumnWidth(6, 80)
-        self.result_table.setColumnWidth(7, 78)
+        self.result_table.setColumnWidth(0, 100)
+        self.result_table.setColumnWidth(1, 100)
+        self.result_table.setColumnWidth(2, 100)
+        self.result_table.setColumnWidth(3, 60)
+        self.result_table.setColumnWidth(4, 60)
+        self.result_table.setColumnWidth(5, 60)
+        self.result_table.setColumnWidth(6, 60)
+        self.result_table.setColumnWidth(7, 98)
         self.search_button.clicked.connect(self.search)
         self.search_entry.returnPressed.connect(self.search_button.click)
         

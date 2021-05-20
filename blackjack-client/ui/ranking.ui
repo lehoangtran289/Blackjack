@@ -59,14 +59,11 @@ Ranking</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-background-color: rgba(0, 0, 0, 50);
-border-color: rgba(255, 255, 255, 0);
-gridline-color: rgba(255, 255, 255, 0);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
@@ -166,11 +163,11 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -190,11 +187,11 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -214,11 +211,11 @@ gridline-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -232,14 +229,19 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     <rect>
      <x>260</x>
      <y>410</y>
-     <width>113</width>
-     <height>32</height>
+     <width>110</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Back</string>
@@ -291,7 +293,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -309,7 +311,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>Rank</string>
@@ -333,7 +335,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>Username</string>
@@ -357,7 +359,7 @@ gridline-color: rgba(255, 255, 255, 0);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 50);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
     <string>Gain/Loss</string>

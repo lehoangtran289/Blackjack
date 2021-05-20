@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>290</y>
+     <y>300</y>
      <width>240</width>
-     <height>191</height>
+     <height>180</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -30,11 +30,15 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(0, 0,0, 70);</string>
+   </property>
    <property name="frameShape">
-    <enum>QFrame::HLine</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Sunken</enum>
@@ -64,7 +68,7 @@
      <x>0</x>
      <y>270</y>
      <width>240</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -75,8 +79,12 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(0, 0,0, 70);</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
@@ -102,6 +110,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>player1</string>
    </property>
@@ -122,6 +133,9 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Waiting for player</string>
@@ -144,6 +158,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>Waiting for player</string>
    </property>
@@ -164,6 +181,9 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Waiting for player</string>
@@ -186,6 +206,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>Dealer</string>
    </property>
@@ -207,6 +230,12 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
+   </property>
    <property name="text">
     <string>Hit</string>
    </property>
@@ -224,6 +253,12 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Stand</string>
@@ -243,6 +278,12 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
+   </property>
    <property name="text">
     <string>$20</string>
    </property>
@@ -260,6 +301,12 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>$100</string>
@@ -279,6 +326,12 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
+   </property>
    <property name="text">
     <string>$10</string>
    </property>
@@ -296,6 +349,12 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Reset Bet</string>
@@ -315,6 +374,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>Balance</string>
    </property>
@@ -332,6 +394,9 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>balance_value</string>
@@ -351,6 +416,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>Bet</string>
    </property>
@@ -368,6 +436,9 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>bet_value</string>
@@ -387,6 +458,12 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
+   </property>
    <property name="text">
     <string>$50</string>
    </property>
@@ -404,6 +481,12 @@
     <font>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -423,6 +506,9 @@
      <family>Arial</family>
      <pointsize>20</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>room id</string>
@@ -445,6 +531,12 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
+   </property>
    <property name="text">
     <string>Bet</string>
    </property>
@@ -459,10 +551,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 191, 0);</string>
+    <string notr="true">background-color: rgb(0, 110, 0);</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <zorder>label_2</zorder>

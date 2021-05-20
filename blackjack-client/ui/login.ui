@@ -22,6 +22,11 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
    <property name="maxLength">
     <number>20</number>
    </property>
@@ -34,6 +39,11 @@
      <width>240</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
    <property name="maxLength">
     <number>20</number>
@@ -95,14 +105,20 @@
     <rect>
      <x>220</x>
      <y>300</y>
-     <width>120</width>
+     <width>110</width>
      <height>32</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Login</string>
@@ -111,16 +127,22 @@
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>350</x>
      <y>300</y>
-     <width>120</width>
+     <width>110</width>
      <height>32</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-style:outset;
+border-width:1px;</string>
    </property>
    <property name="text">
     <string>Back</string>
@@ -139,7 +161,7 @@
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
