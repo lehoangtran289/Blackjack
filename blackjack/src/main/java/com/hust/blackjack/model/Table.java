@@ -17,6 +17,7 @@ public class Table {
     public static final int DEALER_HIT_THRESHOLD = 17;
     public static final double MAXIMUM_BET = 200;
     public static final double MINIMUM_BET = 10;
+    public static final double BLACKJACK_RATE = 1.5;
 
     private String tableId;
 
@@ -24,6 +25,7 @@ public class Table {
     private Deck deck;
     private Hand dealerHand;
     private List<Player> players;
+    private String playerTurn;      // name of current turn's player
     private boolean isDealerHasBlackjack;
     private boolean continuePlaying;
 

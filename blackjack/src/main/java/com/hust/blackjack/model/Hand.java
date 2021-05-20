@@ -41,7 +41,11 @@ public class Hand {
     }
 
     public boolean isBlackJack() {
-        return this.totalSum() == 21;
+        return this.totalSum() == Table.MAXIMUM_SCORE;
+    }
+
+    public boolean isBust() {
+        return this.totalSum() > Table.MAXIMUM_SCORE;
     }
 
     public int totalSum() {
@@ -60,5 +64,12 @@ public class Hand {
             sum += c.getRank().getValue();
         }
         return sum;
+    }
+
+    @Override
+    public String toString() {
+        return "Hand{" +
+                "cards=" + cards +
+                '}';
     }
 }

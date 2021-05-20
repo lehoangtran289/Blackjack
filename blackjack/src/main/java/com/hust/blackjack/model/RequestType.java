@@ -22,6 +22,8 @@ public enum RequestType {
     PLAY("PLAY"),
     QUIT("QUIT"),
     BET("BET"),
+    HIT("HIT"),
+    STAND("STAND"),
     CHAT("CHAT");
 
     private final String value;

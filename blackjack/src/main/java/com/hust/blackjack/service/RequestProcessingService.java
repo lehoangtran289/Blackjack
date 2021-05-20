@@ -1,6 +1,7 @@
 package com.hust.blackjack.service;
 
 import com.hust.blackjack.common.tuple.Tuple2;
+import com.hust.blackjack.common.tuple.Tuple3;
 import com.hust.blackjack.exception.*;
 import com.hust.blackjack.model.*;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
@@ -365,7 +366,8 @@ public class RequestProcessingService {
                         // send TURN
                         sleep(1000);
                         Player firstPlayer = players.get(0);
-                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getHasBlackjack();
+                        table.setPlayerTurn(firstPlayer.getPlayerName());
+                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getIsBlackjack();
                         log.info("TURN msg: {}", turnMsg);
                         for (Player p : table.getPlayers()) {
                             writeToChannel(p.getChannel(), turnMsg);
@@ -378,6 +380,44 @@ public class RequestProcessingService {
                     writeToChannel(channel, "BETFAIL=Invalid bet from player " + playerName);
                     throw ex;
                 }
+                break;
+            }
+            case HIT: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+
+                try {
+                    String msg = tableService.processHit(table, player);
+
+                    // response to client
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), msg);
+                    }
+                } catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", table.getTableId());
+                    throw ex;
+                }
+                break;
+            }
+            case STAND: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+
+                try {
+                    String processedMsg = tableService.processStand(table, player);
+                    String standMsg = "STAND=" + player.getPlayerName();
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), standMsg);
+                    }
+                    sleep(1000);
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), processedMsg);
+                    }
+                }catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", table.getTableId());
+                    throw ex;
+                }
+
                 break;
             }
             case QUIT: {
@@ -429,6 +469,8 @@ public class RequestProcessingService {
                 return request.size() == 2;
             case LOGIN:
             case SIGNUP:
+            case HIT:
+            case STAND:
             case QUIT:
                 return request.size() == 3;
             case ADDMONEY:
@@ -441,7 +483,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-//        msg += "\n"; // terminal testing purposes
+        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
