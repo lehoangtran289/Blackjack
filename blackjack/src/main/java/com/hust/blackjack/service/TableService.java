@@ -231,6 +231,8 @@ public class TableService {
                 gain = p.getBet();
             } else if (state == ResultState.PUSH) {
                 p.setBank(p.getBank() + p.getBet());
+            } else {
+                gain = p.getBet();
             }
 
             // refresh player's state for new game
@@ -240,7 +242,7 @@ public class TableService {
             msgBuilder.append(p.getPlayerName()).append(" ")
                     .append(state.getValue()).append(" ")
                     .append(gain);
-            if (i != cards.size() - 1) {
+            if (i != table.getPlayers().size() - 1) {
                 msgBuilder.append(",");
             }
         }
