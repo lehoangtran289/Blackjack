@@ -1,6 +1,7 @@
 package com.hust.blackjack.service;
 
 import com.hust.blackjack.common.tuple.Tuple2;
+import com.hust.blackjack.common.tuple.Tuple3;
 import com.hust.blackjack.exception.*;
 import com.hust.blackjack.model.*;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
@@ -250,20 +251,13 @@ public class RequestProcessingService {
                                     .map(Player::getPlayerName)
                                     .collect(Collectors.joining(" "));
 
-                    /*StringBuilder players = new StringBuilder();
-                    for (int i = 0; i < playersInTable.size() - 1; i++) {
-                        players.append(playersInTable.get(i).getPlayerName());
-                        if (i != playersInTable.size() - 2) {
-                            players.append(" ");
-                        }
-                    }
-                    msg += players.toString();*/
-
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
                     }
+                    sleep(1001);
                     if (playersInTable.size() == Table.TABLE_SIZE) {
                         table.initDeck();
+                        table.setIsPlaying(1);
                         for (Player player : playersInTable) {
                             writeToChannel(player.getChannel(), "START=" + table.getTableId());
                         }
@@ -365,7 +359,8 @@ public class RequestProcessingService {
                         // send TURN
                         sleep(1000);
                         Player firstPlayer = players.get(0);
-                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getHasBlackjack();
+                        table.setPlayerTurn(firstPlayer.getPlayerName());
+                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getIsBlackjack();
                         log.info("TURN msg: {}", turnMsg);
                         for (Player p : table.getPlayers()) {
                             writeToChannel(p.getChannel(), turnMsg);
@@ -376,6 +371,43 @@ public class RequestProcessingService {
                     throw ex;
                 } catch (TableException.NotEnoughBankBalanceException ex) {
                     writeToChannel(channel, "BETFAIL=Invalid bet from player " + playerName);
+                    throw ex;
+                }
+                break;
+            }
+            case HIT: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+
+                try {
+                    String msg = tableService.processHit(table, player);
+
+                    // response to client
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), msg);
+                    }
+                } catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", table.getTableId());
+                    throw ex;
+                }
+                break;
+            }
+            case STAND: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+
+                try {
+                    String processedMsg = tableService.processStand(table, player);
+                    String standMsg = "STAND=" + player.getPlayerName();
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), standMsg);
+                    }
+                    sleep(1000);
+                    for (Player p : table.getPlayers()) {
+                        writeToChannel(p.getChannel(), processedMsg);
+                    }
+                } catch (TableException.TableNotFoundException ex) {
+                    log.error("Table {} Not found", table.getTableId());
                     throw ex;
                 }
                 break;
@@ -409,6 +441,38 @@ public class RequestProcessingService {
                 }
                 break;
             }
+            case CONTINUE: {
+                Table table = tableService.getTableById(request.get(1));
+                Player player = playerService.getPlayerByName(request.get(2));
+                if (player.getBank() < Table.MINIMUM_BET) {
+                    log.error("Invalid balance of player {} to start game, bl = {}"
+                            , player.getPlayerName(), player.getBank());
+                    tableService.removePlayer(table.getTableId(), player.getPlayerName());
+                    writeToChannel(channel, "FAIL=Balance not enough");
+                    throw new TableException.NotEnoughBankBalanceException();
+                }
+
+                List<Player> playersInTable = table.getPlayers();
+
+                // build response string and send to each players in table
+                String msg = "SUCCESS=" + table.getTableId() + " " +
+                        playersInTable.stream()
+                                .map(Player::getPlayerName)
+                                .collect(Collectors.joining(" "));
+
+                for (Player p : playersInTable) {
+                    writeToChannel(p.getChannel(), msg);
+                }
+                sleep(1000);
+                if (playersInTable.size() == Table.TABLE_SIZE) {
+                    table.initDeck();
+                    table.setIsPlaying(1);
+                    for (Player p : playersInTable) {
+                        writeToChannel(p.getChannel(), "START=" + table.getTableId());
+                    }
+                }
+                break;
+            }
             default:
                 writeToChannel(channel, "FAIL=Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
@@ -429,7 +493,10 @@ public class RequestProcessingService {
                 return request.size() == 2;
             case LOGIN:
             case SIGNUP:
+            case HIT:
+            case STAND:
             case QUIT:
+            case CONTINUE:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:

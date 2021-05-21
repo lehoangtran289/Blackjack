@@ -17,6 +17,7 @@ public class Table {
     public static final int DEALER_HIT_THRESHOLD = 17;
     public static final double MAXIMUM_BET = 200;
     public static final double MINIMUM_BET = 10;
+    public static final double BLACKJACK_RATE = 1.5;
 
     private String tableId;
 
@@ -24,8 +25,8 @@ public class Table {
     private Deck deck;
     private Hand dealerHand;
     private List<Player> players;
-    private boolean isDealerHasBlackjack;
-    private boolean continuePlaying;
+    private String playerTurn;      // name of current turn's player
+    private int isPlaying;
 
     public Table(String tableId) {
         this.tableId = tableId;
@@ -38,6 +39,19 @@ public class Table {
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+    }
+
+    public void refresh() {
+        try {
+            deck = new Deck();
+            players = new ArrayList<>();
+            dealerHand = null;
+            playerTurn = null;
+            isPlaying = 0;
+        } catch (CardException.InvalidCardException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -21,7 +21,10 @@ public enum RequestType {
     WITHDRAWMONEY("WDR"),
     PLAY("PLAY"),
     QUIT("QUIT"),
+    CONTINUE("CONTINUE"),
     BET("BET"),
+    HIT("HIT"),
+    STAND("STAND"),
     CHAT("CHAT");
 
     private final String value;

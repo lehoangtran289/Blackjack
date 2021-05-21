@@ -11,9 +11,6 @@ import java.nio.channels.SocketChannel;
 @EqualsAndHashCode
 @Builder
 public class Player {
-    private static final int MAXIMUM_SCORE = 21;                            // maximum score before bust
-    private static final double BLACKJACK_PAYOUT_MULTIPLIER = 1.5;
-
     // player's info
     private String playerName;
     private String password;
@@ -24,8 +21,9 @@ public class Player {
     private String tableId;
     private Hand hand;
     private double bet;
-    private int hasBlackjack;
-    private int hasBust;
+    private int isBlackjack;
+    private int isBust;
+    private int isStand;
     private Action choice;
 
     public Player(String playerName) {
@@ -42,14 +40,24 @@ public class Player {
     public void refresh() {
         hand.clear();
         bet = 0.0;
-        hasBlackjack = 0;
-        hasBust = 0;
+        isBlackjack = 0;
+        isBust = 0;
+        isStand = 0;
         choice = null;
     }
 
     public void placeBet(double bet) {
         setBet(bet);
         setBank(getBank() - bet);
+    }
+
+    public ResultState checkPlayerFinalState(int dealerHand) {
+        int total = getHand().value();
+        if (total > Table.MAXIMUM_SCORE) return ResultState.BUST;
+        if (total == Table.MAXIMUM_SCORE) return ResultState.BLACKJACK;
+        if (total < dealerHand) return ResultState.LOSE;
+        if (total == dealerHand) return ResultState.PUSH;
+        else return ResultState.WIN;
     }
 
     @SneakyThrows

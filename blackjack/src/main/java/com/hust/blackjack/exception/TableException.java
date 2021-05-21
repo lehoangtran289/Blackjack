@@ -40,4 +40,11 @@ public class TableException extends Exception{
         public GameNotStartException(String msg) { super(msg); }
         public GameNotStartException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class WrongTurnException extends TableException {
+        public WrongTurnException() { }
+        public WrongTurnException(Throwable throwable) { super(throwable); }
+        public WrongTurnException(String msg) { super(msg); }
+        public WrongTurnException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }

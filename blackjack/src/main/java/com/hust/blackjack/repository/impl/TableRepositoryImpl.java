@@ -27,7 +27,7 @@ public class TableRepositoryImpl implements TableRepository {
     @Override
     public Table findAvailableTable() {
         for (Table table : tables) {
-            if (table.getPlayers().size() < Table.TABLE_SIZE) {
+            if (table.getPlayers().size() < Table.TABLE_SIZE && table.getIsPlaying() == 0) {
                 return table;
             }
         }

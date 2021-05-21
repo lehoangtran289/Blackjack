@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -27,20 +26,8 @@ public class MatchHistory {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date;
 
-    @AllArgsConstructor
-    @Getter
-    public enum ResultState implements Serializable {
-        WIN("win"),
-        LOSE("lose"),
-        BUST("bust"),
-        PUSH("push"),
-        BLACKJACK("blackjack");
-
-        private final String value;
-    }
-
     @Override
     public String toString() {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " " + resultState.value + " " + bet;
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " " + resultState.getValue() + " " + bet;
     }
 }
