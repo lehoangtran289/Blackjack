@@ -251,15 +251,6 @@ public class RequestProcessingService {
                                     .map(Player::getPlayerName)
                                     .collect(Collectors.joining(" "));
 
-                    /*StringBuilder players = new StringBuilder();
-                    for (int i = 0; i < playersInTable.size() - 1; i++) {
-                        players.append(playersInTable.get(i).getPlayerName());
-                        if (i != playersInTable.size() - 2) {
-                            players.append(" ");
-                        }
-                    }
-                    msg += players.toString();*/
-
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
                     }
@@ -415,11 +406,10 @@ public class RequestProcessingService {
                     for (Player p : table.getPlayers()) {
                         writeToChannel(p.getChannel(), processedMsg);
                     }
-                }catch (TableException.TableNotFoundException ex) {
+                } catch (TableException.TableNotFoundException ex) {
                     log.error("Table {} Not found", table.getTableId());
                     throw ex;
                 }
-
                 break;
             }
             case QUIT: {
@@ -518,7 +508,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-        msg += "\n"; // terminal testing purposes
+//        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
