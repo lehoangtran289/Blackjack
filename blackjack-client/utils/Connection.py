@@ -30,6 +30,14 @@ class connection():
         response = self.s.recv(2048).decode('utf-8')
         print('received: ' + response)
         return response
+    
+    def send(self, request):
+        try:
+            self.s.sendall(request.encode())
+        except socket.erro.e:
+            print('Error sending message')
+            QtWidgets.QMessageBox.about(self, 'Request Failed', 'Error sending message')
+        print('send: ' + request)
 
     def get_header(self, response):
         return response.split('=')[0]

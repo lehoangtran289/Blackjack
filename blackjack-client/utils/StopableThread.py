@@ -8,6 +8,7 @@ class stopableThread(threading.Thread):
         self._stop_event = threading.Event()
 
     def stop(self):
+        print('stopping thread')
         self._stop_event.set()
 
     def stopped(self):

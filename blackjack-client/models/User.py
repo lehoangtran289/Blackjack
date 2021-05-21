@@ -6,7 +6,7 @@ class AUser():
 class user(AUser):
     def __init__(self, username, balance):
         super().__init__(username)
-        self.balance = balance
+        self.balance = float(balance)
 
 class player(AUser):
     def __init__(self, username, pos):
