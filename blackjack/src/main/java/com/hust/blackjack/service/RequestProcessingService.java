@@ -307,7 +307,7 @@ public class RequestProcessingService {
                     Table table = tableService.getTableById(tableId);
 
                     // send BET response to players in room
-                    String msgSend = "BET=" + tableId + " " + playerName + " " + player.getBank();
+                    String msgSend = "BET=" + tableId + " " + playerName + " " + player.getBet();
                     for (Player p : table.getPlayers()) {
                         writeToChannel(p.getChannel(), msgSend);
                     }
