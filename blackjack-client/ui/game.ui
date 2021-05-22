@@ -239,7 +239,7 @@ background-color: rgba(0, 0,0, 70);</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -263,7 +263,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -287,7 +287,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -311,7 +311,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -335,7 +335,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -359,7 +359,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -383,7 +383,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -404,7 +404,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -425,7 +425,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -446,7 +446,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -467,7 +467,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -491,7 +491,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -515,8 +515,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
-     <pointsize>20</pointsize>
+     <pointsize>18</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -540,7 +539,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -996,6 +995,61 @@ border: 2px solid #ff2025;
     <string/>
    </property>
   </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_31">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>90</y>
+     <width>60</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="card17"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_32">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>170</y>
+     <width>60</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="card07"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_33">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>90</y>
+     <width>60</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="card27"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_34">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>210</y>
+     <width>60</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="card47"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_35">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>210</y>
+     <width>60</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="card37"/>
+  </widget>
   <zorder>label_2</zorder>
   <zorder>chat_history</zorder>
   <zorder>chat_entry</zorder>
@@ -1053,6 +1107,11 @@ border: 2px solid #ff2025;
   <zorder>verticalLayoutWidget_29</zorder>
   <zorder>verticalLayoutWidget_30</zorder>
   <zorder>label_7</zorder>
+  <zorder>verticalLayoutWidget_31</zorder>
+  <zorder>verticalLayoutWidget_32</zorder>
+  <zorder>verticalLayoutWidget_33</zorder>
+  <zorder>verticalLayoutWidget_34</zorder>
+  <zorder>verticalLayoutWidget_35</zorder>
  </widget>
  <resources/>
  <connections/>

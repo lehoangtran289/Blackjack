@@ -158,15 +158,15 @@ border-width:1px;</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>170</x>
      <y>180</y>
-     <width>200</width>
+     <width>300</width>
      <height>30</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>18</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
