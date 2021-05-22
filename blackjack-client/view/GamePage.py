@@ -106,6 +106,9 @@ class gamePage(QtWidgets.QWidget):
             self.chat_history.insertItem(0, 'System: Game Start! Please place bet')
         elif header == 'CHAT':
             self.chat_history.insertItem(0, message.split(' ')[0] + ': ' + ' '.join(message.split(' ')[1:]))
+        elif header == 'BET':
+            _, uname, bet_value = message.split(' ')
+            self.chat_history.insertItem(0, 'System: ' + uname + ' placed $' + bet_value)
         elif header == 'SUCCESS':
             self.username_list = message.split(' ')[1:]
             while len(self.username_list) < 4:
@@ -140,32 +143,36 @@ class gamePage(QtWidgets.QWidget):
         elif header == 'DEAL':
             self.bet_phase = 0
             self.play_phase = 1
-            dealer_hand = int(message.split(',')[0])
-            player_hands = int(message.split(',')[1:])
-            self.dealer.add_card(Card.card(configs.ranks[dealer_hand[0]], configs.suits[dealer_hand[1]]))
-            self.display_card(dealer, 0, self.dealer.card_owned[0])
+            dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
+            print(dealer_hand)
+            player_hands = message.split(',')[1:]
+            card = Card.card(configs.ranks[dealer_hand[0]], configs.suits[dealer_hand[1]])
+            card.display(configs.card_x[0], configs.card_y[0], self)
+            self.dealer.add_card(card)
+            self.display_card(self.dealer, 0, self.dealer.card_owned[0])
             self.dealer.add_card(Card.card('?', '?'))
-            self.display_card(dealer, 0, self.dealer.card_owned[1])
+            self.display_card(self.dealer, 0, self.dealer.card_owned[1])
             self.dealer.card_owned[1] = Card.card(configs.ranks[dealer_hand[2]], configs.suits[dealer_hand[3]])
             for hand in player_hands:
                 pos = self.username_list.index(hand.split(' ')[0])
-                cards = int(hand.split(' ')[1:])
+                cards = [int(i) for i in hand.split(' ')[1:]] 
+                print(cards)
                 self.room_players[pos].add_card(Card.card(configs.ranks[cards[0]], configs.suits[cards[1]]))
                 self.room_players[pos].add_card(Card.card(configs.ranks[cards[2]], configs.suits[cards[3]]))
-                self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[0])
-                self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[1])
+                self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[0])
+                self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
         elif header == 'TURN':
             username, is_blackjack = message.split(' ')
             if username == self.user.username:
-                if is_blackjack:
-                    request = 'STAND ' + username
+                if is_blackjack == 1:
+                    request = 'STAND ' + self.room_id + ' ' + username
                     #self.connection.send(request)
                     response = self.connection.send_request(request)
                     self.chat_history.insertItem(0, 'System: You got BlackJack')
                 else:
                     self.chat_history.insertItem(0, 'System: It\'s your turn')
                     self.set_enable_play_button(True)
-            elif is_blackjack:
+            elif is_blackjack == 0:
                 self.chat_history.insertItem(0, 'System: ' + username + ' got BlackJack')
             else:
                 self.chat_history.insertItem(0, 'System: It\'s ' + username + '\'s turn')
@@ -177,11 +184,11 @@ class gamePage(QtWidgets.QWidget):
             if message == self.user.username:
                 self.set_enable_play_button(False)
             else:
-                self.chat_history.insertItem(0, 'System: ' + username + ' end their turn')
+                self.chat_history.insertItem(0, 'System: ' + message + ' end their turn')
         #process check
         elif header == 'CHECK':
             self.play_phase = 0
-            dealer_hand = message.split(',')[0].split(' ')
+            dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
             i = 0
             while i < len(dealer_hand):
                 card = Card.card(configs.ranks[dealer_hand(i)], configs.suits[dealer_hand(i + 1)])
@@ -191,7 +198,7 @@ class gamePage(QtWidgets.QWidget):
                 username, res, balance = result.split(' ')
                 if username == self.user.username:
                     self.chat_history.insertItem(0, 'You ' + res)
-                    self.user.balance = balance
+                    self.user.balance = float(balance)
                     self.balance_label.setText(self.user.balance)
                 else:
                     self.chat_history.insertItem(0, username + ' ' + res)
@@ -203,16 +210,7 @@ class gamePage(QtWidgets.QWidget):
             else:
                 request = 'QUIT ' + self.room_id + ' ' + self.user.username
                 self.connection.send(request)
-                #response = self.connection.send_request(request)
-                self.home_page = HomePage.homePage(self.user, self.connection)
-                self.home_page.show()
-                self.mutex.unlock()
-                self.worker.finished.emit()
-                self.close()
         #self.mutex.unlock()
-
-    def display_chat(self, uname, msg):
-        self.chat_history.insertItem(0, uname + ': ' + msg)
 
     def update_player_label(self):
         while len(self.username_list) < 4:
@@ -234,6 +232,8 @@ class gamePage(QtWidgets.QWidget):
         
     def process_hit_response(self, header, message):
         uname, rank, suit = message.split(' ')
+        rank = int(rank)
+        suit = int(suit)
         pos = self.username_list.index(uname)
         card = Card.card(configs.ranks[rank], configs.suits[suit])
         self.display_card(self.room_players[pos], pos, card)
@@ -241,7 +241,8 @@ class gamePage(QtWidgets.QWidget):
             # todo: display card
             pass
         elif header == 'BLACKJACK':
-            # todo: display card'
+            request = 'STAND ' + self.room_id + ' ' + self.user.username
+            self.connection.send(request)
             self.set_enable_play_button(False)
             if uname == self.user.username:
                 self.chat_history.insertItem(0, 'You got a Blackjack!')
@@ -249,6 +250,8 @@ class gamePage(QtWidgets.QWidget):
                 self.chat_history.insertItem(0, uname + ' got a Blackjack!')
         elif header == 'BUST':
             # todo: display card
+            request = 'STAND ' + self.room_id + ' ' + self.user.username
+            self.connection.send(request)
             self.set_enable_play_button(False)
             if uname == self.user.username:
                 self.chat_history.insertItem(0, 'You got a Bust!')
@@ -258,7 +261,9 @@ class gamePage(QtWidgets.QWidget):
             print('Wrong response')
 
     def display_card(self, player, pos, card):
-        card.display(configs.card_x[len(player.card_owned)], configs.card_y[pos], self)
+        x = configs.card_x[pos] + configs.space * len(player.card_owned)
+        y = configs.card_y[pos]
+        card.display(x, y, self)
 
     def stand(self):
         request = 'STAND ' + self.room_id + ' ' + self.user.username

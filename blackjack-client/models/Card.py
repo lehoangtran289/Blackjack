@@ -6,7 +6,14 @@ class card():
         self.rank = rank
         self.suit = suit
 
-    def display_card(self, x, y, page):
+    def display(self, x, y, page):
         label = QtWidgets.QLabel(page)
         label.setText(self.rank + self.suit)
-        label.setGeometry(x, y, configs.card_height, configs.card_width)
+        label.move(x, y)
+        print("here")
+        label.resize(configs.card_height, configs.card_width)
+        if self.rank == '?' and self.suit == '?':
+            path = './asset/cards/cardback.png'
+        else:
+            path = "./asset/cards/" + self.rank + '_of_' + self.suit + '.png'
+        label.setStyleSheet("background-image : url(" + path + ")")

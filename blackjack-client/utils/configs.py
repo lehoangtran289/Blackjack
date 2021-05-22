@@ -4,16 +4,19 @@ HOST = "127.0.0.1"
 PORT = 1234
 
 #Card suits
-suits = ['\u2666', '\u2665', '\u2663', '\u2660']
-ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+suits = ['hearts', 'diamonds', 'clubs', 'spades']
+ranks = ['0','ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king']
 
 #Card size
-card_height = 25
-card_width = 50
+card_height = 80
+card_width = 60
+
+#card space
+space = 20
 
 #Card_position
-card_x = [180, 240, 300, 360, 420]
-card_y = [70, 110, 150, 190, 230]
+card_x = [240, 20, 460, 20, 460]
+card_y = [170, 90, 90, 210, 210]
 
 # message header
 LOGIN_SUCCESS = 'LOGINSUCCESS'
