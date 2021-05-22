@@ -19,15 +19,14 @@ class Worker(QObject):
     def run(self):
         while True:
             response = self.connection.polling_response()
+            header = response.split(" ")[0]
+            if header == "QUIT":
+                break
             self.resp.emit(response)
-        self.finished.emit()
-    
-    def stop_thread(self):
         self.finished.emit()
 
 class gamePage(QtWidgets.QWidget):
     mutex = QMutex()
-    mutex_quit = QMutex()
     def __init__(self, user, connection, room_id, username_list):
         super().__init__()
         uic.loadUi('./ui/game.ui', self)
@@ -89,18 +88,17 @@ class gamePage(QtWidgets.QWidget):
         self.thread.start()
 
     def process_response(self, resp):
-        self.mutex.lock()
+        #self.mutex.lock()
         print('worker received response: ' + resp)
         header, message = resp.split('=')
         if header == 'START':
             self.set_enable_bet_button(True)
             self.bet_phase = 1
+            self.chat_history.insertItem(0, 'System: Game Start! Please place bet')
         elif header == 'CHAT':
-            self.display_chat(message.split(' ')[0], ' '.join(message.split(' ')[1:]))
+            self.chat_history.insertItem(0, message.split(' ')[0] + ': ' + ' '.join(message.split(' ')[1:]))
         elif header == 'SUCCESS':
             self.username_list = message.split(' ')[1:]
-            #self.update_player_label()
-            #print(self.username_list)
             while len(self.username_list) < 4:
                 self.username_list.append('Waiting for player')
             self.player1_label.setText(self.username_list[0])
@@ -124,9 +122,6 @@ class gamePage(QtWidgets.QWidget):
                 for i in range(len(self.username_list)):
                     self.room_players[i].username = self.username_list[i]
                 #self.update_player_label()
-                self.mutex.unlock()
-                self.worker.finished.emit()
-                return
         elif header == 'QUIT' and self.play_phase + self.bet_phase != 0:
             _, username = message.split(' ')
             if username != self.user.username:
@@ -206,118 +201,7 @@ class gamePage(QtWidgets.QWidget):
                 self.mutex.unlock()
                 self.worker.finished.emit()
                 self.close()
-        self.mutex.unlock()
-
-    """
-    # waiting for start signal
-    def polling_start(self):
-        while True:
-            response = self.connection.polling_response()
-            header = self.connection.get_header(response)
-            message = self.connection.get_message(response)
-            if header == 'START':
-                self.set_enable_bet_button(True)
-                return
-            elif header == 'CHAT':
-                self.display_chat(message.split(' ')[0], ' '.join(message.split(' ')[1:]))
-            elif header == 'SUCCESS':
-                self.username_list = message.split(' ')[1:]
-                print(self.username_list)
-                self.update_player_label()
-            elif header == 'QUIT':
-                _, username = message.split(' ')
-                print(self.username_list)
-                print(username)
-                self.username_list.remove(username)
-                self.update_player_label()
-            else:
-                print('Wrong response')
-
-    #playing phase
-    def playing_(self):
-        while True:
-            response = self.connection.polling_response()
-            header = self.connection.get_header(response)
-            message = self.connection.get_message(response)
-            #process chat
-            if header == 'CHAT':
-                self.display_chat(message.split(' ')[0], ' '.join(message.split(' ')[1:]))
-            #process deal
-            if header == 'DEAL':
-                dealer_hand = message.split(',')[0]
-                player_hands = message.split(',')[1:]
-                self.dealer.card_owned.append(Card.card(configs.ranks(dealer_hand[0]), configs.suits(dealer_hand[1])))
-                self.display_card(dealer, 0, self.dealer.card_owned[0])
-                self.dealer.card_owned.append(Card.card('?', '?'))
-                self.display_card(dealer, 0, self.dealer.card_owned[1])
-                self.dealer.card_owned[1] = Card.card(configs.ranks(dealer_hand[2]), configs.suits(dealer_hand[3]))
-                for hand in player_hands:
-                    pos = self.username_list.index(hand.split(' ')[0])
-                    cards = hand.split(' ')[1:]
-                    self.room_players[pos].card_owned.append(Card.card(configs.ranks(cards[0]), configs.suits(cards[1])))
-                    self.room_players[pos].card_owned.append(Card.card(configs.ranks(cards[2]), configs.suits(cards[3])))
-                    self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[0])
-                    self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[1])
-            # process quit
-            if header == 'QUIT':
-                _, username = message.split(' ')
-                pos = self.username_list.index(username)
-                self.room_players[pos].username = None
-                self.username_list[pos] = None
-                self.players_label[pos].setText('Player left')
-            # process turn
-            if header == 'TURN':
-                username, is_blackjack = message.split(' ')
-                if username == self.user.username:
-                    if is_blackjack:
-                        request = 'STAND ' + username
-                        response = self.connection.send_request(request)
-                        self.chat_history.insertItem(0, 'System: You got BlackJack')
-                    else:
-                        self.chat_history.insertItem(0, 'System: It\'s your turn')
-                        self.set_enable_play_button(True)
-                elif is_blackjack:
-                    self.chat_history.insertItem(0, 'System: ' + username + ' got BlackJack')
-                else:
-                    self.chat_history.insertItem(0, 'System: It\'s ' + username + '\'s turn')
-            # process result after a hit
-            if header == 'HIT' or header == 'BLACKJACK' or header == 'BUST':
-                self.process_hit_response(header, message)
-            # process stand
-            if header == 'STAND':
-                if message == self.user.username:
-                    self.set_enable_play_button(False)
-                else:
-                    self.chat_history.insertItem(0, 'System: ' + username + ' end their turn')
-            #process check
-            if header == 'CHECK':
-                dealer_hand = message.split(',')[0].split(' ')
-                i = 0
-                while i < len(dealer_hand):
-                    card = Card.card(configs.ranks(dealer_hand(i)), configs.suits(dealer_hand(i + 1)))
-                    self.display_card(dealer, 0, card)
-                players_result = message.split(',')[1:]
-                for result in players_result:
-                    username, res, balance = result.split(' ')
-                    if username == self.user.username:
-                        self.chat_history.insertItem(0, 'You ' + res)
-                        self.user.balance = balance
-                        self.balance_label.setText(self.user.balance)
-                    else:
-                        self.chat_history.insertItem(0, username + ' ' + res)
-                reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit? If you quit, you will lose your bet money', \
-                    QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-                if reply == QtWidgets.QMessageBox.Yes:
-                    request = 'CONTINUE ' + self.room_id + ' ' + self.user.username
-                    response = self.connection.send_request(request)
-                    return
-                else:
-                    request = 'QUIT ' + self.room_id + ' ' + self.user.username
-                    response = self.connection.send_request(request)
-                    self.home_page = HomePage.homePage(self.user, self.connection)
-                    self.close()
-                    self.home_page.show()
-                    return"""
+        #self.mutex.unlock()
 
     def display_chat(self, uname, msg):
         self.chat_history.insertItem(0, uname + ': ' + msg)
@@ -374,23 +258,21 @@ class gamePage(QtWidgets.QWidget):
         #response = self.connection.send_request(request)
 
     def quit(self):
-        self.mutex_quit.lock()
         reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit? If you quit, you will lose your bet money', \
             QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             request = 'QUIT ' + self.room_id + ' ' + self.user.username
-            #self.connection.send(request)
-            response = self.connection.send_request(request)
+            self.connection.send(request)
+            #response = self.connection.send_request(request)
             self.home_page = HomePage.homePage(self.user, self.connection)
             self.home_page.show()
             self.worker.finished.emit()
             self.close()
             #self.mutex.unlock()
-        self.mutex_quit.unlock()
         
     def chat(self):
         message = self.chat_entry.text()
-        self.chat_history.insertItem(0, 'You: ' + message)
+        #self.chat_history.insertItem(0, 'You: ' + message)
         self.chat_entry.clear()
         request = 'CHAT ' + self.room_id + ' ' + self.user.username + ' ' + message
         self.connection.send(request)
