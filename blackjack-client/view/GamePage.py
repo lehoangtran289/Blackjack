@@ -11,18 +11,21 @@ import copy
 class Worker(QObject):
     finished = pyqtSignal()
     resp = pyqtSignal(str)
+    i = 0
 
     def __init__(self, connection):
         super().__init__()
         self.connection = connection
+        self.i += 1
 
     def run(self):
         while True:
             response = self.connection.polling_response()
-            header = response.split(" ")[0]
-            if header == "QUIT":
-                break
             self.resp.emit(response)
+            if response == "QUIT":
+                print("-------------------------------")
+                print("Thread running: " + str(self.i))
+                break
         self.finished.emit()
 
 class gamePage(QtWidgets.QWidget):
@@ -43,11 +46,11 @@ class gamePage(QtWidgets.QWidget):
         self.room_id_label.setText('Room: ' + room_id)
         
         # init room player 
-        self.dealer = User.AUser('dealer')
+        self.dealer = User.player('dealer')
         self.username_list = username_list
         self.room_players = []
         for i in range(4):
-            self.room_players.append(User.player(None, i))
+            self.room_players.append(User.player(None))
         self.update_player_label()
 
         #update player label
@@ -80,7 +83,7 @@ class gamePage(QtWidgets.QWidget):
         self.worker.moveToThread(self.thread)
         # Step 5: Connect signals and slots
         self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.thread.terminate)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
         self.worker.resp.connect(self.process_response)
@@ -90,6 +93,12 @@ class gamePage(QtWidgets.QWidget):
     def process_response(self, resp):
         #self.mutex.lock()
         print('worker received response: ' + resp)
+        if (resp == 'QUIT'):
+            self.home_page = HomePage.homePage(self.user, self.connection)
+            self.home_page.show()
+            self.close()
+            return
+        
         header, message = resp.split('=')
         if header == 'START':
             self.set_enable_bet_button(True)
@@ -121,7 +130,6 @@ class gamePage(QtWidgets.QWidget):
                 print(self.username_list)
                 for i in range(len(self.username_list)):
                     self.room_players[i].username = self.username_list[i]
-                #self.update_player_label()
         elif header == 'QUIT' and self.play_phase + self.bet_phase != 0:
             _, username = message.split(' ')
             if username != self.user.username:
@@ -132,18 +140,18 @@ class gamePage(QtWidgets.QWidget):
         elif header == 'DEAL':
             self.bet_phase = 0
             self.play_phase = 1
-            dealer_hand = message.split(',')[0]
-            player_hands = message.split(',')[1:]
-            self.dealer.card_owned.append(Card.card(configs.ranks(dealer_hand[0]), configs.suits(dealer_hand[1])))
+            dealer_hand = int(message.split(',')[0])
+            player_hands = int(message.split(',')[1:])
+            self.dealer.add_card(Card.card(configs.ranks[dealer_hand[0]], configs.suits[dealer_hand[1]]))
             self.display_card(dealer, 0, self.dealer.card_owned[0])
-            self.dealer.card_owned.append(Card.card('?', '?'))
+            self.dealer.add_card(Card.card('?', '?'))
             self.display_card(dealer, 0, self.dealer.card_owned[1])
-            self.dealer.card_owned[1] = Card.card(configs.ranks(dealer_hand[2]), configs.suits(dealer_hand[3]))
+            self.dealer.card_owned[1] = Card.card(configs.ranks[dealer_hand[2]], configs.suits[dealer_hand[3]])
             for hand in player_hands:
                 pos = self.username_list.index(hand.split(' ')[0])
-                cards = hand.split(' ')[1:]
-                self.room_players[pos].card_owned.append(Card.card(configs.ranks(cards[0]), configs.suits(cards[1])))
-                self.room_players[pos].card_owned.append(Card.card(configs.ranks(cards[2]), configs.suits(cards[3])))
+                cards = int(hand.split(' ')[1:])
+                self.room_players[pos].add_card(Card.card(configs.ranks[cards[0]], configs.suits[cards[1]]))
+                self.room_players[pos].add_card(Card.card(configs.ranks[cards[2]], configs.suits[cards[3]]))
                 self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[0])
                 self.display_card(self.room_players[pos], pos, room_players[pos].card_owned[1])
         elif header == 'TURN':
@@ -176,7 +184,7 @@ class gamePage(QtWidgets.QWidget):
             dealer_hand = message.split(',')[0].split(' ')
             i = 0
             while i < len(dealer_hand):
-                card = Card.card(configs.ranks(dealer_hand(i)), configs.suits(dealer_hand(i + 1)))
+                card = Card.card(configs.ranks[dealer_hand(i)], configs.suits[dealer_hand(i + 1)])
                 self.display_card(dealer, 0, card)
             players_result = message.split(',')[1:]
             for result in players_result:
@@ -264,10 +272,6 @@ class gamePage(QtWidgets.QWidget):
             request = 'QUIT ' + self.room_id + ' ' + self.user.username
             self.connection.send(request)
             #response = self.connection.send_request(request)
-            self.home_page = HomePage.homePage(self.user, self.connection)
-            self.home_page.show()
-            self.worker.finished.emit()
-            self.close()
             #self.mutex.unlock()
         
     def chat(self):
