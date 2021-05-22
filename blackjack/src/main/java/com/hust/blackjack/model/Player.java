@@ -57,6 +57,9 @@ public class Player {
         int total = getHand().value();
         if (total > Table.MAXIMUM_SCORE) return ResultState.BUST;
         if (total == Table.MAXIMUM_SCORE) return ResultState.BLACKJACK;
+        if (dealerHand > 21) {
+            return ResultState.WIN;
+        }
         if (total < dealerHand) return ResultState.LOSE;
         if (total == dealerHand) return ResultState.PUSH;
         else return ResultState.WIN;
