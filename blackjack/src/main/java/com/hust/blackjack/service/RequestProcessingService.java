@@ -351,6 +351,7 @@ public class RequestProcessingService {
                         String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm last ','
                         log.info("DEAL msg: {}", dealMsg);
                         // send DEAL
+                        sleep(1000);
                         for (Player p : table.getPlayers()) {
                             writeToChannel(p.getChannel(), dealMsg);
                         }
