@@ -38,7 +38,9 @@ public class Player {
     }
 
     public void refresh() {
-        hand.clear();
+        if (hand != null) {
+            hand.clear();
+        }
         bet = 0.0;
         isBlackjack = 0;
         isBust = 0;
