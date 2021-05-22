@@ -58,7 +58,7 @@ public class Hand {
             }
         }
         for (Card ignored : aces) {
-            sum += sum <= 11 ? 11 : 1;
+            sum += sum < 11 ? 11 : 1;
         }
         return sum;
     }
