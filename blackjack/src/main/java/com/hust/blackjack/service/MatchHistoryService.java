@@ -28,6 +28,10 @@ public class MatchHistoryService {
         this.playerService = playerService;
     }
 
+    public void save(MatchHistory match) {
+        matchHistoryRepository.save(match);
+    }
+
     public List<PlayerGameInfo> searchPlayerGameInfoByName(String playerName) throws PlayerException.PlayerNotFoundException {
         List<PlayerGameInfo> ret = new ArrayList<>();
         List<Player> players = playerService.getPlayerByNameLIKE(playerName);

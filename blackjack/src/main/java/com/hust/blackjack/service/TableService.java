@@ -10,6 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +20,13 @@ import java.util.Optional;
 public class TableService {
     private final TableRepository tableRepository;
     private final PlayerService playerService;
+    private final MatchHistoryService matchHistoryService;
 
-    public TableService(TableRepository tableRepository, PlayerService playerService) {
+    public TableService(TableRepository tableRepository, PlayerService playerService,
+                        MatchHistoryService matchHistoryService) {
         this.tableRepository = tableRepository;
         this.playerService = playerService;
+        this.matchHistoryService = matchHistoryService;
     }
 
     public Table getTableById(String tableId) throws TableException {
@@ -33,6 +38,7 @@ public class TableService {
         return optionalPlayer.get();
     }
 
+    //TODO: rf
     public boolean isAllBet(Table table) {
         return table.getPlayers().stream().allMatch(p -> p.getBet() != 0);
     }
@@ -68,7 +74,8 @@ public class TableService {
 
         if (player.getTableId() == null) {
             log.error("Player {} not in any table", player);
-            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any " + "table");
+            throw new PlayerException.PlayerNotInAnyTableException("Player " + playerName + " not in any " +
+                    "table");
         }
         if (!table.getPlayers().contains(player)) {
             log.error("Table {} not contain player {}", tableId, player);
@@ -147,18 +154,20 @@ public class TableService {
         // in case of BLACKJACK
         if (player.getHand().isBlackJack()) {
             player.setIsBlackjack(1);
-            log.info("Player {} in table {} has Blackjack. hand = {}", player.getHand(), table.getTableId(), player.getHand());
+            log.info("Player {} in table {} has Blackjack. hand = {}", player.getHand(), table.getTableId(),
+                    player.getHand());
             return "BLACKJACK=" + player.getPlayerName() + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
         }
         // in case of BUST
         if (player.getHand().isBust()) {
             player.setIsBust(1);
-            log.info("Player {} in table {} is BUST. total = {}", player.getPlayerName() , table.getTableId(), player.getHand().value());
-            return "BUST=" + player.getPlayerName()  + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
+            log.info("Player {} in table {} is BUST. total = {}", player.getPlayerName(), table.getTableId(),
+                    player.getHand().value());
+            return "BUST=" + player.getPlayerName() + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
         }
         // normal HIT case
-        log.info("Player {} in table {} hit a card {}", player.getPlayerName() , table.getTableId(), newCard);
-        return "HIT=" + player.getPlayerName()  + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
+        log.info("Player {} in table {} hit a card {}", player.getPlayerName(), table.getTableId(), newCard);
+        return "HIT=" + player.getPlayerName() + " " + newCard.getRank().getValue() + " " + newCard.getSuit().getIntVal();
     }
 
     public String processStand(Table table, Player player)
@@ -181,6 +190,7 @@ public class TableService {
         return msg;
     }
 
+    //TODO: rf
     public Player getNextTurn(Table table) {
         for (Player p : table.getPlayers()) {
             if (p.getIsStand() == 0) {
@@ -231,6 +241,15 @@ public class TableService {
             } else {
                 gain = p.getBet();
             }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            MatchHistory match = MatchHistory.builder()
+                    .playerName(p.getPlayerName())
+                    .resultState(state)
+                    .bet(gain)
+                    .date(LocalDate.parse(LocalDate.now().format(formatter), formatter))
+                    .build();
+            matchHistoryService.save(match);
 
             // refresh player's state for new game
             p.refresh();

@@ -10,4 +10,6 @@ public interface MatchHistoryRepository {
     List<MatchHistory> findAllByPlayerName(String playerName);
 
     List<String> findAllPlayedPlayer();
+
+    void save(MatchHistory match);
 }

@@ -41,4 +41,9 @@ public class MatchHistoryRepositoryImpl implements MatchHistoryRepository {
                 .distinct()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void save(MatchHistory match) {
+        matchHistories.add(match);
+    }
 }
