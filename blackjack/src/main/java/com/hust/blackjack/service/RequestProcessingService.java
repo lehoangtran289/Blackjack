@@ -420,7 +420,7 @@ public class RequestProcessingService {
                     String msg = "QUIT=" + table.getTableId() + " " + playerName;
 
                     // write to requested channel
-                    writeToChannel(channel, msg);
+                    writeToChannel(channel, "QUIT");
 
                     // write to players in current table
                     for (Player player : table.getPlayers()) {
