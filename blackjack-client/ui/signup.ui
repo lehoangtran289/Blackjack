@@ -27,7 +27,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -51,7 +51,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>22</pointsize>
+     <pointsize>18</pointsize>
      <weight>75</weight>
      <italic>false</italic>
      <bold>true</bold>
@@ -78,7 +78,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -173,7 +173,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
