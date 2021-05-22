@@ -380,7 +380,7 @@ public class RequestProcessingService {
                 Player player = playerService.getPlayerByName(request.get(2));
 
                 try {
-                    String msg = tableService.processHit(table, player);
+                    String msg = tableService.processHit(table, player);    // HIT BUST BLACKJACK
 
                     // response to client
                     for (Player p : table.getPlayers()) {
@@ -397,7 +397,8 @@ public class RequestProcessingService {
                 Player player = playerService.getPlayerByName(request.get(2));
 
                 try {
-                    String processedMsg = tableService.processStand(table, player);
+                    sleep(1000);
+                    String processedMsg = tableService.processStand(table, player);     // DEAL or TURN
                     String standMsg = "STAND=" + player.getPlayerName();
                     for (Player p : table.getPlayers()) {
                         writeToChannel(p.getChannel(), standMsg);
