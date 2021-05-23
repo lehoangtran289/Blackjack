@@ -120,7 +120,14 @@ class gamePage(QtWidgets.QWidget):
                 self.chat_history.insertItem(0, message.split(' ')[0] + ': ' + ' '.join(message.split(' ')[1:]))
         elif header == 'BET':
             _, uname, bet_value = message.split(' ')
+            if uname == self.user.username:
+                uname = 'You'
+                self.user.balance -= self.bet_value
+                self.balance_label.setText('$' + str(self.user.balance))
+                self.set_enable_bet_button(False)
             self.chat_history.insertItem(0, 'System: ' + uname + ' placed $' + bet_value)
+        elif header == 'BETFAIL':
+            QtWidgets.QMessageBox.about(self, 'Bet Failed', message)
         elif header == 'SUCCESS':
             self.username_list = message.split(' ')[1:]
             while len(self.username_list) < 4:
@@ -172,8 +179,8 @@ class gamePage(QtWidgets.QWidget):
             if username == self.user.username:
                 if is_blackjack == 1:
                     request = 'STAND ' + self.room_id + ' ' + username
-                    #self.connection.send(request)
-                    response = self.connection.send_request(request)
+                    self.connection.send(request)
+                    #response = self.connection.send_request(request)
                     self.chat_history.insertItem(0, 'System: You got BlackJack')
                 else:
                     self.chat_history.insertItem(0, 'System: It\'s your turn')
@@ -215,12 +222,27 @@ class gamePage(QtWidgets.QWidget):
             reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?', \
                 QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
+                self.clear_table()
                 request = 'CONTINUE ' + self.room_id + ' ' + self.user.username
-                response = self.connection.send_request(request)
+                self.connection.send(request)
             else:
                 request = 'QUIT ' + self.room_id + ' ' + self.user.username
                 self.connection.send(request)
         #self.mutex.unlock()
+
+    def clear_table(self):
+        i = 1
+        for player in self.room_players:
+            for j in range(len(player.card_owned)):
+                self.layout_list[i][j].itemAt(0).widget().deleteLater()
+            i += 1
+            player.card_owned = []
+            player.username = 'Waiting for player'
+
+        for j in range(len(self.dealer.card_owned)):
+            self.layout_list[0][j].itemAt(0).widget().deleteLater()
+        self.dealer.card_owned = []
+        self.bet_label.setText('$0')
 
     def update_player_label(self):
         while len(self.username_list) < 4:
@@ -234,11 +256,9 @@ class gamePage(QtWidgets.QWidget):
             self.room_players[i].username = self.username_list[i]
 
     def hit(self):
+        self.set_enable_play_button(False)
         request = 'HIT ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
-        #response = self.connection.send_request(request)
-        #header = self.connection.get_header(response)
-        #message = self.connection.get_message(response)
         
     def process_hit_response(self, header, message):
         uname, rank, suit = message.split(' ')
@@ -252,24 +272,26 @@ class gamePage(QtWidgets.QWidget):
             # todo: display card
             pass
         elif header == 'BLACKJACK':
-            request = 'STAND ' + self.room_id + ' ' + self.user.username
-            self.connection.send(request)
-            self.set_enable_play_button(False)
             if uname == self.user.username:
                 self.chat_history.insertItem(0, 'You got a Blackjack!')
+                request = 'STAND ' + self.room_id + ' ' + self.user.username
+                self.connection.send(request)
+                self.set_enable_play_button(False)
             else:   
                 self.chat_history.insertItem(0, uname + ' got a Blackjack!')
         elif header == 'BUST':
             # todo: display card
-            request = 'STAND ' + self.room_id + ' ' + self.user.username
-            self.connection.send(request)
-            self.set_enable_play_button(False)
             if uname == self.user.username:
                 self.chat_history.insertItem(0, 'You got a Bust!')
+                request = 'STAND ' + self.room_id + ' ' + self.user.username
+                self.connection.send(request)
+                self.set_enable_play_button(False)
             else:   
                 self.chat_history.insertItem(0, uname + ' got a Bust!')
         else:
             print('Wrong response')
+        if uname == self.user.username:
+            self.set_enable_play_button(True)
 
     def display_card(self, player, pos, card):
         if player.username != 'dealer':
@@ -278,9 +300,10 @@ class gamePage(QtWidgets.QWidget):
         #print(str(pos) + ' ' + str(len(player.card_owned) - 1) + card.rank + card.suit)
 
     def stand(self):
+        self.set_enable_play_button(False)
         request = 'STAND ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
-        #response = self.connection.send_request(request)
+        #response = self.connection.send_request(equest)
 
     def quit(self):
         reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit? If you quit, you will lose your bet money', \
@@ -304,13 +327,8 @@ class gamePage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, 'Place Failed', 'Bet value must greater than 0!')
             return
         request = 'BET ' + str(self.room_id) + ' ' + self.user.username + ' ' + str(self.bet_value)
-        response = self.connection.send_request(request)
-        if self.connection.get_header(response) == 'BET':
-            self.user.balance -= self.bet_value
-            self.balance_label.setText('$' + str(self.user.balance))
-            self.set_enable_bet_button(False)
-        else:
-            QtWidgets.QMessageBox.about(self, 'Bet Failed', self.connection.get_message(response))
+        #response = self.connection.send_request(request)
+        self.connection.send(request)
 
     def reset_bet(self):
         self.bet_value = 0
