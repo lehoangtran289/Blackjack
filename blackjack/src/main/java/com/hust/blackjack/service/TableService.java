@@ -235,7 +235,7 @@ public class TableService {
             } else if (state == ResultState.PUSH) {
                 p.setBank(p.getBank() + p.getBet());
             } else {
-                gain = p.getBet();
+                gain = -p.getBet();
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
