@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Builder
 public class Table {
-    public static final int TABLE_SIZE = 4;
+    public static final int TABLE_SIZE = 3;
     public static final int MAXIMUM_SCORE = 21;
     public static final int DEALER_HIT_THRESHOLD = 17;
     public static final double MAXIMUM_BET = 200;
@@ -33,25 +33,39 @@ public class Table {
         players = new ArrayList<>();
     }
 
-    public void initDeck() {
+    public void refreshAndInitDeck() {
         try {
             deck = new Deck();
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+        if (dealerHand != null) {
+            dealerHand = null;
+        }
+        if (playerTurn != null) {
+            playerTurn = null;
+        }
+        isPlaying = 1;
     }
 
-    public void refresh() {
+    public void resetTable() {
         try {
             deck = new Deck();
-            players = new ArrayList<>();
-            dealerHand = null;
-            playerTurn = null;
-            isPlaying = 0;
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+        players = new ArrayList<>();
+        if (dealerHand != null) {
+            dealerHand = null;
+        }
+        if (playerTurn != null) {
+            playerTurn = null;
+        }
+        isPlaying = 0;
+    }
 
+    public boolean isAllReady() {
+        return players.stream().allMatch(p -> p.getIsReady() == 1);
     }
 
     @Override

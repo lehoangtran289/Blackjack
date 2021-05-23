@@ -71,11 +71,9 @@ public class RequestProcessingService {
                 String playerName = request.get(1);
                 String password = request.get(2);
                 try {
-                    Player player = playerService.login(playerName, password);
-                    player.setChannel(channel);
+                    Player player = playerService.login(playerName, password, channel);
                     writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Player {} login success at channel {}", player.getPlayerName(),
-                            player.getChannel());
+                    log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "LOGINFAIL=Username or password incorrect");
                     throw e;
@@ -249,16 +247,15 @@ public class RequestProcessingService {
                             playersInTable.stream()
                                     .map(Player::getPlayerName)
                                     .collect(Collectors.joining(" "));
-
                     for (Player player : playersInTable) {
                         writeToChannel(player.getChannel(), msg);
                     }
                     sleep(1001);
-                    if (playersInTable.size() == Table.TABLE_SIZE) {
-                        table.initDeck();
-                        table.setIsPlaying(1);
-                        for (Player player : playersInTable) {
-                            writeToChannel(player.getChannel(), "START=" + table.getTableId());
+
+                    if (playersInTable.size() == Table.TABLE_SIZE && table.isAllReady()) {
+                        Table t = tableService.start(table);
+                        for (Player player : t.getPlayers()) {
+                            writeToChannel(player.getChannel(), "START=" + t.getTableId());
                         }
                     }
                     log.info("Player {} join table {}. Players {}",
@@ -350,6 +347,7 @@ public class RequestProcessingService {
                         }
                         String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm last ','
                         log.info("DEAL msg: {}", dealMsg);
+
                         // send DEAL
                         sleep(1000);
                         for (Player p : table.getPlayers()) {
@@ -394,17 +392,18 @@ public class RequestProcessingService {
             }
             case STAND: {
                 Table table = tableService.getTableById(request.get(1));
+                List<Player> playersInTable = table.getPlayers();
                 Player player = playerService.getPlayerByName(request.get(2));
 
                 try {
                     sleep(1000);
-                    String processedMsg = tableService.processStand(table, player);     // DEAL or TURN
+                    String processedMsg = tableService.processStand(table, player);     // CHECK or TURN
                     String standMsg = "STAND=" + player.getPlayerName();
-                    for (Player p : table.getPlayers()) {
+                    for (Player p : playersInTable) {
                         writeToChannel(p.getChannel(), standMsg);
                     }
                     sleep(1000);
-                    for (Player p : table.getPlayers()) {
+                    for (Player p : playersInTable) {
                         writeToChannel(p.getChannel(), processedMsg);
                     }
                 } catch (TableException.TableNotFoundException ex) {
@@ -445,6 +444,8 @@ public class RequestProcessingService {
             case CONTINUE: {
                 Table table = tableService.getTableById(request.get(1));
                 Player player = playerService.getPlayerByName(request.get(2));
+                player.setIsReady(1);
+
                 if (player.getBank() < Table.MINIMUM_BET) {
                     log.error("Invalid balance of player {} to start game, bl = {}"
                             , player.getPlayerName(), player.getBank());
@@ -460,14 +461,14 @@ public class RequestProcessingService {
                         playersInTable.stream()
                                 .map(Player::getPlayerName)
                                 .collect(Collectors.joining(" "));
-
                 for (Player p : playersInTable) {
                     writeToChannel(p.getChannel(), msg);
                 }
                 sleep(1000);
-                if (playersInTable.size() == Table.TABLE_SIZE) {
-                    table.initDeck();
-                    table.setIsPlaying(1);
+
+                // continue all
+                if (playersInTable.size() == Table.TABLE_SIZE && table.isAllReady()) {
+                    table.refreshAndInitDeck();
                     for (Player p : playersInTable) {
                         writeToChannel(p.getChannel(), "START=" + table.getTableId());
                     }
@@ -509,7 +510,7 @@ public class RequestProcessingService {
     }
 
     public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-//        msg += "\n"; // terminal testing purposes
+        msg += "\n"; // terminal testing purposes
         log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
