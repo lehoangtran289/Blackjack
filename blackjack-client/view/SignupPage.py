@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
 from view import StartPage
+import re
 
 class signupPage(QtWidgets.QWidget):
     def __init__(self, connection):
@@ -32,6 +33,12 @@ class signupPage(QtWidgets.QWidget):
         if username == '' or password == '':
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Username and Password must not be empty!')
             return
+        if len(password) < 6 or len(password) > 20:
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Password length must between 6 and 20')
+            return
+        if re.match("[a-zA-Z0-9]*", password) != password:
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Password must only contains digits and alphabet characters')
+            return
         if password != confirm:
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', '2 passwords are not the same')
             return
@@ -39,7 +46,7 @@ class signupPage(QtWidgets.QWidget):
         request = 'SIGNUP ' + username + ' ' + password
         response = self.connection.send_request(request)
         self.validate_signup(response)
-
+       
     def validate_signup(self, response):
         header = self.connection.get_header(response)
         if header == configs.SIGNUP_SUCCESS:
