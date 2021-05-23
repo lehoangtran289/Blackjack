@@ -27,6 +27,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -51,6 +52,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>18</pointsize>
      <weight>75</weight>
      <italic>false</italic>
@@ -78,6 +80,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -102,6 +105,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -126,6 +130,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -148,6 +153,11 @@ border-width:1px;</string>
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+    </font>
+   </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
    </property>
@@ -161,6 +171,11 @@ border-width:1px;</string>
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+    </font>
+   </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
@@ -173,6 +188,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -194,6 +210,11 @@ border-width:1px;</string>
      <width>240</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+    </font>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>

@@ -10,6 +10,8 @@ class infoPage(QtWidgets.QWidget):
         self.user = user
         self.connection = connection
         self.home_page = home
+        self.setWindowTitle('Player information')
+        self.setFixedSize(640, 480)
         self.result_table.setColumnWidth(0, 100)
         self.result_table.setColumnWidth(1, 100)
         self.result_table.setColumnWidth(2, 100)

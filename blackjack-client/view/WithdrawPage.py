@@ -11,6 +11,8 @@ class withdrawPage(QtWidgets.QWidget):
         self.connection = connection
         self.back_button.clicked.connect(self.back)
         self.withdraw_button.clicked.connect(self.withdraw)
+        self.setWindowTitle('Withdraw money')
+        self.setFixedSize(640, 480)
 
     def withdraw(self):
         credit_card_number = self.credit_card_entry.text()

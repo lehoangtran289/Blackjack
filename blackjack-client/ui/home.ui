@@ -27,6 +27,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -50,6 +51,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -73,6 +75,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -96,6 +99,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -119,6 +123,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -142,6 +147,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>16</pointsize>
     </font>
    </property>
@@ -166,6 +172,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>16</pointsize>
     </font>
    </property>
@@ -190,6 +197,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -213,6 +221,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>

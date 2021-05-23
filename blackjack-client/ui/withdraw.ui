@@ -24,6 +24,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -48,6 +49,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -72,6 +74,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -96,6 +99,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -120,6 +124,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -135,6 +140,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -147,6 +153,11 @@ border-width:1px;</string>
      <width>640</width>
      <height>480</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">border-image: url(./asset/home.png) 0 0 0 0 stretch stretch;</string>
@@ -166,6 +177,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>18</pointsize>
      <weight>75</weight>
      <bold>true</bold>

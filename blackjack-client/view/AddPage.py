@@ -11,6 +11,8 @@ class addPage(QtWidgets.QWidget):
         self.user = user
         self.back_button.clicked.connect(self.back)
         self.add_button.clicked.connect(self.add)
+        self.setWindowTitle('Add money')
+        self.setFixedSize(640, 480)
 
     def add(self):
         credit_card_number = self.credit_card_entry.text()

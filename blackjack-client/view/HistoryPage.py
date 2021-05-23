@@ -14,6 +14,8 @@ class historyPage(QtWidgets.QWidget):
         self.history_table.setColumnWidth(0, 200)
         self.history_table.setColumnWidth(1, 200)
         self.history_table.setColumnWidth(2, 200)
+        self.setWindowTitle('Playing History')
+        self.setFixedSize(640, 480)
 
         request = 'HISTORY ' + self.user.username
         response = self.connection.send_request(request)

@@ -30,6 +30,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>16</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -70,6 +71,7 @@
      <widget class="QLabel" name="gain_lose">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -90,6 +92,7 @@
      <widget class="QLabel" name="win">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -110,6 +113,7 @@
      <widget class="QLabel" name="lose">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -130,6 +134,7 @@
      <widget class="QLabel" name="push">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -150,6 +155,7 @@
      <widget class="QLabel" name="bust">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -170,6 +176,7 @@
      <widget class="QLabel" name="blackjack">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -190,6 +197,7 @@
      <widget class="QLabel" name="label_5">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -210,6 +218,7 @@
      <widget class="QLabel" name="label_8">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -230,6 +239,7 @@
      <widget class="QLabel" name="label_7">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -250,6 +260,7 @@
      <widget class="QLabel" name="label_9">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -270,6 +281,7 @@
      <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -290,6 +302,7 @@
      <widget class="QLabel" name="label_4">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -310,6 +323,7 @@
      <widget class="QLabel" name="label_10">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -330,6 +344,7 @@
      <widget class="QLabel" name="balance">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -350,6 +365,7 @@
      <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -370,6 +386,7 @@
      <widget class="QLabel" name="username">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>12</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -399,6 +416,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -425,6 +443,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>16</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -451,6 +470,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -475,6 +495,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -601,6 +622,7 @@ border-width:1px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -642,6 +664,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -668,6 +691,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -694,6 +718,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -720,6 +745,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -746,6 +772,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -772,6 +799,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -798,6 +826,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
@@ -824,6 +853,7 @@ border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>

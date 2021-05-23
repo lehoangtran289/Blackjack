@@ -10,6 +10,8 @@ class signupPage(QtWidgets.QWidget):
         self.connection = connection
         self.signup_button.clicked.connect(self.signup)
         self.back_button.clicked.connect(self.back_to_start_page)
+        self.setWindowTitle('Sign up')
+        self.setFixedSize(640, 480)
 
     def signup(self):
         username = self.username_entry.text()

@@ -13,6 +13,8 @@ class rankingPage(QtWidgets.QWidget):
         self.ranking_table.setColumnWidth(0, 50)
         self.ranking_table.setColumnWidth(1, 200)
         self.ranking_table.setColumnWidth(2, 200)
+        self.setWindowTitle('Ranking')
+        self.setFixedSize(640, 480)
         request = 'GETRANKING ' + self.user.username 
         response = self.connection.send_request(request)
         header = self.connection.get_header(response)

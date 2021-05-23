@@ -13,6 +13,8 @@ class startPage(QtWidgets.QMainWindow):
         self.signup_page = SignupPage.signupPage(self.connection)
         self.login_button.clicked.connect(self.show_login)
         self.signup_button.clicked.connect(self.show_signup)
+        self.setWindowTitle('BlackJack')
+        self.setFixedSize(640, 480)
 
     def show_login(self):
         self.close()

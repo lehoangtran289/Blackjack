@@ -9,6 +9,8 @@ class homePage(QtWidgets.QWidget):
         uic.loadUi('./ui/home.ui', self)
         self.user = user
         self.connection = connection
+        self.setWindowTitle('Home')
+        self.setFixedSize(640, 480)
 
         self.play_button.clicked.connect(self.play)
         self.info_button.clicked.connect(self.show_account_info)

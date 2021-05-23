@@ -10,6 +10,8 @@ class loginPage(QtWidgets.QMainWindow):
         self.connection = connection
         self.login_button.clicked.connect(self.login)
         self.back_button.clicked.connect(self.back_to_start_page)
+        self.setWindowTitle('Login')
+        self.setFixedSize(640, 480)
 
     def login(self):
         username = self.username_entry.text()
