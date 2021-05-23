@@ -12,6 +12,18 @@ class signupPage(QtWidgets.QWidget):
         self.back_button.clicked.connect(self.back_to_start_page)
         self.setWindowTitle('Sign up')
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
+
+    def closeEvent(self, event):
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
     def signup(self):
         username = self.username_entry.text()
@@ -40,6 +52,7 @@ class signupPage(QtWidgets.QWidget):
 
     def back_to_start_page(self):
         print("back to start page")
+        self.close_on_purpose = False
         self.close()
         self.start_page = StartPage.startPage(self.connection)
         self.start_page.show()

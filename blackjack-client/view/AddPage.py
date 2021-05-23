@@ -13,6 +13,21 @@ class addPage(QtWidgets.QWidget):
         self.add_button.clicked.connect(self.add)
         self.setWindowTitle('Add money')
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
+
+    def closeEvent(self, event):
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            request = 'LOGOUT ' + self.user.username
+            self.connection.send(request)
+            event.accept()
+        else:
+            event.ignore()
+
 
     def add(self):
         credit_card_number = self.credit_card_entry.text()
@@ -39,5 +54,6 @@ class addPage(QtWidgets.QWidget):
 
     def back(self): 
         self.home_page = HomePage.homePage(self.user, self.connection)
+        self.close_on_purpose = False
         self.close()
         self.home_page.show()

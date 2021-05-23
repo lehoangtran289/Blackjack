@@ -15,11 +15,25 @@ class startPage(QtWidgets.QMainWindow):
         self.signup_button.clicked.connect(self.show_signup)
         self.setWindowTitle('BlackJack')
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
+    
+    def closeEvent(self, event):
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
     def show_login(self):
+        self.close_on_purpose = False
         self.close()
         self.login_page.show()
 
     def show_signup(self):
+        self.close_on_purpose = False
         self.close()
         self.signup_page.show()

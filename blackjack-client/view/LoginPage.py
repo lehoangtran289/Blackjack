@@ -12,6 +12,7 @@ class loginPage(QtWidgets.QMainWindow):
         self.back_button.clicked.connect(self.back_to_start_page)
         self.setWindowTitle('Login')
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
 
     def login(self):
         username = self.username_entry.text()
@@ -31,15 +32,28 @@ class loginPage(QtWidgets.QMainWindow):
         if header == configs.LOGIN_SUCCESS:
             username, balance = message.split(' ')
             self.home_page = HomePage.homePage(user(username, balance), self.connection)
+            self.close_on_purpose = False
             self.close()
             self.home_page.show()
         elif header == configs.LOGIN_FAIL:
             QtWidgets.QMessageBox.about(self, 'Log in Failed', message)
         else:
             print("Wrong message")
+        
+    def closeEvent(self, event):
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
     def back_to_start_page(self):
         print("back to start page")
+        self.close_on_purpose = False
         self.close()
         self.start_page = StartPage.startPage(self.connection)
         self.start_page.show()

@@ -16,6 +16,7 @@ class historyPage(QtWidgets.QWidget):
         self.history_table.setColumnWidth(2, 200)
         self.setWindowTitle('Playing History')
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
 
         request = 'HISTORY ' + self.user.username
         response = self.connection.send_request(request)
@@ -31,7 +32,20 @@ class historyPage(QtWidgets.QWidget):
                     self.history_table.setItem(row, i, QtWidgets.QTableWidgetItem(data[i]))
                     self.history_table.item(row, i).setTextAlignment(QtCore.Qt.AlignCenter)
 
+    def closeEvent(self, event):
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            request = 'LOGOUT ' + self.user.username
+            self.connection.send(request)
+            event.accept()
+        else:
+            event.ignore()
 
     def back(self):
+        self.close_on_purpose = False
         self.close()
         self.home_page.show()

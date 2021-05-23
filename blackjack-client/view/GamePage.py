@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
-from PyQt5.QtCore import QThread, QObject, pyqtSignal, QMutex
+from PyQt5.QtCore import QThread, QObject, pyqtSignal, QMutex, QTimer, QEventLoop
 from utils import configs, Connection, StopableThread
 from models import User, Card
 import socket
@@ -38,6 +38,7 @@ class gamePage(QtWidgets.QWidget):
         self.bet_phase = 0
         self.setWindowTitle('Room: ' + room_id)
         self.setFixedSize(640, 480)
+        self.close_on_purpose = True
 
         # update user's information label
         self.balance_label.setText('$' + str(self.user.balance))
@@ -58,7 +59,7 @@ class gamePage(QtWidgets.QWidget):
         #connect button signal
         self.hit_button.clicked.connect(self.hit)
         self.stand_button.clicked.connect(self.stand)
-        self.quit_button.clicked.connect(self.quit)
+        self.quit_button.clicked.connect(self.exit_room)
         self.chat_entry.returnPressed.connect(self.chat)
         self.bet_button.clicked.connect(self.bet)
         self.reset_bet_button.clicked.connect(self.reset_bet)
@@ -81,10 +82,20 @@ class gamePage(QtWidgets.QWidget):
         self.start_receiving_response()
 
     def closeEvent(self, event):
-        self.quit()
-        request = 'LOGOUT ' + self.user.username
-        self.connection.send(request)
-        event.accept()
+        if self.close_on_purpose == False:
+            event.accept()
+            return
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            self.connection.send(request)
+            self.freezeUI(1000)
+            request = 'LOGOUT ' + self.user.username
+            self.connection.send(request)
+            event.accept()
+        else:
+            event.ignore()
 
     def start_receiving_response(self):
         self.thread = QThread()
@@ -107,6 +118,7 @@ class gamePage(QtWidgets.QWidget):
         if (resp == 'QUIT'):
             self.home_page = HomePage.homePage(self.user, self.connection)
             self.home_page.show()
+            self.close_on_purpose = False
             self.close()
             return
         
@@ -215,13 +227,21 @@ class gamePage(QtWidgets.QWidget):
                 i = i + 2
             players_result = message.split(',')[1:]
             for result in players_result:
-                username, res, balance = result.split(' ')
+                username, res, gain_loss = result.split(' ')
+                gain_loss = int(gain_loss)
                 if username == self.user.username:
-                    self.display_chats('You ' + res)
-                    self.user.balance = float(balance)
+                    if gain_loss < 0:
+                        self.display_chats(res.upcase() + ', You loss $' + str(abs(gain_loss)))
+                    else:
+                        self.display_chats(res.upcase() + ', You won $' + str(gain_loss))
+                    self.user.balance += gain_loss
                     self.balance_label.setText('$' + str(self.user.balance))
                 else:
-                    self.display_chat(username + ' ' + res)
+                    if gain_loss < 0:
+                        self.display_chats(res.upcase() + ', ' + username + 'loss $' + str(abs(gain_loss)))
+                    else:
+                        self.display_chats(res.upcase() + ', ' + username + 'won $' + str(abs(gain_loss)))
+            self.freezeUI(5000)
             reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?', \
                 QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
@@ -311,8 +331,8 @@ class gamePage(QtWidgets.QWidget):
         self.connection.send(request)
         #response = self.connection.send_request(equest)
 
-    def quit(self):
-        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit? If you quit, you will lose your bet money', \
+    def exit_room(self):
+        reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to exit room? You will lose your bet money', \
             QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             request = 'QUIT ' + self.room_id + ' ' + self.user.username
@@ -379,3 +399,8 @@ class gamePage(QtWidgets.QWidget):
     def set_enable_play_button(self, flag):
         self.hit_button.setEnabled(flag)
         self.stand_button.setEnabled(flag)
+
+    def freezeUI(self, t):
+        loop = QEventLoop()
+        QTimer.singleShot(t, loop.quit)
+        loop.exec_()
