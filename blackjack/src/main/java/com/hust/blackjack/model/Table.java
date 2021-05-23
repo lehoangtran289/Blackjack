@@ -64,8 +64,21 @@ public class Table {
         isPlaying = 0;
     }
 
+    public Player getNextTurn() {
+        for (Player p : this.getPlayers()) {
+            if (p.getIsStand() == 0) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public boolean isAllReady() {
         return players.stream().allMatch(p -> p.getIsReady() == 1);
+    }
+
+    public boolean isAllBet() {
+        return this.getPlayers().stream().allMatch(p -> p.getBet() != 0);
     }
 
     @Override

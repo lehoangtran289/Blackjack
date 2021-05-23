@@ -310,7 +310,7 @@ public class RequestProcessingService {
                     }
 
                     // if all players bet -> DEAL + TURN
-                    if (tableService.isAllBet(table)) {
+                    if (table.isAllBet()) {
                         Tuple2<Hand, List<Player>> tuple = tableService.dealCards(table);
                         Hand dealerHand = tuple.getA0();
                         List<Player> players = tuple.getA1();

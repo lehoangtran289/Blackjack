@@ -38,11 +38,6 @@ public class TableService {
         return optionalPlayer.get();
     }
 
-    //TODO: rf
-    public boolean isAllBet(Table table) {
-        return table.getPlayers().stream().allMatch(p -> p.getBet() != 0);
-    }
-
     public Table play(String playerName) throws TableException, PlayerException, LoginException {
         // get user
         Player player = playerService.getPlayerByName(playerName);
@@ -191,7 +186,7 @@ public class TableService {
 
         // return CHECK or TURN message based on table.isAllStand
         String msg = "";
-        Player p = getNextTurn(table);
+        Player p = table.getNextTurn();
         if (p != null) {
             table.setPlayerTurn(p.getPlayerName());
             msg = "TURN=" + p.getPlayerName() + " " + p.getIsBlackjack();
@@ -199,16 +194,6 @@ public class TableService {
             msg = processCheck(table);
         }
         return msg;
-    }
-
-    //TODO: rf
-    public Player getNextTurn(Table table) {
-        for (Player p : table.getPlayers()) {
-            if (p.getIsStand() == 0) {
-                return p;
-            }
-        }
-        return null;
     }
 
     private String processCheck(Table table) {
