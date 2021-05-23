@@ -63,12 +63,13 @@ public class PlayerService {
         return playerRepository.findAllPlayerName();
     }
 
-    public Player login(String playerName, String password) throws PlayerException, LoginException {
+    public Player login(String playerName, String password, SocketChannel channel) throws PlayerException, LoginException {
         Player player = this.getPlayerByNameAndPassword(playerName, password);
         if (player.getChannel() != null) {
             log.error("player already login");
             throw new LoginException.PlayerAlreadyLoginException();
         }
+        player.setChannel(channel);
         return player;
     }
 

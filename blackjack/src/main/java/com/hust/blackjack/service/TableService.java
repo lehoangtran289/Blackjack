@@ -38,11 +38,6 @@ public class TableService {
         return optionalPlayer.get();
     }
 
-    //TODO: rf
-    public boolean isAllBet(Table table) {
-        return table.getPlayers().stream().allMatch(p -> p.getBet() != 0);
-    }
-
     public Table play(String playerName) throws TableException, PlayerException, LoginException {
         // get user
         Player player = playerService.getPlayerByName(playerName);
@@ -63,8 +58,11 @@ public class TableService {
         Table table = tableRepository.findAvailableTable();
 
         // place player into table
+        player.refresh();
+        player.setIsReady(1);
         player.setTableId(table.getTableId());
         table.getPlayers().add(player);
+
         return table;
     }
 
@@ -107,9 +105,17 @@ public class TableService {
             log.error("Game not START in table {}", table);
             throw new TableException.GameNotStartException();
         }
+        if (player.getBet() != 0) {
+            log.error("Player {} already bet {}", playerName, player.getBet());
+            throw new TableException("Player already bet");
+        }
         if (player.getBank() < bet) {
             log.error("Player {} invalid bet={}, bank = {}", playerName, bet, player.getBank());
             throw new TableException.NotEnoughBankBalanceException();
+        }
+        if (bet < Table.MINIMUM_BET) {
+            log.error("Invalid bet of player {}, bet = {}", playerName, player.getBet());
+            throw new TableException.InvalidBet();
         }
         player.placeBet(bet);
         return player;
@@ -180,7 +186,7 @@ public class TableService {
 
         // return CHECK or TURN message based on table.isAllStand
         String msg = "";
-        Player p = getNextTurn(table);
+        Player p = table.getNextTurn();
         if (p != null) {
             table.setPlayerTurn(p.getPlayerName());
             msg = "TURN=" + p.getPlayerName() + " " + p.getIsBlackjack();
@@ -188,16 +194,6 @@ public class TableService {
             msg = processCheck(table);
         }
         return msg;
-    }
-
-    //TODO: rf
-    public Player getNextTurn(Table table) {
-        for (Player p : table.getPlayers()) {
-            if (p.getIsStand() == 0) {
-                return p;
-            }
-        }
-        return null;
     }
 
     private String processCheck(Table table) {
@@ -264,5 +260,10 @@ public class TableService {
         }
         table.setIsPlaying(0);
         return msgBuilder.toString();
+    }
+
+    public Table start(Table table) {
+        table.refreshAndInitDeck();
+        return table;
     }
 }

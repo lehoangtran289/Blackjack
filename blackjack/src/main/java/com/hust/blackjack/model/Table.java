@@ -33,25 +33,52 @@ public class Table {
         players = new ArrayList<>();
     }
 
-    public void initDeck() {
+    public void refreshAndInitDeck() {
         try {
             deck = new Deck();
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+        if (dealerHand != null) {
+            dealerHand = null;
+        }
+        if (playerTurn != null) {
+            playerTurn = null;
+        }
+        isPlaying = 1;
     }
 
-    public void refresh() {
+    public void resetTable() {
         try {
             deck = new Deck();
-            players = new ArrayList<>();
-            dealerHand = null;
-            playerTurn = null;
-            isPlaying = 0;
         } catch (CardException.InvalidCardException e) {
             e.printStackTrace();
         }
+        players = new ArrayList<>();
+        if (dealerHand != null) {
+            dealerHand = null;
+        }
+        if (playerTurn != null) {
+            playerTurn = null;
+        }
+        isPlaying = 0;
+    }
 
+    public Player getNextTurn() {
+        for (Player p : this.getPlayers()) {
+            if (p.getIsStand() == 0) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean isAllReady() {
+        return players.stream().allMatch(p -> p.getIsReady() == 1);
+    }
+
+    public boolean isAllBet() {
+        return this.getPlayers().stream().allMatch(p -> p.getBet() != 0);
     }
 
     @Override

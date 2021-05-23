@@ -25,6 +25,7 @@ public class Player {
     private int isBust;
     private int isStand;
     private Action choice;
+    private int isReady;
 
     public Player(String playerName) {
         this.playerName = playerName;
@@ -46,6 +47,7 @@ public class Player {
         isBust = 0;
         isStand = 0;
         choice = null;
+        isReady = 0;
     }
 
     public void placeBet(double bet) {

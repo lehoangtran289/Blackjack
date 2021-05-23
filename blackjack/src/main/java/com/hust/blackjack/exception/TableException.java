@@ -47,4 +47,11 @@ public class TableException extends Exception{
         public WrongTurnException(String msg) { super(msg); }
         public WrongTurnException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class InvalidBet extends TableException {
+        public InvalidBet() { }
+        public InvalidBet(Throwable throwable) { super(throwable); }
+        public InvalidBet(String msg) { super(msg); }
+        public InvalidBet(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }
