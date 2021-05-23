@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection, StopableThread
 import socket
-from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage
+from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage, AboutPage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, connection):
@@ -20,6 +20,7 @@ class homePage(QtWidgets.QWidget):
         self.withdraw_button.clicked.connect(self.withdraw)
         self.logout_button.clicked.connect(self.logout)
         self.history_button.clicked.connect(self.show_history)
+        self.about_button.clicked.connect(self.about)
 
         self.username_label.setText("Henlo " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
@@ -67,6 +68,11 @@ class homePage(QtWidgets.QWidget):
         self.close_on_purpose = False
         self.close()
         self.add_page.show()
+    
+    def about(self):
+        self.about_page = AboutPage.aboutPage(self)
+        self.hide()
+        self.about_page.show()
 
     def closeEvent(self, event):
         if self.close_on_purpose == False:
