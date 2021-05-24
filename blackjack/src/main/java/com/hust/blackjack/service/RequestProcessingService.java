@@ -62,6 +62,7 @@ public class RequestProcessingService {
 
         // process request
         switch (requestType) {
+            // loginController
             case LOGIN: {
                 if (playerService.isChannelLoggedIn(channel)) {
                     writeToChannel(channel, "LOGINFAIL=Channel already login, logout first");
@@ -116,6 +117,8 @@ public class RequestProcessingService {
                 }
                 break;
             }
+
+            // searchController
             case SEARCHINFO: {
                 if (request.size() == 1) {
                     log.error("searchinfo playername empty");
@@ -187,6 +190,8 @@ public class RequestProcessingService {
                 log.info("Get rankings {}", rankings);
                 break;
             }
+
+            // creditCardController
             case ADDMONEY: {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
@@ -236,6 +241,7 @@ public class RequestProcessingService {
                 break;
             }
 
+            // gameController
             case PLAY: {
                 String playerName = request.get(1);
                 try {
