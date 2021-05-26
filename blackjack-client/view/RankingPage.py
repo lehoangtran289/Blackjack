@@ -40,7 +40,7 @@ class rankingPage(QtWidgets.QWidget):
 
     def closeEvent(self, event):
         if self.close_on_purpose == False:
-            event.accpet()
+            event.accept()
             return
         reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
             QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)

@@ -36,7 +36,7 @@ class signupPage(QtWidgets.QWidget):
         if len(password) < 6 or len(password) > 20:
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Password length must between 6 and 20')
             return
-        if re.match("[a-zA-Z0-9]*", password) != password:
+        if re.findall('[0-9A-Za-z]+', password)[0] != password:
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Password must only contains digits and alphabet characters')
             return
         if password != confirm:

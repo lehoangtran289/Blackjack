@@ -224,6 +224,7 @@ class gamePage(QtWidgets.QWidget):
             self.layout_list[0][1].itemAt(0).widget().setParent(None)
             self.display_card(self.dealer, 0, self.dealer.card_owned[1])
             self.play_phase = 0
+            self.set_enable_play_button(False)
             dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
             i = 4
             while i < len(dealer_hand):
@@ -246,9 +247,9 @@ class gamePage(QtWidgets.QWidget):
                     self.balance_label.setText('$' + str(self.user.balance))
                 else:
                     if gain_loss < 0:
-                        self.display_chat(res.upper() + ', ' + username + 'loss $' + str(abs(gain_loss)))
+                        self.display_chat(res.upper() + ', ' + username + ' loss $' + str(abs(gain_loss)))
                     else:
-                        self.display_chat(res.upper() + ', ' + username + 'won $' + str(abs(gain_loss)))
+                        self.display_chat(res.upper() + ', ' + username + ' won $' + str(abs(gain_loss)))
             rep = QtWidgets.QMessageBox.information(self, 'Result', info)
             if rep == QtWidgets.QMessageBox.Ok:
                 self.freezeUI(5000)
@@ -261,6 +262,8 @@ class gamePage(QtWidgets.QWidget):
                 else:
                     request = 'QUIT ' + self.room_id + ' ' + self.user.username
                     self.connection.send(request)
+        elif header == 'FAIL':
+            print("Wrong message: " + resp)
         #self.mutex.unlock()
 
     def clear_table(self):
