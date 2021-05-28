@@ -227,7 +227,7 @@ border-width:1px;</string>
     <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
    </property>
    <property name="text">
-    <string>Gain/Loss</string>
+    <string>Bet Placed</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
