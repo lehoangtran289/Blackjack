@@ -185,18 +185,24 @@ class gamePage(QtWidgets.QWidget):
             self.display_card(self.dealer, 0, self.dealer.card_owned[0])
             self.display_facedown_card(self.layout_list[0][1])
             self.dealer.add_card(Card.card(configs.ranks[dealer_hand[2]], configs.suits[dealer_hand[3]]))
+            self.freezeUI(300)
             for hand in player_hands:
                 pos = self.username_list.index(hand.split(' ')[0])
                 cards = [int(i) for i in hand.split(' ')[1:]] 
                 self.room_players[pos].add_card(Card.card(configs.ranks[cards[0]], configs.suits[cards[1]]))
                 self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[0])
                 self.room_players[pos].add_card(Card.card(configs.ranks[cards[2]], configs.suits[cards[3]]))
-                self.display_facedown_card(self.layout_list[pos + 1][1])
+                if hand.split(' ')[0] == self.user.username:
+                    self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
+                else:
+                    self.display_facedown_card(self.layout_list[pos + 1][1])
+                self.freezeUI(300)
         elif header == 'TURN':
             username, is_blackjack = message.split(' ')
-            pos = self.username_list.index(username)
-            self.layout_list[pos + 1][1].itemAt(0).widget().setParent(None)
-            self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
+            if username != self.user.username:
+                pos = self.username_list.index(username)
+                self.layout_list[pos + 1][1].itemAt(0).widget().setParent(None)
+                self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
             if username == self.user.username:
                 if is_blackjack == 1:
                     request = 'STAND ' + self.room_id + ' ' + username
