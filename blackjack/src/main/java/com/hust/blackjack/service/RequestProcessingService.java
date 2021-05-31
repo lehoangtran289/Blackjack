@@ -6,6 +6,7 @@ import com.hust.blackjack.model.*;
 import com.hust.blackjack.model.dto.PlayerGameInfo;
 import com.hust.blackjack.model.dto.PlayerRanking;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -74,7 +75,8 @@ public class RequestProcessingService {
                 try {
                     Player player = playerService.login(playerName, password, channel);
                     writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Player {} login success at channel {}", player.getPlayerName(), player.getChannel());
+                    log.info("Player {} login success at channel {}", player.getPlayerName(),
+                            player.getChannel());
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "LOGINFAIL=Username or password incorrect");
                     throw e;
@@ -351,7 +353,8 @@ public class RequestProcessingService {
                                 }
                             }
                         }
-                        String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm last ','
+                        String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm
+                        // last ','
                         log.info("DEAL msg: {}", dealMsg);
 
                         // send DEAL
@@ -364,7 +367,8 @@ public class RequestProcessingService {
                         sleep(1000);
                         Player firstPlayer = players.get(0);
                         table.setPlayerTurn(firstPlayer.getPlayerName());
-                        String turnMsg = "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getIsBlackjack();
+                        String turnMsg =
+                                "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getIsBlackjack();
                         log.info("TURN msg: {}", turnMsg);
                         for (Player p : table.getPlayers()) {
                             writeToChannel(p.getChannel(), turnMsg);
@@ -422,9 +426,15 @@ public class RequestProcessingService {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
                 try {
-                    Table table = tableService.removePlayer(tableId, playerName);
-                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
+                    Tuple2<Table, String> tup = tableService.removePlayer(tableId, playerName);
+                    Table table = tup.getA0();
+                    if (!StringUtils.isEmpty(tup.getA1())) {    // in case current turn's player quit
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), tup.getA1());
+                        }
+                    }
 
+                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
                     // write to requested channel
                     writeToChannel(channel, "QUIT");
 

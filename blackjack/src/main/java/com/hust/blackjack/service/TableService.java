@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -66,7 +67,7 @@ public class TableService {
         return table;
     }
 
-    public Table removePlayer(String tableId, String playerName) throws PlayerException, TableException {
+    public Tuple2<Table, String> removePlayer(String tableId, String playerName) throws PlayerException, TableException {
         Player player = playerService.getPlayerByName(playerName);
         Table table = this.getTableById(tableId);
 
@@ -81,12 +82,22 @@ public class TableService {
         }
 
         // process QUIT
+        String turnMsg = "";
         table.getPlayers().remove(player);
+
+        // in case current turn's player quit
+        if (StringUtils.equals(table.getPlayerTurn(), playerName) && table.getIsPlaying() == 1) {
+            Player nextPlayer = table.getNextTurn();
+            if (nextPlayer != null) {
+                table.setPlayerTurn(nextPlayer.getPlayerName());
+                turnMsg = "TURN=" + nextPlayer.getPlayerName() + " " + nextPlayer.getIsBlackjack();
+            }
+        }
         player.refresh();
         player.setTableId(null);
         log.info("Player {} is removed from the table {}", player, table);
 
-        return table;
+        return new Tuple2<>(table, turnMsg);
     }
 
     public Player getBet(String tableId, String playerName, double bet) throws PlayerException, TableException {
@@ -101,7 +112,7 @@ public class TableService {
             log.error("Table {} not contain player {}", tableId, player);
             throw new TableException.PlayerNotFoundInTableException("Table not contain player");
         }
-        if (table.getPlayers().size() < Table.TABLE_SIZE) {
+        if (table.getIsPlaying() == 0) {
             log.error("Game not START in table {}", table);
             throw new TableException.GameNotStartException();
         }
@@ -185,7 +196,7 @@ public class TableService {
         player.setIsStand(1);
 
         // return CHECK or TURN message based on table.isAllStand
-        String msg = "";
+        String msg;
         Player p = table.getNextTurn();
         if (p != null) {
             table.setPlayerTurn(p.getPlayerName());
