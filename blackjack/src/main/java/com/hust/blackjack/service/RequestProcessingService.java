@@ -433,7 +433,7 @@ public class RequestProcessingService {
                             writeToChannel(p.getChannel(), tup.getA1());
                         }
                     }
-
+                    sleep(1000);
                     String msg = "QUIT=" + table.getTableId() + " " + playerName;
                     // write to requested channel
                     writeToChannel(channel, "QUIT");
