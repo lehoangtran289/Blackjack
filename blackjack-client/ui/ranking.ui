@@ -63,7 +63,7 @@ Ranking</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
@@ -167,7 +167,7 @@ Ranking</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -191,7 +191,7 @@ Ranking</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -215,7 +215,7 @@ Ranking</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -311,7 +311,7 @@ border-color: rgb(255, 255, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Rank</string>
@@ -335,7 +335,7 @@ border-color: rgb(255, 255, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Username</string>
@@ -359,7 +359,7 @@ border-color: rgb(255, 255, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Gain/Loss</string>
