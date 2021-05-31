@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, QMutex, QTimer, QEventLoop
-from utils import configs, Connection, StopableThread
+from utils import configs, Connection
 from models import User, Card
 import socket
 from view import HomePage
