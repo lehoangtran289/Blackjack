@@ -4,9 +4,6 @@ from utils import configs, Connection, StopableThread
 from models import User, Card
 import socket
 from view import HomePage
-import multiprocessing
-import threading
-import copy
 
 class Worker(QObject):
     finished = pyqtSignal()
@@ -21,7 +18,7 @@ class Worker(QObject):
             response = self.connection.polling_response()
             self.resp.emit(response)
             if response == "QUIT":
-                print("-------------------------------")
+                #print("-------------------------------")
                 break
         self.finished.emit()
 
@@ -116,7 +113,7 @@ class gamePage(QtWidgets.QWidget):
 
     def process_response(self, resp):
         #self.mutex.lock()
-        print('worker received response: ' + resp)
+        #print('worker received response: ' + resp)
         if resp == 'QUIT':
             if self.quit_app == True:
                 return

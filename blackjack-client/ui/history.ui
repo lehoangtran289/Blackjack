@@ -46,7 +46,7 @@
      <x>20</x>
      <y>100</y>
      <width>600</width>
-     <height>301</height>
+     <height>300</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -65,8 +65,10 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Sunken</enum>
    </property>
    <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -191,7 +193,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Date</string>
@@ -224,7 +226,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Bet Placed</string>
@@ -257,7 +259,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Result</string>

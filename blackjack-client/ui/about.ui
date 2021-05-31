@@ -28,8 +28,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string>Rules</string>
@@ -51,8 +50,7 @@ background-color: rgba(0, 0, 0, 70);</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);
-background-color: rgba(0, 0, 0, 70);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
    </property>
    <property name="text">
     <string/>
