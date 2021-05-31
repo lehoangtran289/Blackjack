@@ -582,10 +582,18 @@ border-width:1px
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);
+    <string notr="true">:enabled { color: rgb(0, 0, 0);
+border-color: rgb(0, 0, 0);
 background-color: rgb(255, 255, 255);
 border-style:outset;
-border-width:1px;</string>
+border-width:1px}
+:disabled {
+color: rgb(169, 167, 171);
+background-color: rgb(255, 255, 255);
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:1px
+}</string>
    </property>
    <property name="text">
     <string>Quit</string>

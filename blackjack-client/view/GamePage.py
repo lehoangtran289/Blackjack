@@ -175,7 +175,6 @@ class gamePage(QtWidgets.QWidget):
                 self.players_label[pos].setText('Player left')
         elif header == 'DEAL':
             self.bet_phase = 0
-            self.play_phase = 1
             dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
             player_hands = message.split(',')[1:]
             self.dealer.add_card(Card.card(configs.ranks[dealer_hand[0]], configs.suits[dealer_hand[1]]))
@@ -208,6 +207,7 @@ class gamePage(QtWidgets.QWidget):
                     self.display_chat('System: You got BlackJack')
                 else:
                     self.display_chat('System: It\'s your turn')
+                    self.play_phase = 1
                     self.set_enable_play_button(True)
             elif is_blackjack == 0:
                 self.display_chat('System: ' + username + ' got BlackJack')
@@ -219,6 +219,7 @@ class gamePage(QtWidgets.QWidget):
         # process stand
         elif header == 'STAND':
             if message == self.user.username:
+                self.play_phase = 0
                 self.set_enable_play_button(False)
             else:
                 self.display_chat('System: ' + message + ' end their turn')
@@ -236,6 +237,7 @@ class gamePage(QtWidgets.QWidget):
                 self.display_card(self.dealer, 0, card)
                 i = i + 2
             players_result = message.split(',')[1:]
+            self.freezeUI(1000)
             for result in players_result:
                 username, res, gain_loss = result.split(' ')
                 gain_loss = float(gain_loss)
@@ -301,9 +303,10 @@ class gamePage(QtWidgets.QWidget):
             self.room_players[i].username = self.username_list[i]
 
     def hit(self):
-        self.set_enable_play_button(False)
+        #self.set_enable_play_button(False)
         request = 'HIT ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
+        self.freezeUI(500)
         
     def process_hit_response(self, header, message):
         uname, rank, suit = message.split(' ')
@@ -315,7 +318,7 @@ class gamePage(QtWidgets.QWidget):
         self.display_card(self.room_players[pos], pos, card)
         if header == 'HIT':
             if uname != self.user.username:
-                self.display_chat('System: ' + 'uname ' + "hit a " + configs.ranks[rank] + ' of ' + configs.suits[suit])
+                self.display_chat('System: ' + uname + " hit a " + configs.ranks[rank] + ' of ' + configs.suits[suit])
         elif header == 'BLACKJACK':
             if uname == self.user.username:
                 self.display_chat('You got a Blackjack!')
@@ -335,8 +338,8 @@ class gamePage(QtWidgets.QWidget):
                 self.display_chat(uname + ' got a Bust!')
         else:
             print('Wrong response')
-        if uname == self.user.username:
-            self.set_enable_play_button(True)
+        #if uname == self.user.username:
+         #   self.set_enable_play_button(True)
 
     def display_card(self, player, pos, card):
         if player.username != 'dealer':
@@ -355,6 +358,7 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_play_button(False)
         request = 'STAND ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
+        self.play_phase = 0
         #response = self.connection.send_request(equest)
 
     def exit_room(self):
@@ -427,6 +431,14 @@ class gamePage(QtWidgets.QWidget):
         self.stand_button.setEnabled(flag)
 
     def freezeUI(self, t):
+        self.set_enable_bet_button(False)
+        self.set_enable_play_button(False)
+        self.quit_button.setEnabled(False)
         loop = QEventLoop()
         QTimer.singleShot(t, loop.quit)
         loop.exec_()
+        if self.bet_phase:
+            self.set_enable_bet_button(True)
+        if self.play_phase:
+            self.set_enable_play_button(True)
+        self.quit_button.setEnabled(True)
