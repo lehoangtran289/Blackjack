@@ -220,7 +220,6 @@ class gamePage(QtWidgets.QWidget):
         # process stand
         elif header == 'STAND':
             if message == self.user.username:
-                self.play_phase = 0
                 self.set_enable_play_button(False)
             else:
                 self.display_chat('System: ' + message + ' end their turn')
