@@ -118,7 +118,7 @@ class gamePage(QtWidgets.QWidget):
         if resp == 'QUIT':
             if self.quit_app == True:
                 return
-            self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos().y())
+            self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos())
             self.home_page.show()
             self.close_on_purpose = False
             self.close()
@@ -155,7 +155,7 @@ class gamePage(QtWidgets.QWidget):
             self.player4_label.setText(self.username_list[3])
             for i in range(len(self.username_list)):
                 self.room_players[i].username = self.username_list[i]
-        elif header == 'QUIT' and self.play_phase + self.bet_phase == 0:
+        elif header == 'QUIT' and self.bet_phase == 0:
             _, username = message.split(' ')
             if username != self.user.username:
                 self.username_list.remove(username)
@@ -220,6 +220,7 @@ class gamePage(QtWidgets.QWidget):
         # process stand
         elif header == 'STAND':
             if message == self.user.username:
+                self.play_phase = 0
                 self.set_enable_play_button(False)
             else:
                 self.display_chat('System: ' + message + ' end their turn')
