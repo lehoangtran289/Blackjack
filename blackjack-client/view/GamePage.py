@@ -118,7 +118,7 @@ class gamePage(QtWidgets.QWidget):
         if resp == 'QUIT':
             if self.quit_app == True:
                 return
-            self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos())
+            self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos().y() + 30) 
             self.home_page.show()
             self.close_on_purpose = False
             self.close()
