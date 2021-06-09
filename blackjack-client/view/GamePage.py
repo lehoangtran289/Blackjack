@@ -176,6 +176,7 @@ class gamePage(QtWidgets.QWidget):
                 self.players_label[pos].setText('Player left')
         elif header == 'DEAL':
             self.bet_phase = 0
+            self.play_phase = 1
             dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
             player_hands = message.split(',')[1:]
             self.dealer.add_card(Card.card(configs.ranks[dealer_hand[0]], configs.suits[dealer_hand[1]]))
@@ -208,7 +209,7 @@ class gamePage(QtWidgets.QWidget):
                     self.display_chat('System: You got BlackJack')
                 else:
                     self.display_chat('System: It\'s your turn')
-                    self.play_phase = 1
+                    #self.play_phase = 1
                     self.set_enable_play_button(True)
             elif is_blackjack == 0:
                 self.display_chat('System: ' + username + ' got BlackJack')
@@ -220,7 +221,7 @@ class gamePage(QtWidgets.QWidget):
         # process stand
         elif header == 'STAND':
             if message == self.user.username:
-                self.play_phase = 0
+                #self.play_phase = 0
                 self.set_enable_play_button(False)
             else:
                 self.display_chat('System: ' + message + ' end their turn')
@@ -359,7 +360,7 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_play_button(False)
         request = 'STAND ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
-        self.play_phase = 0
+        #self.play_phase = 0
         #response = self.connection.send_request(equest)
 
     def exit_room(self):
