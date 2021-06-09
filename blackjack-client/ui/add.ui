@@ -169,9 +169,9 @@ border-width:1px;</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>230</y>
-     <width>400</width>
+     <x>120</x>
+     <y>240</y>
+     <width>571</width>
      <height>30</height>
     </rect>
    </property>
