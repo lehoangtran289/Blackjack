@@ -4,13 +4,14 @@ import socket
 from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage, AboutPage
 
 class homePage(QtWidgets.QWidget):
-    def __init__(self, user, connection):
+    def __init__(self, user, connection, x, y):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi('./ui/home.ui', self)
         self.user = user
         self.connection = connection
         self.setWindowTitle('Home')
-        self.setFixedSize(640, 480)
+        self.setGeometry(x, y, 800, 600)
+        self.setFixedSize(800, 600)
         self.close_on_purpose = True
 
         self.play_button.clicked.connect(self.play)
@@ -37,41 +38,45 @@ class homePage(QtWidgets.QWidget):
 
         room_id = message.split(' ')[0]
         uname_list = message.split(' ')[1:]
-        self.game_page = GamePage.gamePage(self.user, self.connection, room_id, uname_list)
+        self.game_page = GamePage.gamePage(self.user, self.connection, room_id, uname_list, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
         self.game_page.show()
 
     def show_account_info(self):
-        self.info_page = InfoPage.infoPage(self.user, self.connection, self)
-        self.hide()
+        self.info_page = InfoPage.infoPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
+        self.close_on_purpose = False
+        self.close()
         self.info_page.show()
         
     def show_ranking(self):
-        self.ranking_page = RankingPage.rankingPage(self.user, self.connection, self)
-        self.hide()
+        self.ranking_page = RankingPage.rankingPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
+        self.close_on_purpose = False
+        self.close()
         self.ranking_page.show()
 
     def show_history(self):
-        self.history_page = HistoryPage.historyPage(self.user, self.connection, self)
-        self.hide()
+        self.history_page = HistoryPage.historyPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
+        self.close_on_purpose = False
+        self.close()
         self.history_page.show()
     
     def withdraw(self):
-        self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.connection)
+        self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
         self.withdraw_page.show()
     
     def add(self):
-        self.add_page = AddPage.addPage(self.user, self.connection)
+        self.add_page = AddPage.addPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
         self.add_page.show()
     
     def about(self):
-        self.about_page = AboutPage.aboutPage(self)
-        self.hide()
+        self.about_page = AboutPage.aboutPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
+        self.close_on_purpose = False
+        self.close()
         self.about_page.show()
 
     def closeEvent(self, event):
@@ -91,7 +96,7 @@ class homePage(QtWidgets.QWidget):
         request = 'LOGOUT ' + self.user.username
         reponse = self.connection.send_request(request)
         if reponse == 'LOGOUTSUCCESS': 
-            self.start_page = StartPage.startPage(self.connection)
+            self.start_page = StartPage.startPage(self.connection, self.pos().x(), self.pos().y() + 30)
             self.close_on_purpose = False
             self.close()
             self.start_page.show()

@@ -4,14 +4,14 @@ import socket
 from view import HomePage
 
 class infoPage(QtWidgets.QWidget):
-    def __init__(self, user, connection, home):
+    def __init__(self, user, connection, x, y):
         super().__init__()
         uic.loadUi('./ui/player_info.ui', self)
         self.user = user
         self.connection = connection
-        self.home_page = home
         self.setWindowTitle('Player information')
-        self.setFixedSize(640, 480)
+        self.setFixedSize(800, 600)
+        self.setGeometry(x, y, 800, 600)
         self.result_table.setColumnWidth(0, 100)
         self.result_table.setColumnWidth(1, 100)
         self.result_table.setColumnWidth(2, 100)
@@ -80,6 +80,7 @@ class infoPage(QtWidgets.QWidget):
             self.result_table.setItem(0, 0, QtWidgets.QTableWidgetItem('Username not found'))
 
     def back(self): 
+        self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
         self.home_page.show()

@@ -4,17 +4,17 @@ import socket
 from view import HomePage
 
 class rankingPage(QtWidgets.QWidget):
-    def __init__(self, user, connection, home):
+    def __init__(self, user, connection, x, y):
         super().__init__()
         uic.loadUi('./ui/ranking.ui', self)
         self.user = user
         self.connection = connection
-        self.home_page = home
-        self.ranking_table.setColumnWidth(0, 50)
-        self.ranking_table.setColumnWidth(1, 200)
-        self.ranking_table.setColumnWidth(2, 200)
+        self.ranking_table.setColumnWidth(0, 130)
+        self.ranking_table.setColumnWidth(1, 240)
+        self.ranking_table.setColumnWidth(2, 250)
         self.setWindowTitle('Ranking')
-        self.setFixedSize(640, 480)
+        self.setFixedSize(800, 600)
+        self.setGeometry(x, y, 800, 600)
         self.close_on_purpose = True
         request = 'GETRANKING ' + self.user.username 
         response = self.connection.send_request(request)
@@ -52,6 +52,7 @@ class rankingPage(QtWidgets.QWidget):
             event.ignore()
 
     def back(self):
+        self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
         self.home_page.show()    

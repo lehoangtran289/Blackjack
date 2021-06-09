@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>200</y>
+     <x>-10</x>
+     <y>230</y>
      <width>111</width>
      <height>61</height>
     </rect>
@@ -45,10 +45,10 @@ Ranking</string>
   <widget class="QTableWidget" name="ranking_table">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>90</y>
-     <width>451</width>
-     <height>270</height>
+     <width>620</width>
+     <height>400</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -131,8 +131,8 @@ Ranking</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>360</y>
+     <x>10</x>
+     <y>490</y>
      <width>91</width>
      <height>20</height>
     </rect>
@@ -155,9 +155,9 @@ Ranking</string>
   <widget class="QLabel" name="user_rank_label">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>360</y>
-     <width>50</width>
+     <x>110</x>
+     <y>490</y>
+     <width>130</width>
      <height>20</height>
     </rect>
    </property>
@@ -179,9 +179,9 @@ Ranking</string>
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>360</y>
-     <width>200</width>
+     <x>240</x>
+     <y>490</y>
+     <width>240</width>
      <height>20</height>
     </rect>
    </property>
@@ -203,9 +203,9 @@ Ranking</string>
   <widget class="QLabel" name="user_gain_label">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>360</y>
-     <width>200</width>
+     <x>480</x>
+     <y>490</y>
+     <width>250</width>
      <height>20</height>
     </rect>
    </property>
@@ -227,8 +227,8 @@ Ranking</string>
   <widget class="QPushButton" name="back_button">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>410</y>
+     <x>340</x>
+     <y>540</y>
      <width>110</width>
      <height>30</height>
     </rect>
@@ -250,7 +250,7 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>290</x>
      <y>20</y>
      <width>211</width>
      <height>31</height>
@@ -279,8 +279,8 @@ border-color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
-     <height>480</height>
+     <width>800</width>
+     <height>600</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -299,9 +299,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>70</y>
-     <width>50</width>
+     <width>130</width>
      <height>20</height>
     </rect>
    </property>
@@ -323,9 +323,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>240</x>
      <y>70</y>
-     <width>200</width>
+     <width>240</width>
      <height>20</height>
     </rect>
    </property>
@@ -347,9 +347,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>480</x>
      <y>70</y>
-     <width>200</width>
+     <width>250</width>
      <height>20</height>
     </rect>
    </property>

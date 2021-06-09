@@ -5,14 +5,15 @@ from view import StartPage
 import re
 
 class signupPage(QtWidgets.QWidget):
-    def __init__(self, connection):
+    def __init__(self, connection, x, y):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi('./ui/signup.ui', self)
         self.connection = connection
         self.signup_button.clicked.connect(self.signup)
         self.back_button.clicked.connect(self.back_to_start_page)
         self.setWindowTitle('Sign up')
-        self.setFixedSize(640, 480)
+        self.setFixedSize(800, 600)
+        self.setGeometry(x, y, 800, 600)
         self.close_on_purpose = True
 
     def closeEvent(self, event):
@@ -58,9 +59,8 @@ class signupPage(QtWidgets.QWidget):
             print("Wrong message")
 
     def back_to_start_page(self):
-        print("back to start page")
         self.close_on_purpose = False
         self.close()
-        self.start_page = StartPage.startPage(self.connection)
+        self.start_page = StartPage.startPage(self.connection, self.pos().x(), self.pos().y() + 30)
         self.start_page.show()
         

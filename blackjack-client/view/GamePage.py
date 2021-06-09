@@ -24,7 +24,7 @@ class Worker(QObject):
 
 class gamePage(QtWidgets.QWidget):
     mutex = QMutex()
-    def __init__(self, user, connection, room_id, username_list):
+    def __init__(self, user, connection, room_id, username_list, x, y):
         super().__init__()
         uic.loadUi('./ui/game.ui', self)
         self.user = user
@@ -34,7 +34,8 @@ class gamePage(QtWidgets.QWidget):
         self.play_phase = 0
         self.bet_phase = 0
         self.setWindowTitle('Room: ' + room_id)
-        self.setFixedSize(640, 480)
+        self.setFixedSize(800, 600)
+        self.setGeometry(x, y, 800, 600)
         self.close_on_purpose = True
         self.quit_app = False
 
@@ -71,11 +72,11 @@ class gamePage(QtWidgets.QWidget):
         self.set_enable_play_button(False)
 
         #layout to show cards
-        self.layout_list = [[self.card01, self.card02, self.card03, self.card04, self.card05, self.card06, self.card07],
-                            [self.card11, self.card12, self.card13, self.card14, self.card15, self.card16, self.card17],
-                            [self.card21, self.card22, self.card23, self.card24, self.card25, self.card26, self.card27],
-                            [self.card31, self.card32, self.card33, self.card34, self.card35, self.card36, self.card37],
-                            [self.card41, self.card42, self.card43, self.card44, self.card45, self.card46, self.card47]]
+        self.layout_list = [[self.card00, self.card01, self.card02, self.card03, self.card04, self.card05, self.card06, self.card07],
+                            [self.card10, self.card11, self.card12, self.card13, self.card14, self.card15, self.card16, self.card17],
+                            [self.card20, self.card21, self.card22, self.card23, self.card24, self.card25, self.card26, self.card27],
+                            [self.card30, self.card31, self.card32, self.card33, self.card34, self.card35, self.card36, self.card37],
+                            [self.card40, self.card41, self.card42, self.card43, self.card44, self.card45, self.card46, self.card47]]
 
         self.start_receiving_response()
 
@@ -117,7 +118,7 @@ class gamePage(QtWidgets.QWidget):
         if resp == 'QUIT':
             if self.quit_app == True:
                 return
-            self.home_page = HomePage.homePage(self.user, self.connection)
+            self.home_page = HomePage.homePage(self.user, self.connection, self.pos().x(), self.pos().y())
             self.home_page.show()
             self.close_on_purpose = False
             self.close()

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -25,8 +25,8 @@
   <widget class="QPushButton" name="login_button">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>290</y>
+     <x>300</x>
+     <y>380</y>
      <width>200</width>
      <height>60</height>
     </rect>
@@ -65,8 +65,8 @@ border-width:1px;</string>
   <widget class="QPushButton" name="signup_button">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>360</y>
+     <x>300</x>
+     <y>450</y>
      <width>200</width>
      <height>60</height>
     </rect>
@@ -123,8 +123,8 @@ border-width:1px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
-     <height>480</height>
+     <width>800</width>
+     <height>600</height>
     </rect>
    </property>
    <property name="sizePolicy">
