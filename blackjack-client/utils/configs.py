@@ -19,10 +19,10 @@ card_x = [240, 20, 460, 20, 460]
 card_y = [170, 90, 90, 210, 210]
 
 # contributors
-contributors = "Trần Lê Hoàng - 20176764\nHoàng Tuấn Anh Văn - 20170224"
+contributors = "Tran Le Hoang - 20176764\nHoang Tuan Anh Van - 20170224\nInstructor: Prof. Truong Thi Dieu Linh"
 
 #game rules
-rules = """- Each player places a bet and is dealt 2 cards withone facing up and the other facing down. Dealer also gets 2 cards with one facing up and the other facing down as well.
+rules = """- Each player places a bet and is dealt 2 cards with one facing up and the other facing down. Dealer also gets 2 cards with one facing up and the other facing down as well.
 - A traditional 52 cards deck is used and each card has a point value attached to it. Aces count as 1 or 11, Face cards (King, Queen and Jack) count as 10 and all other cards keep the value that is printed on them.
 - During a player’s turn, the player is allowed to draw additional cards (HIT) from the deck to the total value of 21 or “STAND” to keep their current cards and end turn.
 - Blackjack is played against the casino so the main objective is to have a total hand value that exceeds the total hand value of the dealer without going over a total point value of 21.

@@ -13,33 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="rules">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>60</y>
-     <width>721</width>
-     <height>301</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
-   </property>
-   <property name="text">
-    <string>Rules</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="contributors">
    <property name="geometry">
     <rect>
@@ -49,8 +22,14 @@
      <height>121</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
    </property>
    <property name="text">
     <string/>
@@ -168,13 +147,32 @@ border-width:1px;</string>
     <string/>
    </property>
   </widget>
+  <widget class="QTextBrowser" name="textBrowser">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>60</y>
+     <width>721</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
+   </property>
+  </widget>
   <zorder>label_5</zorder>
-  <zorder>rules</zorder>
   <zorder>contributors</zorder>
   <zorder>label_3</zorder>
   <zorder>label_4</zorder>
   <zorder>back_button</zorder>
   <zorder>label</zorder>
+  <zorder>textBrowser</zorder>
  </widget>
  <resources/>
  <connections/>
