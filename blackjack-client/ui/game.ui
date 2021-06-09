@@ -756,31 +756,10 @@ border: 2px solid #ff2025;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>90</y>
-     <width>81</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-image : url(&quot;./asset/cards/card_back.png&quot;) 0 0 0 0 stretch stretch;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>360</x>
      <y>50</y>
      <width>90</width>
      <height>110</height>
@@ -1264,7 +1243,6 @@ border: 2px solid #ff2025;
   <zorder>label_6</zorder>
   <zorder>label_8</zorder>
   <zorder>label_7</zorder>
-  <zorder>label_9</zorder>
   <zorder>label_10</zorder>
   <zorder>verticalLayoutWidget</zorder>
   <zorder>verticalLayoutWidget_2</zorder>
