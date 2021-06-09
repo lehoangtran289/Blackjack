@@ -89,7 +89,10 @@ class gamePage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             self.quit_app = True
-            request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            if self.bet_phase == 0:
+                request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            else:
+                request = 'BETQUIT ' + self.room_id + ' ' + self.user.username
             self.connection.send(request)
             self.freezeUI(1000)
             request = 'LOGOUT ' + self.user.username
@@ -371,7 +374,10 @@ class gamePage(QtWidgets.QWidget):
         reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Are you sure you want to exit room? You will lose your bet money', \
             QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
-            request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            if self.bet_phase == 0:
+                request = 'QUIT ' + self.room_id + ' ' + self.user.username
+            else: 
+                request = 'BETQUIT ' + self.room_id + ' ' + self.user.username
             self.connection.send(request)
             #response = self.connection.send_request(request)
             #self.mutex.unlock()
