@@ -33,6 +33,7 @@ class gamePage(QtWidgets.QWidget):
         self.bet_value = 0
         self.play_phase = 0
         self.bet_phase = 0
+        self.turn = 0
         self.setWindowTitle('Room: ' + room_id)
         self.setFixedSize(800, 600)
         self.setGeometry(x, y, 800, 600)
@@ -197,6 +198,7 @@ class gamePage(QtWidgets.QWidget):
                 self.freezeUI(300)
         elif header == 'TURN':
             username, is_blackjack = message.split(' ')
+            self.turn = 1
             if username != self.user.username:
                 pos = self.username_list.index(username)
                 self.layout_list[pos + 1][1].itemAt(0).widget().setParent(None)
@@ -207,6 +209,7 @@ class gamePage(QtWidgets.QWidget):
                     self.connection.send(request)
                     #response = self.connection.send_request(request)
                     self.display_chat('System: You got BlackJack')
+                    self.turn = 0
                 else:
                     self.display_chat('System: It\'s your turn')
                     #self.play_phase = 1
@@ -357,6 +360,7 @@ class gamePage(QtWidgets.QWidget):
         self.chat_history.scrollToBottom()
 
     def stand(self):
+        self.turn = 0
         self.set_enable_play_button(False)
         request = 'STAND ' + self.room_id + ' ' + self.user.username
         self.connection.send(request)
@@ -441,6 +445,6 @@ class gamePage(QtWidgets.QWidget):
         loop.exec_()
         if self.bet_phase:
             self.set_enable_bet_button(True)
-        if self.play_phase:
+        if self.turn:
             self.set_enable_play_button(True)
         self.quit_button.setEnabled(True)
