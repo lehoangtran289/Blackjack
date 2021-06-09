@@ -198,12 +198,12 @@ class gamePage(QtWidgets.QWidget):
                 self.freezeUI(300)
         elif header == 'TURN':
             username, is_blackjack = message.split(' ')
-            self.turn = 1
             if username != self.user.username:
                 pos = self.username_list.index(username)
                 self.layout_list[pos + 1][1].itemAt(0).widget().setParent(None)
                 self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
             if username == self.user.username:
+                self.turn = 1
                 if is_blackjack == 1:
                     request = 'STAND ' + self.room_id + ' ' + username
                     self.connection.send(request)

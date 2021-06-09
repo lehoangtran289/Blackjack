@@ -139,9 +139,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>620</x>
+     <x>570</x>
      <y>10</y>
-     <width>171</width>
+     <width>221</width>
      <height>25</height>
     </rect>
    </property>
@@ -164,9 +164,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="balance_label">
    <property name="geometry">
     <rect>
-     <x>620</x>
+     <x>570</x>
      <y>50</y>
-     <width>171</width>
+     <width>221</width>
      <height>25</height>
     </rect>
    </property>
