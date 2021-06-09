@@ -159,7 +159,7 @@ class gamePage(QtWidgets.QWidget):
             self.player4_label.setText(self.username_list[3])
             for i in range(len(self.username_list)):
                 self.room_players[i].username = self.username_list[i]
-        elif header == 'QUIT' and self.bet_phase == 0:
+        elif header == 'QUIT' and self.bet_phase + self.play_phase == 0:
             _, username = message.split(' ')
             if username != self.user.username:
                 self.username_list.remove(username)

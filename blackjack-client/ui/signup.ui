@@ -45,9 +45,9 @@
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>230</y>
+     <y>220</y>
      <width>500</width>
-     <height>30</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="font">
@@ -180,9 +180,9 @@ border-width:1px;</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>79</x>
      <y>360</y>
-     <width>150</width>
+     <width>201</width>
      <height>20</height>
     </rect>
    </property>
