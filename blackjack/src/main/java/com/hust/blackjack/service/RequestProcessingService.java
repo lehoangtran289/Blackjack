@@ -383,6 +383,99 @@ public class RequestProcessingService {
                 }
                 break;
             }
+            case BETQUIT: {
+                String tableId = request.get(1);
+                String playerName = request.get(2);
+                try {
+                    Tuple2<Table, String> tup = tableService.removePlayer(tableId, playerName);
+                    Table table = tup.getA0();
+                    if (!StringUtils.isEmpty(tup.getA1())) {    // in case current turn's player quit
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), tup.getA1());
+                        }
+                    }
+                    sleep(1000);
+                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
+                    // write to requested channel
+                    writeToChannel(channel, "QUIT");
+
+                    // write to players in current table
+                    for (Player player : table.getPlayers()) {
+                        writeToChannel(player.getChannel(), msg);
+                    }
+
+                    // if all players bet -> DEAL + TURN
+                    if (table.isAllBet()) {
+                        Tuple2<Hand, List<Player>> tuple = tableService.dealCards(table);
+                        Hand dealerHand = tuple.getA0();
+                        List<Player> players = tuple.getA1();
+
+                        // build response message
+                        StringBuilder msgBuilder = new StringBuilder("DEAL=");
+                        List<Card> dealerCards = dealerHand.getCards();
+                        for (int i = 0; i < dealerCards.size(); i++) {
+                            Card card = dealerCards.get(i);   // dealer's hand
+                            msgBuilder.append(card.rank().getValue())
+                                    .append(" ")
+                                    .append(card.getSuit().getIntVal());
+                            if (i == dealerHand.size() - 1) {
+                                msgBuilder.append(",");
+                            } else {
+                                msgBuilder.append(" ");
+                            }
+                        }
+
+                        for (Player p : players) {  // players' hand
+                            msgBuilder.append(p.getPlayerName()).append(" ");
+                            List<Card> playerCards = p.getHand().getCards();
+                            for (int i = 0; i < playerCards.size(); ++i) {
+                                Card card = playerCards.get(i);
+                                msgBuilder.append(card.rank().getValue())
+                                        .append(" ")
+                                        .append(card.getSuit().getIntVal());
+                                if (i == playerCards.size() - 1) {
+                                    msgBuilder.append(",");
+                                } else {
+                                    msgBuilder.append(" ");
+                                }
+                            }
+                        }
+                        String dealMsg = msgBuilder.substring(0, msgBuilder.toString().length() - 1); // rm
+                        // last ','
+                        log.info("DEAL msg: {}", dealMsg);
+
+                        // send DEAL
+                        sleep(1000);
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), dealMsg);
+                        }
+
+                        // send TURN
+                        sleep(1000);
+                        Player firstPlayer = players.get(0);
+                        table.setPlayerTurn(firstPlayer.getPlayerName());
+                        String turnMsg =
+                                "TURN=" + firstPlayer.getPlayerName() + " " + firstPlayer.getIsBlackjack();
+                        log.info("TURN msg: {}", turnMsg);
+                        for (Player p : table.getPlayers()) {
+                            writeToChannel(p.getChannel(), turnMsg);
+                        }
+                    }
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Player not found");
+                    throw e;
+                } catch (TableException.TableNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Table not found");
+                    throw e;
+                } catch (PlayerException.PlayerNotInAnyTableException e) {
+                    writeToChannel(channel, "FAIL=Player not in any table");
+                    throw e;
+                } catch (TableException.PlayerNotFoundInTableException e) {
+                    writeToChannel(channel, "FAIL=table not contain request player");
+                    throw e;
+                }
+                break;
+            }
             case HIT: {
                 Table table = tableService.getTableById(request.get(1));
                 Player player = playerService.getPlayerByName(request.get(2));
@@ -515,6 +608,7 @@ public class RequestProcessingService {
             case STAND:
             case QUIT:
             case CONTINUE:
+            case BETQUIT:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:

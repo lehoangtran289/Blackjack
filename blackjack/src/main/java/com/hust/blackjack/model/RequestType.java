@@ -23,6 +23,7 @@ public enum RequestType {
     QUIT("QUIT"),
     CONTINUE("CONTINUE"),
     BET("BET"),
+    BETQUIT("BETQUIT"),
     HIT("HIT"),
     STAND("STAND"),
     CHAT("CHAT");
