@@ -387,18 +387,11 @@ public class RequestProcessingService {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
                 try {
-                    Tuple2<Table, String> tup = tableService.removePlayer(tableId, playerName);
-                    Table table = tup.getA0();
-                    if (!StringUtils.isEmpty(tup.getA1())) {    // in case current turn's player quit
-                        for (Player p : table.getPlayers()) {
-                            writeToChannel(p.getChannel(), tup.getA1());
-                        }
-                    }
-                    sleep(1000);
-                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
+                    Table table = tableService.removePlayerInBetPhase(tableId, playerName);
                     // write to requested channel
                     writeToChannel(channel, "QUIT");
 
+                    String msg = "QUIT=" + table.getTableId() + " " + playerName;
                     // write to players in current table
                     for (Player player : table.getPlayers()) {
                         writeToChannel(player.getChannel(), msg);
