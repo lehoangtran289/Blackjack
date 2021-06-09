@@ -278,6 +278,8 @@ class gamePage(QtWidgets.QWidget):
                     self.clear_table()
                     request = 'CONTINUE ' + self.room_id + ' ' + self.user.username
                     self.connection.send(request)
+                    self.set_enable_play_button(False)
+                    self.set_enable_bet_button(False)
                 else:
                     request = 'QUIT ' + self.room_id + ' ' + self.user.username
                     self.connection.send(request)
