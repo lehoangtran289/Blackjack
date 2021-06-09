@@ -29,7 +29,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 180);</string>
    </property>
    <property name="text">
     <string/>
@@ -147,7 +147,7 @@ border-width:1px;</string>
     <string/>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="rules">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -163,7 +163,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 180);</string>
    </property>
   </widget>
   <zorder>label_5</zorder>
@@ -172,7 +172,7 @@ border-width:1px;</string>
   <zorder>label_4</zorder>
   <zorder>back_button</zorder>
   <zorder>label</zorder>
-  <zorder>textBrowser</zorder>
+  <zorder>rules</zorder>
  </widget>
  <resources/>
  <connections/>
