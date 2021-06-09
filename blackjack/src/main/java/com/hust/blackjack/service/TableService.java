@@ -67,6 +67,26 @@ public class TableService {
         return table;
     }
 
+    public Table removePlayerInBetPhase(String tableId, String playerName) throws PlayerException, TableException {
+        Player player = playerService.getPlayerByName(playerName);
+        Table table = this.getTableById(tableId);
+        if (player.getTableId() == null) {
+            log.error("BetPhase: Player {} not in any table", player);
+            throw new PlayerException.PlayerNotInAnyTableException("BetPhase: Player " + playerName + " not in any " +
+                    "table");
+        }
+        if (!table.getPlayers().contains(player)) {
+            log.error("BetPhase: Table {} not contain player {}", tableId, player);
+            throw new TableException.PlayerNotFoundInTableException("Table not contain player");
+        }
+        table.getPlayers().remove(player);
+        player.refresh();
+        player.setTableId(null);
+        log.info("BetPhase: Player {} is removed from the table {}", player, table);
+
+        return table;
+    }
+
     public Tuple2<Table, String> removePlayer(String tableId, String playerName) throws PlayerException, TableException {
         Player player = playerService.getPlayerByName(playerName);
         Table table = this.getTableById(tableId);
