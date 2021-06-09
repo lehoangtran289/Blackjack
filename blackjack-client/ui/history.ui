@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Sunken</enum>
@@ -193,7 +193,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
    </property>
    <property name="text">
     <string>Date</string>
@@ -226,7 +226,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
    </property>
    <property name="text">
     <string>Bet Placed</string>
@@ -259,7 +259,7 @@ border-width:1px;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 90);</string>
+    <string notr="true">color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 110);</string>
    </property>
    <property name="text">
     <string>Result</string>
