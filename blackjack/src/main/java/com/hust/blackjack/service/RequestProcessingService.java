@@ -35,7 +35,7 @@ public class RequestProcessingService {
         this.tableService = tableService;
     }
 
-    // TODO: handle each request-type separately
+    // TODO: handle each request-type separately (Front Controller Pattern)
     public void process(SocketChannel channel, String requestMsg)
             throws RequestException, IOException, LoginException, PlayerException, CreditCardException,
             TableException {
@@ -246,10 +246,14 @@ public class RequestProcessingService {
             // gameController
             case PLAY: {
                 String playerName = request.get(1);
-                try {
-                    Table table = tableService.play(playerName);
-                    List<Player> playersInTable = table.getPlayers();
+                String tableId = request.size() == 3 ? request.get(2) : "";
 
+                try {
+                    Table table = StringUtils.isEmpty(tableId) ?
+                            tableService.play(playerName) :                 // play random
+                            tableService.playroom(playerName, tableId);     // play enter room
+
+                    List<Player> playersInTable = table.getPlayers();
                     // build response string and send to each players in table
                     String msg = "SUCCESS=" + table.getTableId() + " " +
                             playersInTable.stream()
@@ -280,6 +284,9 @@ public class RequestProcessingService {
                     throw e;
                 } catch (TableException.PlayerInAnotherTableException e) {
                     writeToChannel(channel, "FAIL=Player in another table");
+                    throw e;
+                } catch (TableException.TableNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Table not found");
                     throw e;
                 }
                 break;
@@ -594,7 +601,7 @@ public class RequestProcessingService {
             case INFO:
             case HISTORY:
             case PLAY:
-                return request.size() == 2;
+                return request.size() == 2 || request.size() == 3;
             case LOGIN:
             case SIGNUP:
             case HIT:

@@ -67,6 +67,38 @@ public class TableService {
         return table;
     }
 
+    public Table playroom(String playerName, String tableId) throws TableException, PlayerException, LoginException {
+        // get user
+        Player player = playerService.getPlayerByName(playerName);
+        if (player.getChannel() == null) {
+            log.error("Player {} does not login", playerName);
+            throw new LoginException.PlayerNotLoginException();
+        }
+        if (player.getTableId() != null) {
+            log.error("Player {} is in another table, id = {}", playerName, player.getTableId());
+            throw new TableException.PlayerInAnotherTableException();
+        }
+        if (player.getBank() < Table.MINIMUM_BET) {
+            log.error("Invalid balance of player {} to enter game, bl = {}", playerName, player.getBank());
+            throw new TableException.NotEnoughBankBalanceException();
+        }
+
+        // get table
+        Table table = this.getTableById(tableId);
+        if (table.getIsPlaying() == 1 || table.getPlayers().size() == Table.TABLE_SIZE) {
+            log.error("Table not valid to join, table = {}", table.getTableId());
+            throw new TableException.TableNotFoundException("Table not valid to join");
+        }
+
+        // place player into table
+        player.refresh();
+        player.setIsReady(1);
+        player.setTableId(table.getTableId());
+        table.getPlayers().add(player);
+
+        return table;
+    }
+
     public Table removePlayerInBetPhase(String tableId, String playerName) throws PlayerException, TableException {
         Player player = playerService.getPlayerByName(playerName);
         Table table = this.getTableById(tableId);
