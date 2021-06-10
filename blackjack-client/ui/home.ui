@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>300</y>
+     <y>270</y>
      <width>150</width>
      <height>30</height>
     </rect>
@@ -280,6 +280,30 @@ border-color: rgb(255, 255, 255);
     <string>About</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="enter_room_button">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>300</y>
+     <width>150</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>Enter Room</string>
+   </property>
+  </widget>
   <zorder>background_label</zorder>
   <zorder>play_button</zorder>
   <zorder>logout_button</zorder>
@@ -291,6 +315,7 @@ border-color: rgb(255, 255, 255);
   <zorder>withdraw_button</zorder>
   <zorder>history_button</zorder>
   <zorder>about_button</zorder>
+  <zorder>enter_room_button</zorder>
  </widget>
  <resources/>
  <connections/>
