@@ -44,7 +44,7 @@ public class BlackjackSocketServer {
     public void run() {
         try {
             while (serverSocketChannel.isOpen()) {
-                log.info("Waiting for events......");
+                log.info("Waiting for events......\n");
                 if (selector.select() <= 0) // blocking call
                     continue;
                 log.info("New event received");

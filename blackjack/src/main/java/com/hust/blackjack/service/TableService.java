@@ -38,8 +38,7 @@ public class TableService {
         return optionalPlayer.get();
     }
 
-    public Table randomPlay(String playerName) throws TableException, PlayerException, LoginException {
-        // get user
+    public Player validateAndGetPlayerByName(String playerName) throws PlayerException, LoginException, TableException {
         Player player = playerService.getPlayerByName(playerName);
         if (player.getChannel() == null) {
             log.error("Player {} not login", playerName);
@@ -53,6 +52,12 @@ public class TableService {
             log.error("Invalid balance of player {} to start game, bl = {}", playerName, player.getBank());
             throw new TableException.NotEnoughBankBalanceException();
         }
+        return player;
+    }
+
+    public Table randomPlay(String playerName) throws TableException, PlayerException, LoginException {
+        // get user
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get available table, create new if all table full
         Table table = tableRepository.findAvailableTable();
@@ -69,19 +74,7 @@ public class TableService {
     public Table createRoom(String playerName, String password) throws TableException, PlayerException,
             LoginException {
         // get user
-        Player player = playerService.getPlayerByName(playerName);
-        if (player.getChannel() == null) {
-            log.error("Player {} does not login", playerName);
-            throw new LoginException.PlayerNotLoginException();
-        }
-        if (player.getTableId() != null) {
-            log.error("Player {} is in another table, id = {}", playerName, player.getTableId());
-            throw new TableException.PlayerInAnotherTableException();
-        }
-        if (player.getBank() < Table.MINIMUM_BET) {
-            log.error("Invalid balance of player {} to enter game, bl = {}", playerName, player.getBank());
-            throw new TableException.NotEnoughBankBalanceException();
-        }
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get table
         Table table = tableRepository.createPrivateTable(password);
@@ -98,19 +91,7 @@ public class TableService {
     public Table enterRoomPlay(String playerName, String tableId) throws TableException, PlayerException,
             LoginException {
         // get user
-        Player player = playerService.getPlayerByName(playerName);
-        if (player.getChannel() == null) {
-            log.error("Player {} does not login", playerName);
-            throw new LoginException.PlayerNotLoginException();
-        }
-        if (player.getTableId() != null) {
-            log.error("Player {} is in another table, id = {}", playerName, player.getTableId());
-            throw new TableException.PlayerInAnotherTableException();
-        }
-        if (player.getBank() < Table.MINIMUM_BET) {
-            log.error("Invalid balance of player {} to enter game, bl = {}", playerName, player.getBank());
-            throw new TableException.NotEnoughBankBalanceException();
-        }
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get table
         Table table = this.getTableById(tableId);
@@ -135,24 +116,12 @@ public class TableService {
     public Table enterRoomPlay(String playerName, String tableId, String password) throws TableException,
             PlayerException, LoginException {
         // get user
-        Player player = playerService.getPlayerByName(playerName);
-        if (player.getChannel() == null) {
-            log.error("Player {} does not login", playerName);
-            throw new LoginException.PlayerNotLoginException();
-        }
-        if (player.getTableId() != null) {
-            log.error("Player {} is in another table, id = {}", playerName, player.getTableId());
-            throw new TableException.PlayerInAnotherTableException();
-        }
-        if (player.getBank() < Table.MINIMUM_BET) {
-            log.error("Invalid balance of player {} to enter game, bl = {}", playerName, player.getBank());
-            throw new TableException.NotEnoughBankBalanceException();
-        }
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get table
         Table table = this.getTableById(tableId);
         if (table.getIsPlaying() == 1 || table.getPlayers().size() == Table.TABLE_SIZE) {
-            log.error("Table not valid to join, table = {}", table.getTableId());
+            log.error("Table not valid to join, table = {} ", table.getTableId());
             throw new TableException.TableNotFoundException("Table not valid to join");
         }
         if (table.getIsAllowFreeJoin() == 0) {
