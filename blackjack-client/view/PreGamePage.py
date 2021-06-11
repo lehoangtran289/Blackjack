@@ -1,15 +1,16 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
+import re
 from view import HomePage, GamePage
 
 class preGamePage(QtWidgets.QWidget):
-    def __init___(self, user, connection, x, y):
+    def __init__(self, user, connection, x, y):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi('./ui/pre_game.ui', self)
         self.user = user
         self.connection = connection
-        self.setWindowTitle('Home')
+        self.setWindowTitle('BlackJack')
         self.setGeometry(x, y, 800, 600)
         self.setFixedSize(800, 600)
         self.close_on_purpose = True
@@ -39,8 +40,9 @@ class preGamePage(QtWidgets.QWidget):
 
     def enter_room(self):
         room_id, ok = QtWidgets.QInputDialog.getText(self, 'input dialog', 'Enter room id')
-        if validate(str(room_id)) == False and len(str(room_id)) != 4:
+        if self.validateInput(str(room_id)) == False or len(str(room_id)) != 4:
             QtWidgets.QMessageBox.about(self, 'Enter room Failed', 'Room id must have length of 4 and contain only digits and alphabet characters')
+            return
         if ok:
             room_id = str(room_id)
             request = 'PLAY ' + self.user.username + ' ' + room_id
@@ -55,9 +57,9 @@ class preGamePage(QtWidgets.QWidget):
                 self.close()
                 self.game_page.show()
             elif header == 'PASSWORD_REQUIRE':
-                password, ok = QInputDialog.getText(None, "Room Password", "Enter Room Password", QLineEdit.Password)
+                password, ok = QtWidgets.QInputDialog.getText(self, "Room Password", "Enter Room Password", QtWidgets.QLineEdit.Password)
                 if ok:
-                    password = str(text)
+                    password = str(password)
                     request = 'PLAY ' + self.user.username + ' ' + room_id + ' ' + password
                     response = self.connection.send_request(request)
                     header = self.connection.get_header(response)
@@ -70,21 +72,21 @@ class preGamePage(QtWidgets.QWidget):
                         self.close()
                         self.game_page.show()
                     else: 
-                        QtWidgets.QMessageBox.about(self, 'Enter room Failed', message)
+                        QtWidgets.QMessageBox.about(self, 'Enter room Failed', self.connection.get_message(response))
             else:
-                QtWidgets.QMessageBox.about(self, 'Enter room Failed', message)
+                QtWidgets.QMessageBox.about(self, 'Enter room Failed', self.connection.get_message(response))
 
     def validateInput(self, text):
         if text == '':
             return False
-        if re.findall('[0-9A-Za-z]+', password)[0] != password:
+        if re.findall('[0-9A-Za-z]+', text)[0] != text:
             return False
         return True
 
     def create_room(self):
-        password, ok = QInputDialog.getText(None, "Room Password", "Enter Room Password", QLineEdit.Password)
+        password, ok = QtWidgets.QInputDialog.getText(self, "Room Password", "Enter Room Password", QtWidgets.QLineEdit.Password)
         if ok:
-            password = str(text)
+            password = str(password)
             request = 'CREATE ' + self.user.username + ' ' + password
             response = self.connection.send_request(request)
             header = self.connection.get_header(response)
