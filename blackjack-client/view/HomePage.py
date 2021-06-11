@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from utils import configs, Connection
 import socket
-from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage, AboutPage
+from view import StartPage, RankingPage, InfoPage, AddPage, WithdrawPage, HistoryPage, GamePage, AboutPage, PreGamePage
 
 class homePage(QtWidgets.QWidget):
     def __init__(self, user, connection, x, y):
@@ -22,45 +22,16 @@ class homePage(QtWidgets.QWidget):
         self.logout_button.clicked.connect(self.logout)
         self.history_button.clicked.connect(self.show_history)
         self.about_button.clicked.connect(self.about)
-        self.enter_room_button.clicked.connect(self.enter_room)
+        #self.enter_room_button.clicked.connect(self.enter_room)
 
         self.username_label.setText("Henlo " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):
-        request = 'PLAY ' + self.user.username
-        response = self.connection.send_request(request)
-        header = self.connection.get_header(response)
-        message = self.connection.get_message(response)
-        
-        if header != 'SUCCESS':
-            QtWidgets.QMessageBox.about(self, 'Failed', message)
-            return
-
-        room_id = message.split(' ')[0]
-        uname_list = message.split(' ')[1:]
-        self.game_page = GamePage.gamePage(self.user, self.connection, room_id, uname_list, self.pos().x(), self.pos().y() + 30)
+        self.pre_game = PreGamePage.preGamePage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
-        self.game_page.show()
-
-    def enter_room(self):
-        room_id, ok = QtWidgets.QInputDialog.getText(self, 'input dialog', 'Enter room id')
-        if ok:
-            room_id = str(room_id)
-            request = 'PLAY ' + self.user.username + ' ' + room_id
-            response = self.connection.send_request(request)
-            header = self.connection.get_header(response)
-            message = self.connection.get_message(response)
-            if header == 'SUCCESS':
-                room_id = message.split(' ')[0]
-                uname_list = message.split(' ')[1:]
-                self.game_page = GamePage.gamePage(self.user, self.connection, room_id, uname_list, self.pos().x(), self.pos().y() + 30)
-                self.close_on_purpose = False
-                self.close()
-                self.game_page.show()
-            else:
-                QtWidgets.QMessageBox.about(self, 'Enter room Failed', message)
+        self.pre_game.show()
 
     def show_account_info(self):
         self.info_page = InfoPage.infoPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
