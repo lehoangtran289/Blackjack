@@ -50,6 +50,12 @@ public class Player {
         isReady = 0;
     }
 
+    public void logout() {
+        this.refresh();
+        this.tableId = null;
+        this.channel = null;
+    }
+
     public void placeBet(double bet) {
         setBet(bet);
         setBank(getBank() - bet);

@@ -104,6 +104,7 @@ public class BlackjackSocketServer {
         }
         if (read < 0) {
             log.info("Closing channel {}", client);
+            processingService.processChannelClose(client);
             client.close();
         } else {
             String msg = sb.toString().trim();     // read message
@@ -114,9 +115,9 @@ public class BlackjackSocketServer {
             } catch (NumberFormatException e) {
                 processingService.writeToChannel(client, "FAIL-Wrong data format");
                 log.error("Wrong data format");
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
     }

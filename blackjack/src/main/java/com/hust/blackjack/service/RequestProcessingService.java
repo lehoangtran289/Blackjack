@@ -246,7 +246,9 @@ public class RequestProcessingService {
             // gameController
             case PLAY: {
                 String playerName = request.get(1);
-                String tableId = request.size() == 3 ? request.get(2) : "";
+                String tableId = request.size() >= 3 ?
+                        request.stream().skip(2).collect(Collectors.joining(" ")) :
+                        "";
 
                 try {
                     Table table = StringUtils.isEmpty(tableId) ?
@@ -596,12 +598,13 @@ public class RequestProcessingService {
                 return request.size() > 3;
             case SEARCHINFO:
                 return request.size() == 2 || request.size() == 1;
+            case PLAY:
+                return request.size() >= 2;
             case RANKING:
             case LOGOUT:
             case INFO:
             case HISTORY:
-            case PLAY:
-                return request.size() == 2 || request.size() == 3;
+                return request.size() == 2;
             case LOGIN:
             case SIGNUP:
             case HIT:
@@ -625,6 +628,16 @@ public class RequestProcessingService {
         channel.write(ByteBuffer.wrap(msg.getBytes()));
     }
 
+    public void processChannelClose(SocketChannel client) {
+        List<Player> players = playerService.getAllPlayers();
+        for (Player player: players) {
+            if (player.getChannel() == client) {
+                player.logout();
+                return;
+            }
+        }
+    }
+
     private void sleep(long time) {
         try {
             Thread.sleep(time);
@@ -632,5 +645,4 @@ public class RequestProcessingService {
             e.printStackTrace();
         }
     }
-
 }

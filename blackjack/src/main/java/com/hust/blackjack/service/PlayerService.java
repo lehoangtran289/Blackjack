@@ -20,6 +20,10 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAll();
+    }
+
     public boolean isChannelLoggedIn(SocketChannel channel) {
         return playerRepository.existsByChannel(channel);
     }
@@ -84,7 +88,7 @@ public class PlayerService {
             log.error("invalid channel to logout");
             throw new LoginException.InvalidChannelToLogoutException();
         }
-        player.setChannel(null);
+        player.logout();
         return player;
     }
 }
