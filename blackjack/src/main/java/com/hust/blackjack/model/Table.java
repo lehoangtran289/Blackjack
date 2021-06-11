@@ -19,7 +19,10 @@ public class Table {
     public static final double MINIMUM_BET = 10;
     public static final double BLACKJACK_RATE = 1.5;
 
+    //
     private String tableId;
+    private String password;
+    private int isAllowFreeJoin;
 
     // game state
     private Deck deck;
@@ -30,7 +33,15 @@ public class Table {
 
     public Table(String tableId) {
         this.tableId = tableId;
-        players = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.isAllowFreeJoin = 1;
+    }
+
+    public Table(String tableId, String password) {
+        this.tableId = tableId;
+        this.players = new ArrayList<>();
+        this.isAllowFreeJoin = 0;
+        this.password = password;
     }
 
     public void refreshAndInitDeck() {

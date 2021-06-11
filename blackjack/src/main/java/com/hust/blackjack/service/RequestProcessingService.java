@@ -152,7 +152,7 @@ public class RequestProcessingService {
                 }
                 break;
             }
-            case INFO: { // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
+            case INFO: {
                 String playerName = request.get(1);
                 try {
                     PlayerGameInfo playerGameInfo = matchHistoryService.getPlayerGameInfoByName(playerName);
@@ -244,16 +244,51 @@ public class RequestProcessingService {
             }
 
             // gameController
+            case CREATEROOM: {
+                String playerName = request.get(1);
+                String password = request.get(2);
+                try {
+                    Table table = tableService.createRoom(playerName, password);
+                    // build response string and send to each players in table
+                    String msg = "SUCCESS=" + table.getTableId() + " " + playerName;
+                    writeToChannel(channel, msg);
+
+                    log.info("Player {} join table {}. Players {}",
+                            playerName, table.getTableId(), table.getPlayers()
+                    );
+
+                } catch (TableException.NotEnoughBankBalanceException e) {
+                    writeToChannel(channel, "FAIL=Balance not enough");
+                    throw e;
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Player not found");
+                    throw e;
+                } catch (LoginException.PlayerNotLoginException e) {
+                    writeToChannel(channel, "FAIL=Player not login");
+                    throw e;
+                } catch (TableException.PlayerInAnotherTableException e) {
+                    writeToChannel(channel, "FAIL=Player in another table");
+                    throw e;
+                } catch (TableException.TableNotFoundException e) {
+                    writeToChannel(channel, "FAIL=Table not found");
+                    throw e;
+                }
+                break;
+            }
             case PLAY: {
                 String playerName = request.get(1);
-                String tableId = request.size() >= 3 ?
-                        request.stream().skip(2).collect(Collectors.joining(" ")) :
-                        "";
-
+                String tableId = request.size() > 2 ? request.get(2) : "";
+                String password = request.size() > 3 ?
+                        request.stream().skip(3).collect(Collectors.joining(" ")) : "";
                 try {
-                    Table table = StringUtils.isEmpty(tableId) ?
-                            tableService.play(playerName) :                 // play random
-                            tableService.playroom(playerName, tableId);     // play enter room
+                    Table table;
+                    if (StringUtils.isEmpty(tableId)) {
+                        table = tableService.randomPlay(playerName);
+                    } else {
+                        table = StringUtils.isEmpty(password) ?
+                                tableService.enterRoomPlay(playerName, tableId) :
+                                tableService.enterRoomPlay(playerName, tableId, password);
+                    }
 
                     List<Player> playersInTable = table.getPlayers();
                     // build response string and send to each players in table
@@ -289,6 +324,15 @@ public class RequestProcessingService {
                     throw e;
                 } catch (TableException.TableNotFoundException e) {
                     writeToChannel(channel, "FAIL=Table not found");
+                    throw e;
+                } catch (TableException.PasswordRequireException e) {
+                    writeToChannel(channel, "PASSWORD_REQUIRE");
+                    throw e;
+                } catch (TableException.InvalidPasswordException e) {
+                    writeToChannel(channel, "FAIL=Wrong password");
+                    throw e;
+                } catch (TableException e) {
+                    writeToChannel(channel, "FAIL=Room not require password");
                     throw e;
                 }
                 break;
@@ -602,7 +646,7 @@ public class RequestProcessingService {
                 return request.size() >= 2;
             case RANKING:
             case LOGOUT:
-            case INFO:
+            case INFO: // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
             case HISTORY:
                 return request.size() == 2;
             case LOGIN:
@@ -612,6 +656,7 @@ public class RequestProcessingService {
             case QUIT:
             case CONTINUE:
             case BETQUIT:
+            case CREATEROOM:
                 return request.size() == 3;
             case ADDMONEY:
             case WITHDRAWMONEY:
@@ -630,7 +675,7 @@ public class RequestProcessingService {
 
     public void processChannelClose(SocketChannel client) {
         List<Player> players = playerService.getAllPlayers();
-        for (Player player: players) {
+        for (Player player : players) {
             if (player.getChannel() == client) {
                 player.logout();
                 return;
