@@ -156,11 +156,4 @@ public class MatchHistoryService {
     public List<MatchHistory> getPlayerHistory(String playerName) {
         return matchHistoryRepository.findAllByPlayerName(playerName);
     }
-
-    private PlayerRanking convertToPlayerRanking(PlayerGameInfo playerGameInfo) {
-        return PlayerRanking.builder()
-                .playerName(playerGameInfo.getPlayer().getPlayerName())
-                .moneyEarn(playerGameInfo.getMoneyEarn())
-                .build();
-    }
 }

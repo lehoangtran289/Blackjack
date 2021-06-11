@@ -23,8 +23,9 @@ public class Tuple3<A0, A1, A2> implements Tuple {
                 return a1;
             case 2:
                 return a2;
+            default:
+                throw new ArrayIndexOutOfBoundsException();
         }
-        throw new ArrayIndexOutOfBoundsException();
     }
 
     public static <AS0, AS1, AS2> Tuple3<AS0, AS1, AS2> of(AS0 arg0, AS1 arg1, AS2 arg2) {

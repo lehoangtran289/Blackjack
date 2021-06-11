@@ -4,7 +4,6 @@ import com.hust.blackjack.exception.CardException;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,29 +14,29 @@ import java.util.List;
 @Builder
 @ToString
 public class Deck {
-    private List<Card> deck;
+    private List<Card> cardDeck;
 
     public Deck() throws CardException.InvalidCardException {
-        deck = new ArrayList<>();
+        cardDeck = new ArrayList<>();
         for (Card.Suit suit : Card.Suit.values()) {
             for (Card.Rank rank : Card.Rank.values()) {
-                deck.add(new Card(rank, suit));
+                cardDeck.add(new Card(rank, suit));
             }
         }
-        Collections.shuffle(deck);
+        Collections.shuffle(cardDeck);
     }
 
     public void shuffle() {
-        Collections.shuffle(deck);
+        Collections.shuffle(cardDeck);
     }
 
     public Card dealCard() {
-        Card card = deck.get(deck.size() - 1);    // last card in the deck
-        deck.remove(card);
+        Card card = cardDeck.get(cardDeck.size() - 1);    // last card in the deck
+        cardDeck.remove(card);
         return card;
     }
 
     public int size() {
-        return deck.size();
+        return cardDeck.size();
     }
 }

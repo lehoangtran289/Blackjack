@@ -63,17 +63,6 @@ public class Hand {
         return sum;
     }
 
-//    public static void main(String[] args) throws CardException.InvalidCardException {
-//        List<Card> cards = Arrays.asList(
-//                new Card(Card.Rank.EIGHT, Card.Suit.DIAMONDS),
-//                new Card(Card.Rank.ACE, Card.Suit.CLUBS),
-//                new Card(Card.Rank.KING, Card.Suit.DIAMONDS)
-//        );
-//        Hand hand = new Hand();
-//        hand.setCards(cards);
-//        System.out.println(hand.totalSum());
-//    }
-
     @Override
     public String toString() {
         return "Hand{" +
