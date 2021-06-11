@@ -61,6 +61,6 @@ class signupPage(QtWidgets.QWidget):
     def back_to_start_page(self):
         self.close_on_purpose = False
         self.close()
-        self.start_page = StartPage.startPage(self.connection, self.pos().x(), self.pos().y() + 30)
+        self.start_page = StartPage.startPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.start_page.show()
         
