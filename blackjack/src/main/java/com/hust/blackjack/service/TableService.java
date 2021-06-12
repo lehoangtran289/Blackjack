@@ -336,21 +336,23 @@ public class TableService {
             double gain = 0;
             if (state == ResultState.BLACKJACK) {
                 p.setBank(p.getBank() + p.getBet() * (1 + Table.BLACKJACK_RATE));
-                gain = p.getBet() * Table.BLACKJACK_RATE;
+                gain = p.getBet() + p.getBet() * Table.BLACKJACK_RATE;
             } else if (state == ResultState.WIN) {
                 p.setBank(p.getBank() + p.getBet() * 2);
-                gain = p.getBet();
+                gain = p.getBet() * 2;
             } else if (state == ResultState.PUSH) {
                 p.setBank(p.getBank() + p.getBet());
+                gain = p.getBet();
             } else {
-                gain = -p.getBet();
+//                gain = p.getBet();
+                gain = 0;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             MatchHistory match = MatchHistory.builder()
                     .playerName(p.getPlayerName())
                     .resultState(state)
-                    .bet(gain)
+                    .bet(p.getBet())
                     .date(LocalDate.parse(LocalDate.now().format(formatter), formatter))
                     .build();
             matchHistoryService.save(match);
