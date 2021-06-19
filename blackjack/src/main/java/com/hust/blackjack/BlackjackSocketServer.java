@@ -1,7 +1,6 @@
 package com.hust.blackjack;
 
 import com.hust.blackjack.controller.FrontController;
-import com.hust.blackjack.controller.RequestProcessingService;
 import com.hust.blackjack.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +24,9 @@ public class BlackjackSocketServer {
     private final Selector selector;
     private final ByteBuffer commonBuffer = ByteBuffer.allocate(10000);
 
-    private final RequestProcessingService processingService;
     private final FrontController frontController;
 
-    public BlackjackSocketServer(RequestProcessingService processingService,
-                                 @Value("${server-port}") int port, FrontController frontController) throws IOException {
-        this.processingService = processingService;
+    public BlackjackSocketServer(@Value("${server-port}") int port, FrontController frontController) throws IOException {
         this.frontController = frontController;
 
         //Create TCP server channel
