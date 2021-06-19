@@ -76,10 +76,13 @@ public class Player {
     @SneakyThrows
     @Override
     public String toString() {
+        String clientChannel = channel != null ?
+                channel.getRemoteAddress().toString() :
+                "null";
         return "Player{" +
                 "playerName='" + playerName + '\'' +
                 ", bank=" + bank +
-                ", channel=" + channel.getRemoteAddress() +
+                ", channel=" + clientChannel +
                 ", tableId=" + tableId +
                 '}';
     }
