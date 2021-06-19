@@ -54,6 +54,7 @@ public class Dispatcher {
 
             case CREATEROOM:
             case PLAY:
+            case CHAT:
             case BET:
             case BETQUIT:
             case HIT:

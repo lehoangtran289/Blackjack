@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+@Deprecated
 public class RequestProcessingService {
     private final CreditCardService creditCardService;
     private final PlayerService playerService;
