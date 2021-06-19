@@ -8,4 +8,6 @@ public interface TableRepository {
     Table findAvailableTable();
 
     Optional<Table> findTableById(String tableId);
+
+    Table createPrivateTable(String password);
 }

@@ -19,6 +19,7 @@ public enum RequestType {
     RANKING("GETRANKING"),
     ADDMONEY("ADD"),
     WITHDRAWMONEY("WDR"),
+    CREATEROOM("CREATE"),
     PLAY("PLAY"),
     QUIT("QUIT"),
     CONTINUE("CONTINUE"),

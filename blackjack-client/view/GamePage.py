@@ -250,10 +250,10 @@ class gamePage(QtWidgets.QWidget):
                 username, res, gain_loss = result.split(' ')
                 gain_loss = float(gain_loss)
                 if username == self.user.username:
-                    if gain_loss < 0:
+                    if gain_loss == 0:
                         self.display_chat(res.upper() + ', You loss $' + str(abs(gain_loss)))
                         info = 'You lost to the dealer with a ' + res.upper()
-                    elif gain_loss == 0:
+                    elif gain_loss == self.bet_value:
                         self.display_chat(res.upper() + ', You will receive your bet $' + str(abs(gain_loss)))
                         info = res.upper() + ', You got a draw'
                         self.user.balance += self.bet_value

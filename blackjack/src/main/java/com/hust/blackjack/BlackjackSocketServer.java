@@ -44,7 +44,7 @@ public class BlackjackSocketServer {
     public void run() {
         try {
             while (serverSocketChannel.isOpen()) {
-                System.out.println("Waiting for events......");
+                log.info("Waiting for events......\n");
                 if (selector.select() <= 0) // blocking call
                     continue;
                 log.info("New event received");
@@ -85,7 +85,6 @@ public class BlackjackSocketServer {
         client.configureBlocking(false);
         log.info("Registering new reading channel: {}", client);
 
-        String address = client.getRemoteAddress().toString();
         client.register(selector, SelectionKey.OP_READ, client);     // attach client channel
     }
 

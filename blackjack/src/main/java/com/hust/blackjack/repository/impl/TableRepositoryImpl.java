@@ -1,7 +1,6 @@
 package com.hust.blackjack.repository.impl;
 
 import com.hust.blackjack.common.RandomId;
-import com.hust.blackjack.exception.TableException;
 import com.hust.blackjack.model.Table;
 import com.hust.blackjack.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +23,14 @@ public class TableRepositoryImpl implements TableRepository {
         tables.add(new Table(RandomId.generate())); // init 1 table in system
     }
 
+    /**
+     * @return available table which 1. has no password + allow free join; 2. is not playing
+     */
     @Override
     public Table findAvailableTable() {
         for (Table table : tables) {
-            if (table.getPlayers().size() < Table.TABLE_SIZE && table.getIsPlaying() == 0) {
+            if (table.getIsAllowFreeJoin() == 1 && StringUtils.isEmpty(table.getPassword()) &&
+                    table.getIsPlaying() == 0 && table.getPlayers().size() < Table.TABLE_SIZE) {
                 return table;
             }
         }
@@ -37,9 +40,16 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
+    public Table createPrivateTable(String password) {
+        Table newTable = new Table(RandomId.generate(), password);
+        tables.add(newTable);
+        return newTable;
+    }
+
+    @Override
     public Optional<Table> findTableById(String tableId) {
         return tables.stream()
-                        .filter(table -> StringUtils.equals(table.getTableId(), tableId))
-                        .findFirst();
+                .filter(table -> StringUtils.equals(table.getTableId(), tableId))
+                .findFirst();
     }
 }

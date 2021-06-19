@@ -20,8 +20,9 @@ public class Tuple2<A0, A1> implements Tuple {
                 return a0;
             case 1:
                 return a1;
+            default:
+                throw new ArrayIndexOutOfBoundsException();
         }
-        throw new ArrayIndexOutOfBoundsException();
     }
 
     public static <AS0, AS1> Tuple2<AS0, AS1> of(AS0 arg0, AS1 arg1) {

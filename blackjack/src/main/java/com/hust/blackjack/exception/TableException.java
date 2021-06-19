@@ -54,4 +54,18 @@ public class TableException extends Exception{
         public InvalidBet(String msg) { super(msg); }
         public InvalidBet(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class PasswordRequireException extends TableException {
+        public PasswordRequireException() { }
+        public PasswordRequireException(Throwable throwable) { super(throwable); }
+        public PasswordRequireException(String msg) { super(msg); }
+        public PasswordRequireException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
+
+    public static class InvalidPasswordException extends TableException {
+        public InvalidPasswordException() { }
+        public InvalidPasswordException(Throwable throwable) { super(throwable); }
+        public InvalidPasswordException(String msg) { super(msg); }
+        public InvalidPasswordException(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }

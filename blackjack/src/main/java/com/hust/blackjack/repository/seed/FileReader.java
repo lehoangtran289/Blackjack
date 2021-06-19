@@ -1,5 +1,8 @@
 package com.hust.blackjack.repository.seed;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -7,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileReader {
     public static String read(String filePath) {
         StringBuilder contentBuilder = new StringBuilder();

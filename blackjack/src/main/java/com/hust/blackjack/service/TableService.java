@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -39,8 +38,7 @@ public class TableService {
         return optionalPlayer.get();
     }
 
-    public Table play(String playerName) throws TableException, PlayerException, LoginException {
-        // get user
+    public Player validateAndGetPlayerByName(String playerName) throws PlayerException, LoginException, TableException {
         Player player = playerService.getPlayerByName(playerName);
         if (player.getChannel() == null) {
             log.error("Player {} not login", playerName);
@@ -54,6 +52,12 @@ public class TableService {
             log.error("Invalid balance of player {} to start game, bl = {}", playerName, player.getBank());
             throw new TableException.NotEnoughBankBalanceException();
         }
+        return player;
+    }
+
+    public Table randomPlay(String playerName) throws TableException, PlayerException, LoginException {
+        // get user
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get available table, create new if all table full
         Table table = tableRepository.findAvailableTable();
@@ -67,27 +71,37 @@ public class TableService {
         return table;
     }
 
-    public Table playroom(String playerName, String tableId) throws TableException, PlayerException, LoginException {
+    public Table createRoom(String playerName, String password) throws TableException, PlayerException,
+            LoginException {
         // get user
-        Player player = playerService.getPlayerByName(playerName);
-        if (player.getChannel() == null) {
-            log.error("Player {} does not login", playerName);
-            throw new LoginException.PlayerNotLoginException();
-        }
-        if (player.getTableId() != null) {
-            log.error("Player {} is in another table, id = {}", playerName, player.getTableId());
-            throw new TableException.PlayerInAnotherTableException();
-        }
-        if (player.getBank() < Table.MINIMUM_BET) {
-            log.error("Invalid balance of player {} to enter game, bl = {}", playerName, player.getBank());
-            throw new TableException.NotEnoughBankBalanceException();
-        }
+        Player player = validateAndGetPlayerByName(playerName);
+
+        // get table
+        Table table = tableRepository.createPrivateTable(password);
+
+        // place player into table
+        player.refresh();
+        player.setIsReady(1);
+        player.setTableId(table.getTableId());
+        table.getPlayers().add(player);
+
+        return table;
+    }
+
+    public Table enterRoomPlay(String playerName, String tableId) throws TableException, PlayerException,
+            LoginException {
+        // get user
+        Player player = validateAndGetPlayerByName(playerName);
 
         // get table
         Table table = this.getTableById(tableId);
         if (table.getIsPlaying() == 1 || table.getPlayers().size() == Table.TABLE_SIZE) {
             log.error("Table not valid to join, table = {}", table.getTableId());
             throw new TableException.TableNotFoundException("Table not valid to join");
+        }
+        if (table.getIsAllowFreeJoin() == 0 || !StringUtils.isEmpty(table.getPassword())) {
+            log.info("Table {} require password to join", table.getTableId());
+            throw new TableException.PasswordRequireException("require password to join");
         }
 
         // place player into table
@@ -99,13 +113,43 @@ public class TableService {
         return table;
     }
 
-    public Table removePlayerInBetPhase(String tableId, String playerName) throws PlayerException, TableException {
+    public Table enterRoomPlay(String playerName, String tableId, String password) throws TableException,
+            PlayerException, LoginException {
+        // get user
+        Player player = validateAndGetPlayerByName(playerName);
+
+        // get table
+        Table table = this.getTableById(tableId);
+        if (table.getIsPlaying() == 1 || table.getPlayers().size() == Table.TABLE_SIZE) {
+            log.error("Table not valid to join, table = {} ", table.getTableId());
+            throw new TableException.TableNotFoundException("Table not valid to join");
+        }
+        if (table.getIsAllowFreeJoin() == 0) {
+            if (StringUtils.equals(table.getPassword(), password)) {
+                // place player into table
+                player.refresh();
+                player.setIsReady(1);
+                player.setTableId(table.getTableId());
+                table.getPlayers().add(player);
+                return table;
+            } else {
+                log.error("Wrong password to join table {}, pw = {}", table.getTableId(), password);
+                throw new TableException.InvalidPasswordException("Invalid room password");
+            }
+        } else {
+            log.error("Table {} does not require password", table.getTableId());
+            throw new TableException("No password required");
+        }
+    }
+
+    public Table removePlayerInBetPhase(String tableId, String playerName) throws PlayerException,
+            TableException {
         Player player = playerService.getPlayerByName(playerName);
         Table table = this.getTableById(tableId);
         if (player.getTableId() == null) {
             log.error("BetPhase: Player {} not in any table", player);
-            throw new PlayerException.PlayerNotInAnyTableException("BetPhase: Player " + playerName + " not in any " +
-                    "table");
+            throw new PlayerException.PlayerNotInAnyTableException("BetPhase: Player " + playerName + " not " +
+                    "in any table");
         }
         if (!table.getPlayers().contains(player)) {
             log.error("BetPhase: Table {} not contain player {}", tableId, player);
@@ -119,7 +163,8 @@ public class TableService {
         return table;
     }
 
-    public Tuple2<Table, String> removePlayer(String tableId, String playerName) throws PlayerException, TableException {
+    public Tuple2<Table, String> removePlayer(String tableId, String playerName) throws PlayerException,
+            TableException {
         Player player = playerService.getPlayerByName(playerName);
         Table table = this.getTableById(tableId);
 
@@ -217,7 +262,7 @@ public class TableService {
         Card newCard = table.getDeck().dealCard();
         log.info("New card hit = {}", newCard);
         player.getHand().addCard(newCard);
-        System.out.println(player.getHand() + " " + player.getHand().value());
+        log.info(player.getHand() + " " + player.getHand().value());
 
         // check hand and return
         // in case of BLACKJACK
@@ -291,21 +336,23 @@ public class TableService {
             double gain = 0;
             if (state == ResultState.BLACKJACK) {
                 p.setBank(p.getBank() + p.getBet() * (1 + Table.BLACKJACK_RATE));
-                gain = p.getBet() * Table.BLACKJACK_RATE;
+                gain = p.getBet() + p.getBet() * Table.BLACKJACK_RATE;
             } else if (state == ResultState.WIN) {
                 p.setBank(p.getBank() + p.getBet() * 2);
-                gain = p.getBet();
+                gain = p.getBet() * 2;
             } else if (state == ResultState.PUSH) {
                 p.setBank(p.getBank() + p.getBet());
+                gain = p.getBet();
             } else {
-                gain = -p.getBet();
+//                gain = p.getBet();
+                gain = 0;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             MatchHistory match = MatchHistory.builder()
                     .playerName(p.getPlayerName())
                     .resultState(state)
-                    .bet(gain)
+                    .bet(p.getBet())
                     .date(LocalDate.parse(LocalDate.now().format(formatter), formatter))
                     .build();
             matchHistoryService.save(match);
