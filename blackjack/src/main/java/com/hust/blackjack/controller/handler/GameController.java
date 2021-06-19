@@ -1,249 +1,41 @@
-package com.hust.blackjack.service;
+package com.hust.blackjack.controller.handler;
 
 import com.hust.blackjack.common.tuple.Tuple2;
-import com.hust.blackjack.exception.*;
+import com.hust.blackjack.exception.LoginException;
+import com.hust.blackjack.exception.PlayerException;
+import com.hust.blackjack.exception.RequestException;
+import com.hust.blackjack.exception.TableException;
 import com.hust.blackjack.model.*;
-import com.hust.blackjack.model.dto.PlayerGameInfo;
-import com.hust.blackjack.model.dto.PlayerRanking;
+import com.hust.blackjack.service.PlayerService;
+import com.hust.blackjack.service.TableService;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hust.blackjack.utils.MessageUtils.sleep;
+import static com.hust.blackjack.utils.MessageUtils.writeToChannel;
+
 @Log4j2
 @Service
-public class RequestProcessingService {
-    private final CreditCardService creditCardService;
-    private final PlayerService playerService;
-    private final MatchHistoryService matchHistoryService;
-    private final TableService tableService;
+public class GameController implements IController {
 
-    public RequestProcessingService(CreditCardService creditCardService,
-                                    PlayerService playerService,
-                                    MatchHistoryService matchHistoryService,
-                                    TableService tableService) {
-        this.creditCardService = creditCardService;
-        this.playerService = playerService;
-        this.matchHistoryService = matchHistoryService;
+    private final TableService tableService;
+    private final PlayerService playerService;
+
+    public GameController(TableService tableService, PlayerService playerService) {
         this.tableService = tableService;
+        this.playerService = playerService;
     }
 
-    // TODO: handle each request-type separately (Front Controller Pattern)
-    public void process(SocketChannel channel, String requestMsg)
-            throws RequestException, IOException, LoginException, PlayerException, CreditCardException,
-            TableException {
-        List<String> request = new ArrayList<>(Arrays.asList(requestMsg.split(" ")));
-        if (request.isEmpty()) {
-            writeToChannel(channel, "FAIL=Invalid request");
-            throw new RequestException("Invalid request, request empty");
-        }
-
-        // get request type
-        RequestType requestType;
-        try {
-            requestType = RequestType.from(request.get(0));
-            log.info("Receive {} request", requestType.getValue());
-        } catch (RequestException ex) {
-            writeToChannel(channel, "FAIL=Invalid request");
-            throw new RequestException("Invalid request type " + request.get(0));
-        }
-
-        // check request length
-        if (!isRequestLengthValid(request)) {
-            writeToChannel(channel, "FAIL=Invalid " + requestType.getValue() + " request length");
-            throw new RequestException.InvalidRequestLengthException(requestType.getValue() + "=" + request.size());
-        }
-
-        // process request
+    @Override
+    public void processRequest(SocketChannel channel, RequestType requestType, List<String> request)
+            throws RequestException, IOException, LoginException, PlayerException, TableException {
         switch (requestType) {
-            // loginController
-            case LOGIN: {
-                if (playerService.isChannelLoggedIn(channel)) {
-                    writeToChannel(channel, "LOGINFAIL=Channel already login, logout first");
-                    log.error("channel {} already login", channel);
-                    throw new LoginException("channel already login");
-                }
-                String playerName = request.get(1);
-                String password = request.get(2);
-                try {
-                    Player player = playerService.login(playerName, password, channel);
-                    writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Player {} login success at channel {}", player.getPlayerName(),
-                            player.getChannel());
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "LOGINFAIL=Username or password incorrect");
-                    throw e;
-                } catch (LoginException.PlayerAlreadyLoginException e) {
-                    writeToChannel(channel, "LOGINFAIL=Player already login");
-                    throw e;
-                }
-                break;
-            }
-            case LOGOUT: {
-                String playerName = request.get(1);
-                try {
-                    Player player = playerService.logout(channel, playerName);
-                    writeToChannel(channel, "LOGOUTSUCCESS");
-                    log.info("Player {} at channel {} logout success",
-                            player.getPlayerName(), channel
-                    );
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "LOGOUTFAIL=Username not found");
-                    throw e;
-                } catch (LoginException.PlayerNotLoginException e) {
-                    writeToChannel(channel, "LOGOUTFAIL=Player haven't login");
-                    throw e;
-                } catch (LoginException.InvalidChannelToLogoutException e) {
-                    writeToChannel(channel, "LOGOUTFAIL=Invalid channel to logout");
-                    throw e;
-                }
-                break;
-            }
-            case SIGNUP: {
-                String playerName = request.get(1);
-                String password = request.get(2);
-                try {
-                    Player newPlayer = playerService.saveNewPlayer(playerName, password);
-                    writeToChannel(channel, "SIGNUPSUCCESS");
-                    log.info("Sign up success with player {}", newPlayer);
-                } catch (PlayerException.PlayerAlreadyExistsException e) {
-                    writeToChannel(channel, "SIGNUPFAIL=Username already exists");
-                    throw e;
-                }
-                break;
-            }
-
-            // searchController
-            case SEARCHINFO: {
-                if (request.size() == 1) {
-                    log.error("searchinfo playername empty");
-                    writeToChannel(channel, "SEARCHFAIL");
-                    throw new PlayerException.PlayerNotFoundException();
-                }
-                String playerName = request.get(1);
-                try {
-                    List<PlayerGameInfo> playerGameInfos =
-                            matchHistoryService.searchPlayerGameInfoByName(playerName);
-                    String msg = "SEARCHSUCCESS=" + playerGameInfos.stream()
-                            .map(playerGameInfo -> String.join(" ", Arrays.asList(
-                                    playerGameInfo.getPlayer().getPlayerName(),
-                                    String.valueOf(playerGameInfo.getPlayer().getBank()),
-                                    String.valueOf(playerGameInfo.getMoneyEarn()),
-                                    String.valueOf(playerGameInfo.getWin()),
-                                    String.valueOf(playerGameInfo.getLose()),
-                                    String.valueOf(playerGameInfo.getPush()),
-                                    String.valueOf(playerGameInfo.getBust()),
-                                    String.valueOf(playerGameInfo.getBlackjack())
-                                    )
-                            ))
-                            .collect(Collectors.joining(","));
-                    writeToChannel(channel, msg);
-                    log.info("Game Info of player {}: {}", playerName, playerGameInfos);
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "SEARCHFAIL");
-                    throw e;
-                }
-                break;
-            }
-            case INFO: {
-                String playerName = request.get(1);
-                try {
-                    PlayerGameInfo playerGameInfo = matchHistoryService.getPlayerGameInfoByName(playerName);
-                    String msg = requestType.getValue() + "=" +
-                            String.join(" ", Arrays.asList(
-                                    playerGameInfo.getPlayer().getPlayerName(),
-                                    String.valueOf(playerGameInfo.getPlayer().getBank()),
-                                    String.valueOf(playerGameInfo.getMoneyEarn()),
-                                    String.valueOf(playerGameInfo.getWin()),
-                                    String.valueOf(playerGameInfo.getLose()),
-                                    String.valueOf(playerGameInfo.getPush()),
-                                    String.valueOf(playerGameInfo.getBust()),
-                                    String.valueOf(playerGameInfo.getBlackjack())
-                            ));
-                    writeToChannel(channel, msg);
-                    log.info("Game Info of player {}: {}", playerName, playerGameInfo);
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "INFOFAIL=Player not found");
-                    throw e;
-                }
-                break;
-            }
-            case HISTORY: {
-                String playerName = request.get(1);
-                List<MatchHistory> histories = matchHistoryService.getPlayerHistory(playerName);
-                String msg = "HISTORY=" + histories.stream().map(MatchHistory::toString)
-                        .collect(Collectors.joining(","));
-                writeToChannel(channel, msg);
-                break;
-            }
-            case RANKING: { // RANK={ranking1} {user_name1} {money_earn1}, ...
-                String playerName = request.get(1);
-                List<PlayerRanking> rankings = matchHistoryService.getAllPlayerRanking(playerName);
-                String msg = "RANK=" + rankings.stream().map(PlayerRanking::toString)
-                        .collect(Collectors.joining(","));
-                writeToChannel(channel, msg);
-                log.info("Get rankings {}", rankings);
-                break;
-            }
-
-            // creditCardController
-            case ADDMONEY: {
-                String playerName = request.get(1);
-                String cardNumber = request.get(2);
-                double amount = Double.parseDouble(request.get(3));
-                try {
-                    Player player = creditCardService.manageCreditCard(
-                            CreditCard.Action.ADD, playerName, cardNumber, amount
-                    );
-                    writeToChannel(channel, "ADDSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Add money from card {} to player {} success. New balance: {} ",
-                            cardNumber, playerName, player.getBank()
-                    );
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "ADDFAIL=Player not found");
-                    throw e;
-                } catch (CreditCardException.CreditCardNotFoundException e) {
-                    writeToChannel(channel, "ADDFAIL=credit card not found");
-                    throw e;
-                } catch (CreditCardException.NotEnoughBalanceException e) {
-                    writeToChannel(channel, "ADDFAIL=Credit card balance not enough");
-                    throw e;
-                }
-                break;
-            }
-            case WITHDRAWMONEY: {
-                String playerName = request.get(1);
-                String cardNumber = request.get(2);
-                double amount = Double.parseDouble(request.get(3));
-                try {
-                    Player player = creditCardService.manageCreditCard(
-                            CreditCard.Action.WITHDRAW, playerName, cardNumber, amount
-                    );
-                    writeToChannel(channel, "WDRSUCCESS=" + player.getPlayerName() + " " + player.getBank());
-                    log.info("Withdrawn money from player {} to card {} success. New balance: {} ",
-                            playerName, cardNumber, player.getBank()
-                    );
-                } catch (PlayerException.PlayerNotFoundException e) {
-                    writeToChannel(channel, "WDRFAIL=Player not found");
-                    throw e;
-                } catch (CreditCardException.CreditCardNotFoundException e) {
-                    writeToChannel(channel, "WDRFAIL=credit card not found");
-                    throw e;
-                } catch (PlayerException.NotEnoughBankBalanceException e) {
-                    writeToChannel(channel, "WDRFAIL=Player bank balance not enough");
-                    throw e;
-                }
-                break;
-            }
-
-            // gameController
             case CREATEROOM: {
                 String playerName = request.get(1);
                 String password = request.get(2);
@@ -633,61 +425,6 @@ public class RequestProcessingService {
             default:
                 writeToChannel(channel, "FAIL=Invalid request");
                 throw new RequestException.InvalidRequestTypeException(request.get(0));
-        }
-    }
-
-    private boolean isRequestLengthValid(List<String> request) throws RequestException {
-        switch (RequestType.from(request.get(0))) {
-            case CHAT:
-                return request.size() > 3;
-            case SEARCHINFO:
-                return request.size() == 2 || request.size() == 1;
-            case PLAY:
-                return request.size() >= 2;
-            case RANKING:
-            case LOGOUT:
-            case INFO: // INFO {username} {bank} {money_earn} {Win} {Lose} {Push} {Bust} {Blackjack}
-            case HISTORY:
-                return request.size() == 2;
-            case LOGIN:
-            case SIGNUP:
-            case HIT:
-            case STAND:
-            case QUIT:
-            case CONTINUE:
-            case BETQUIT:
-            case CREATEROOM:
-                return request.size() == 3;
-            case ADDMONEY:
-            case WITHDRAWMONEY:
-            case BET:
-                return request.size() == 4;
-            default:
-                throw new RequestException.InvalidRequestLengthException();
-        }
-    }
-
-    public void writeToChannel(SocketChannel channel, String msg) throws IOException {
-//        msg += "\n"; // terminal testing purposes
-        log.info("Response to channel {}: {}", channel.getRemoteAddress(), msg);
-        channel.write(ByteBuffer.wrap(msg.getBytes()));
-    }
-
-    public void processChannelClose(SocketChannel client) {
-        List<Player> players = playerService.getAllPlayers();
-        for (Player player : players) {
-            if (player.getChannel() == client) {
-                player.logout();
-                return;
-            }
-        }
-    }
-
-    private void sleep(long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

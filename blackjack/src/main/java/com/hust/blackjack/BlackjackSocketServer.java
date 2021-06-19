@@ -1,6 +1,8 @@
 package com.hust.blackjack;
 
-import com.hust.blackjack.service.RequestProcessingService;
+import com.hust.blackjack.controller.FrontController;
+import com.hust.blackjack.controller.RequestProcessingService;
+import com.hust.blackjack.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,12 @@ public class BlackjackSocketServer {
     private final ByteBuffer commonBuffer = ByteBuffer.allocate(10000);
 
     private final RequestProcessingService processingService;
+    private final FrontController frontController;
 
     public BlackjackSocketServer(RequestProcessingService processingService,
-                                 @Value("${server-port}") int port) throws IOException {
+                                 @Value("${server-port}") int port, FrontController frontController) throws IOException {
         this.processingService = processingService;
+        this.frontController = frontController;
 
         //Create TCP server channel
         this.port = port;
@@ -103,16 +107,18 @@ public class BlackjackSocketServer {
         }
         if (read < 0) {
             log.info("Closing channel {}", client);
-            processingService.processChannelClose(client);
+//            processingService.processChannelClose(client);
+            frontController.processChannelClose(client);
             client.close();
         } else {
             String msg = sb.toString().trim();     // read message
             log.info("Message received from {}: {}", client.getRemoteAddress(), msg);
 
             try {
-                processingService.process(client, msg);     // process request HERE
+//                processingService.process(client, msg);     // process request HERE
+                frontController.dispatchRequest(client, msg);
             } catch (NumberFormatException e) {
-                processingService.writeToChannel(client, "FAIL-Wrong data format");
+                MessageUtils.writeToChannel(client, "FAIL-Wrong data format");
                 log.error("Wrong data format");
                 log.error(e.getMessage(), e);
             } catch (Exception e) {
