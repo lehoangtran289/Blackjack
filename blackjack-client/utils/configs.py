@@ -1,6 +1,7 @@
 
 # socket
-HOST = "14.162.174.218"
+#HOST = "14.162.174.218"
+HOST = "127.0.0.1"
 PORT = 1234
 
 #Card suits
