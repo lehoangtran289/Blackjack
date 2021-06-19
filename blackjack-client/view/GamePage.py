@@ -178,6 +178,7 @@ class gamePage(QtWidgets.QWidget):
                 self.room_players[pos].username = None
                 self.username_list[pos] = None
                 self.players_label[pos].setText('Player left')
+                self.display_chat('System: ' + username + ' left the room')
         elif header == 'DEAL':
             self.bet_phase = 0
             self.play_phase = 1
@@ -237,12 +238,14 @@ class gamePage(QtWidgets.QWidget):
             self.display_card(self.dealer, 0, self.dealer.card_owned[1])
             self.play_phase = 0
             self.set_enable_play_button(False)
+            self.display_chat('System: Dealer\'s second card is ' + self.dealer.card_owned[1].rank + ' of ' + self.dealer.card_owned[1].suit)
             dealer_hand = [int(i) for i in message.split(',')[0].split(' ')]
             i = 4
             while i < len(dealer_hand):
                 card = Card.card(configs.ranks[dealer_hand[i]], configs.suits[dealer_hand[i + 1]])
                 self.dealer.add_card(card)
                 self.display_card(self.dealer, 0, card)
+                self.display_chat('System: Dealer hit a ' + configs.ranks[dealer_hand[i]] + ' of ' + configs.suits[dealer_hand[i + 1]])
                 i = i + 2
             players_result = message.split(',')[1:]
             self.freezeUI(1000)
