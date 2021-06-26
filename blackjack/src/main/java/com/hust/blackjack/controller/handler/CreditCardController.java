@@ -6,6 +6,7 @@ import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.CreditCard;
 import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.RequestType;
+import com.hust.blackjack.model.Token;
 import com.hust.blackjack.service.CreditCardService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,9 @@ public class CreditCardController implements IController {
                 String cardId = request.get(1);
                 String username = request.get(2);
                 try {
-                    creditCardService.sendToken(cardId, username);
+                    Token token = creditCardService.sendToken(cardId, username);
+                    writeToChannel(channel, "RQOK");
+                    log.info("New token sent, token = {} ", token.getSecret());
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "RQFAIL=Player not found");
                     throw e;

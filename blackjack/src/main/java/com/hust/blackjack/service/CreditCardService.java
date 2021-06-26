@@ -85,7 +85,7 @@ public class CreditCardService {
         return false;
     }
 
-    public void sendToken(String cardNumber, String username) throws PlayerException, CreditCardException {
+    public Token sendToken(String cardNumber, String username) throws PlayerException, CreditCardException {
         Player player = playerService.getPlayerByName(username);
         CreditCard creditCard = this.getCreditCard(cardNumber);
 
@@ -99,6 +99,8 @@ public class CreditCardService {
         //
         String emailMessage = "Your token is: " + token.getSecret();
         emailService.sendEmail(creditCard.getEmail(), "Token Confirmation", emailMessage);
+
+        return token;
     }
 
     public List<CreditCard> findAll() {
