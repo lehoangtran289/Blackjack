@@ -48,8 +48,8 @@ public class TableService {
             log.error("Player {} in another table, id = {}", playerName, player.getTableId());
             throw new TableException.PlayerInAnotherTableException();
         }
-        if (player.getBank() < Table.MINIMUM_BET) {
-            log.error("Invalid balance of player {} to start game, bl = {}", playerName, player.getBank());
+        if (player.getBalance() < Table.MINIMUM_BET) {
+            log.error("Invalid balance of player {} to start game, bl = {}", playerName, player.getBalance());
             throw new TableException.NotEnoughBankBalanceException();
         }
         return player;
@@ -217,8 +217,8 @@ public class TableService {
             log.error("Player {} already bet {}", playerName, player.getBet());
             throw new TableException("Player already bet");
         }
-        if (player.getBank() < bet) {
-            log.error("Player {} invalid bet={}, bank = {}", playerName, bet, player.getBank());
+        if (player.getBalance() < bet) {
+            log.error("Player {} invalid bet={}, bank = {}", playerName, bet, player.getBalance());
             throw new TableException.NotEnoughBankBalanceException();
         }
         if (bet < Table.MINIMUM_BET) {
@@ -335,13 +335,13 @@ public class TableService {
             // process Bet after a game
             double gain = 0;
             if (state == ResultState.BLACKJACK) {
-                p.setBank(p.getBank() + p.getBet() * (1 + Table.BLACKJACK_RATE));
+                p.setBalance(p.getBalance() + p.getBet() * (1 + Table.BLACKJACK_RATE));
                 gain = p.getBet() + p.getBet() * Table.BLACKJACK_RATE;
             } else if (state == ResultState.WIN) {
-                p.setBank(p.getBank() + p.getBet() * 2);
+                p.setBalance(p.getBalance() + p.getBet() * 2);
                 gain = p.getBet() * 2;
             } else if (state == ResultState.PUSH) {
-                p.setBank(p.getBank() + p.getBet());
+                p.setBalance(p.getBalance() + p.getBet());
                 gain = p.getBet();
             } else {
 //                gain = p.getBet();

@@ -46,7 +46,7 @@ public class QueryController implements IController {
                     String msg = "SEARCHSUCCESS=" + playerGameInfos.stream()
                             .map(playerGameInfo -> String.join(" ", Arrays.asList(
                                     playerGameInfo.getPlayer().getPlayerName(),
-                                    String.valueOf(playerGameInfo.getPlayer().getBank()),
+                                    String.valueOf(playerGameInfo.getPlayer().getBalance()),
                                     String.valueOf(playerGameInfo.getMoneyEarn()),
                                     String.valueOf(playerGameInfo.getWin()),
                                     String.valueOf(playerGameInfo.getLose()),
@@ -71,7 +71,7 @@ public class QueryController implements IController {
                     String msg = requestType.getValue() + "=" +
                             String.join(" ", Arrays.asList(
                                     playerGameInfo.getPlayer().getPlayerName(),
-                                    String.valueOf(playerGameInfo.getPlayer().getBank()),
+                                    String.valueOf(playerGameInfo.getPlayer().getBalance()),
                                     String.valueOf(playerGameInfo.getMoneyEarn()),
                                     String.valueOf(playerGameInfo.getWin()),
                                     String.valueOf(playerGameInfo.getLose()),

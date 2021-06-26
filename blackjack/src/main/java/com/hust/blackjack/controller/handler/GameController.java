@@ -393,9 +393,9 @@ public class GameController implements IController {
                 Player player = playerService.getPlayerByName(request.get(2));
                 player.setIsReady(1);
 
-                if (player.getBank() < Table.MINIMUM_BET) {
+                if (player.getBalance() < Table.MINIMUM_BET) {
                     log.error("Invalid balance of player {} to start game, bl = {}"
-                            , player.getPlayerName(), player.getBank());
+                            , player.getPlayerName(), player.getBalance());
                     tableService.removePlayer(table.getTableId(), player.getPlayerName());
                     writeToChannel(channel, "FAIL=Balance not enough");
                     throw new TableException.NotEnoughBankBalanceException();

@@ -56,9 +56,9 @@ public class CreditCardController implements IController {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.ADD, playerName, cardNumber, amount, secret
                     );
-                    writeToChannel(channel, "ADDSUCCESS=" + player.getPlayerName() + " " + player.getBank());
+                    writeToChannel(channel, "ADDSUCCESS=" + player.getPlayerName() + " " + player.getBalance());
                     log.info("Add money from card {} to player {} success. New balance: {} ",
-                            cardNumber, playerName, player.getBank()
+                            cardNumber, playerName, player.getBalance()
                     );
                 } catch (CreditCardException.InvalidToken e) {
                     writeToChannel(channel, "ADDFAIL=Invalid token");
@@ -84,9 +84,9 @@ public class CreditCardController implements IController {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.WITHDRAW, playerName, cardNumber, amount, secret
                     );
-                    writeToChannel(channel, "WDRSUCCESS=" + player.getPlayerName() + " " + player.getBank());
+                    writeToChannel(channel, "WDRSUCCESS=" + player.getPlayerName() + " " + player.getBalance());
                     log.info("Withdrawn money from player {} to card {} success. New balance: {} ",
-                            playerName, cardNumber, player.getBank()
+                            playerName, cardNumber, player.getBalance()
                     );
                 } catch (CreditCardException.InvalidToken e) {
                     writeToChannel(channel, "WDRFAIL=Invalid token");
