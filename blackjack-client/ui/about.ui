@@ -141,7 +141,7 @@ border-width:1px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image : url(&quot;./asset/meme.png&quot;) 0 0 0 0 stretch stretch;</string>
+    <string notr="true">border-image : url(&quot;./asset/meme1.png&quot;) 0 0 0 0 stretch stretch;</string>
    </property>
    <property name="text">
     <string/>
