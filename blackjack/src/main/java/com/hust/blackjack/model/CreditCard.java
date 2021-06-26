@@ -2,6 +2,7 @@ package com.hust.blackjack.model;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,7 +18,7 @@ public class CreditCard {
     private String email;
 
     //
-    private List<Token> tokens;
+    private List<Token> tokens = new ArrayList<>();
 
     @Getter
     @AllArgsConstructor

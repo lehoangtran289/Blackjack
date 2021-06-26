@@ -79,7 +79,7 @@ public class CreditCardController implements IController {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
                 String secret = request.get(3);
-                double amount = Double.parseDouble(request.get(3));
+                double amount = Double.parseDouble(request.get(4));
                 try {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.WITHDRAW, playerName, cardNumber, amount, secret
