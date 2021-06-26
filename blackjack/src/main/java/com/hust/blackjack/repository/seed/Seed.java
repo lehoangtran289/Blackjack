@@ -37,7 +37,7 @@ public class Seed {
                 .map(p -> Player.builder()
                         .playerName(p.getPlayerName())
                         .password(p.getPassword())
-                        .bank(p.getBank())
+                        .balance(p.getBank())
                         .build())
                 .collect(Collectors.toList())
         );

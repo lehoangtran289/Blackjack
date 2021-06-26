@@ -58,14 +58,14 @@ public class CreditCardService {
                 throw new CreditCardException.NotEnoughBalanceException();
             }
             creditCard.setBalance(creditCard.getBalance() - amount);
-            player.setBank(player.getBank() + amount);
+            player.setBalance(player.getBalance() + amount);
         }
         else if (action == CreditCard.Action.WITHDRAW) {
-            if (player.getBank() < amount) {
-                log.error("Player {} bank balance not enough, balance = {}", playerName, player.getBank());
+            if (player.getBalance() < amount || player.getBalance() <= 1000) {
+                log.error("Player {} bank balance not enough, balance = {}", playerName, player.getBalance());
                 throw new PlayerException.NotEnoughBankBalanceException();
             }
-            player.setBank(player.getBank() - amount);
+            player.setBalance(player.getBalance() - amount);
             creditCard.setBalance(creditCard.getBalance() + amount);
         }
         return player;

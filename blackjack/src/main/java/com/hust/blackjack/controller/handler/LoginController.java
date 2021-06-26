@@ -39,7 +39,7 @@ public class LoginController implements IController{
                 String password = request.get(2);
                 try {
                     Player player = playerService.login(playerName, password, channel);
-                    writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBank());
+                    writeToChannel(channel, "LOGINSUCCESS=" + player.getPlayerName() + " " + player.getBalance());
                     log.info("Player {} login success at channel {}", player.getPlayerName(),
                             player.getChannel());
                 } catch (PlayerException.PlayerNotFoundException e) {
