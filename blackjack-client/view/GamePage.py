@@ -208,7 +208,7 @@ class gamePage(QtWidgets.QWidget):
                 self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
             if username == self.user.username:
                 self.turn = 1
-                if is_blackjack == 1:
+                if int(is_blackjack) == 1:
                     request = 'STAND ' + self.room_id + ' ' + username
                     self.connection.send(request)
                     #response = self.connection.send_request(request)
@@ -218,7 +218,7 @@ class gamePage(QtWidgets.QWidget):
                     self.display_chat('System: It\'s your turn')
                     #self.play_phase = 1
                     self.set_enable_play_button(True)
-            elif is_blackjack == 0:
+            elif int(is_blackjack) == 1:
                 self.display_chat('System: ' + username + ' got BlackJack')
             else:
                 self.display_chat('System: It\'s ' + username + '\'s turn')

@@ -34,7 +34,7 @@ background-color: rgb(255, 255, 255);
 border-color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>Play!</string>
+    <string>Play Random</string>
    </property>
   </widget>
   <widget class="QPushButton" name="enter_room_button">

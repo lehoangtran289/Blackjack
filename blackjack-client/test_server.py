@@ -44,6 +44,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if header == 'BET':
                 conn.sendall(b'BET=1 palizu 1000')
                 time.sleep(2)
-                conn.sendall(b'DEAL=7 0 8 0,palizu 8 1 13 1')
-            if header == 'QUIT':
-                conn.sendall(b'QUIt=1 palizu')
+                conn.sendall(b'DEAL=7 0 8 0,palizu 1 1 13 1')
+                time.sleep(2)
+                conn.sendall(b'TURN=palizu 1')
