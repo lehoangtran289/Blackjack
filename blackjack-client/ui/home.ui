@@ -141,7 +141,7 @@ border-color: rgb(255, 255, 255);</string>
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>221</width>
+     <width>500</width>
      <height>25</height>
     </rect>
    </property>
@@ -165,8 +165,8 @@ border-color: rgb(255, 255, 255);</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>50</y>
-     <width>221</width>
+     <y>40</y>
+     <width>500</width>
      <height>25</height>
     </rect>
    </property>
