@@ -52,6 +52,9 @@ class homePage(QtWidgets.QWidget):
         self.history_page.show()
     
     def withdraw(self):
+        if float(self.user.balance) <= 1000:
+            QtWidgets.QMessageBox.about(self, 'Balance not enough', 'You must have more than $1000 to withdraw money')
+            return
         self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()
