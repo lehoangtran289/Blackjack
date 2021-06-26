@@ -41,6 +41,7 @@ class gamePage(QtWidgets.QWidget):
         self.quit_app = False
 
         # update user's information label
+        self.username_label.setText(str(self.user.username))
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         
