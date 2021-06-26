@@ -24,7 +24,7 @@ class homePage(QtWidgets.QWidget):
         self.about_button.clicked.connect(self.about)
         #self.enter_room_button.clicked.connect(self.enter_room)
 
-        self.username_label.setText("Henlo " + self.user.username)
+        self.username_label.setText("Welcome, " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):

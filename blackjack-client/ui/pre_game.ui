@@ -133,7 +133,7 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QLabel" name="balance_label">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>10</x>
      <y>50</y>
      <width>221</width>
      <height>25</height>
@@ -152,13 +152,13 @@ border-color: rgb(255, 255, 255);</string>
     <string/>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>10</x>
      <y>10</y>
      <width>221</width>
      <height>25</height>
@@ -177,7 +177,7 @@ border-color: rgb(255, 255, 255);</string>
     <string/>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <zorder>background_label</zorder>
