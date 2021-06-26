@@ -98,7 +98,7 @@ public class CreditCardController implements IController {
                     writeToChannel(channel, "WDRFAIL=credit card not found");
                     throw e;
                 } catch (PlayerException.NotEnoughBankBalanceException e) {
-                    writeToChannel(channel, "WDRFAIL=Player bank balance not enough");
+                    writeToChannel(channel, "WDRFAIL=Player balance not enough");
                     throw e;
                 }
                 break;
