@@ -17,6 +17,7 @@ public enum RequestType {
     INFO("INFO"),
     HISTORY("HISTORY"),
     RANKING("GETRANKING"),
+    CARDREQUEST("CARDRQ"),
     ADDMONEY("ADD"),
     WITHDRAWMONEY("WDR"),
     CREATEROOM("CREATE"),
