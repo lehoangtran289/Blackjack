@@ -34,6 +34,9 @@ class signupPage(QtWidgets.QWidget):
         if username == '' or password == '':
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Username and Password must not be empty!')
             return
+        if re.findall('[0-9A-Za-z]+', username)[0] != username:
+            QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Username must only contains digits and alphabet characters')
+            return
         if len(password) < 6 or len(password) > 20:
             QtWidgets.QMessageBox.about(self, 'Sign up Failed', 'Password length must between 6 and 20')
             return
