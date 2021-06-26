@@ -87,6 +87,9 @@ class preGamePage(QtWidgets.QWidget):
         password, ok = QtWidgets.QInputDialog.getText(self, "Room Password", "Enter Room Password", QtWidgets.QLineEdit.Password)
         if ok:
             password = str(password)
+            if re.findall('[0-9A-Za-z]+', password)[0] != password:
+                QtWidgets.QMessageBox.about(self, 'Create Room Failed', 'Password must only contains digits and alphabet characters')
+                return
             request = 'CREATE ' + self.user.username + ' ' + password
             response = self.connection.send_request(request)
             header = self.connection.get_header(response)
