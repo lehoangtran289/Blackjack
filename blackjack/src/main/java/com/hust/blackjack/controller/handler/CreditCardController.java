@@ -60,6 +60,9 @@ public class CreditCardController implements IController {
                     log.info("Add money from card {} to player {} success. New balance: {} ",
                             cardNumber, playerName, player.getBank()
                     );
+                } catch (CreditCardException.InvalidToken e) {
+                    writeToChannel(channel, "ADDFAIL=Invalid token");
+                    throw e;
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "ADDFAIL=Player not found");
                     throw e;
@@ -85,6 +88,9 @@ public class CreditCardController implements IController {
                     log.info("Withdrawn money from player {} to card {} success. New balance: {} ",
                             playerName, cardNumber, player.getBank()
                     );
+                } catch (CreditCardException.InvalidToken e) {
+                    writeToChannel(channel, "WDRFAIL=Invalid token");
+                    throw e;
                 } catch (PlayerException.PlayerNotFoundException e) {
                     writeToChannel(channel, "WDRFAIL=Player not found");
                     throw e;
