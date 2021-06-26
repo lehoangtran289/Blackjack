@@ -30,8 +30,8 @@ class withdrawPage(QtWidgets.QWidget):
             event.ignore()
 
     def withdraw(self):
-        credit_card_number = self.credit_card_entry.text()
-        amount = self.amount_entry.text()   
+        credit_card_number = self.credit_card_entry.text().strip()
+        amount = self.amount_entry.text().strip()  
         if credit_card_number == '' or amount == '':
             QtWidgets.QMessageBox.about(self, 'Invalid information', 'CreditCard and Amount field must not be empty!')
             return
@@ -48,7 +48,7 @@ class withdrawPage(QtWidgets.QWidget):
 
         token, ok = QtWidgets.QInputDialog.getText(self, "Add/Withdraw token", "Enter token which was sent to your email")
         if ok:
-            token = str(token)
+            token = str(token).strip()
             request = 'WDR ' + self.user.username + ' ' + credit_card_number + ' ' + token + ' ' + amount
             response = self.connection.send_request(request)
             header = self.connection.get_header(response)

@@ -44,7 +44,7 @@ class preGamePage(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, 'Enter room Failed', 'Room id must have length of 4 and contain only digits and alphabet characters')
             return
         if ok:
-            room_id = str(room_id)
+            room_id = str(room_id).strip()
             request = 'PLAY ' + self.user.username + ' ' + room_id
             response = self.connection.send_request(request)
             header = self.connection.get_header(response)
