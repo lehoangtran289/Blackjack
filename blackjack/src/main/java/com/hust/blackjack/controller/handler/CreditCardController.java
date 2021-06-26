@@ -79,7 +79,7 @@ public class CreditCardController implements IController {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
                 String secret = request.get(3);
-                double amount = Double.parseDouble(request.get(3));
+                double amount = Double.parseDouble(request.get(4));
                 try {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.WITHDRAW, playerName, cardNumber, amount, secret
@@ -98,7 +98,7 @@ public class CreditCardController implements IController {
                     writeToChannel(channel, "WDRFAIL=credit card not found");
                     throw e;
                 } catch (PlayerException.NotEnoughBankBalanceException e) {
-                    writeToChannel(channel, "WDRFAIL=Player bank balance not enough");
+                    writeToChannel(channel, "WDRFAIL=Player balance not enough");
                     throw e;
                 }
                 break;
