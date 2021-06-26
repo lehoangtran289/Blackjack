@@ -97,7 +97,7 @@ public class CreditCardService {
         creditCard.getTokens().add(token);
 
         //
-        String emailMessage = "Your token is: " + token.getSecret();
+        String emailMessage = token.getSecret();
         emailService.sendEmail(creditCard.getEmail(), "Token Confirmation", emailMessage);
 
         return token;
