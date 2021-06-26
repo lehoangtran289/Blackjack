@@ -79,11 +79,13 @@ public class FrontController {
             case CONTINUE:
             case BETQUIT:
             case CREATEROOM:
+            case CARDREQUEST:
                 return request.size() == 3;
-            case ADDMONEY:
-            case WITHDRAWMONEY:
             case BET:
                 return request.size() == 4;
+            case ADDMONEY:
+            case WITHDRAWMONEY:
+                return request.size() == 5;
             default:
                 throw new RequestException.InvalidRequestLengthException();
         }

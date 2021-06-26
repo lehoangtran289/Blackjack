@@ -30,13 +30,28 @@ public class CreditCardController implements IController {
     public void processRequest(SocketChannel channel, RequestType requestType, List<String> request)
             throws RequestException, IOException, PlayerException, CreditCardException {
         switch (requestType) {
+            case CARDREQUEST: {
+                String cardId = request.get(1);
+                String username = request.get(2);
+                try {
+                    creditCardService.sendToken(cardId, username);
+                } catch (PlayerException.PlayerNotFoundException e) {
+                    writeToChannel(channel, "RQFAIL=Player not found");
+                    throw e;
+                } catch (CreditCardException.CreditCardNotFoundException e) {
+                    writeToChannel(channel, "RQFAIL=credit card not found");
+                    throw e;
+                }
+                break;
+            }
             case ADDMONEY: {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
-                double amount = Double.parseDouble(request.get(3));
+                String secret = request.get(3);
+                double amount = Double.parseDouble(request.get(4));
                 try {
                     Player player = creditCardService.manageCreditCard(
-                            CreditCard.Action.ADD, playerName, cardNumber, amount
+                            CreditCard.Action.ADD, playerName, cardNumber, amount, secret
                     );
                     writeToChannel(channel, "ADDSUCCESS=" + player.getPlayerName() + " " + player.getBank());
                     log.info("Add money from card {} to player {} success. New balance: {} ",
@@ -57,10 +72,11 @@ public class CreditCardController implements IController {
             case WITHDRAWMONEY: {
                 String playerName = request.get(1);
                 String cardNumber = request.get(2);
+                String secret = request.get(3);
                 double amount = Double.parseDouble(request.get(3));
                 try {
                     Player player = creditCardService.manageCreditCard(
-                            CreditCard.Action.WITHDRAW, playerName, cardNumber, amount
+                            CreditCard.Action.WITHDRAW, playerName, cardNumber, amount, secret
                     );
                     writeToChannel(channel, "WDRSUCCESS=" + player.getPlayerName() + " " + player.getBank());
                     log.info("Withdrawn money from player {} to card {} success. New balance: {} ",

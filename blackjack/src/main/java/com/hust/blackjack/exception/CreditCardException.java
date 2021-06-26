@@ -19,4 +19,11 @@ public class CreditCardException extends Exception{
         public NotEnoughBalanceException(String msg) { super(msg); }
         public NotEnoughBalanceException(String msg, Throwable throwable) { super(msg, throwable); }
     }
+
+    public static class InvalidToken extends CreditCardException {
+        public InvalidToken() { }
+        public InvalidToken(Throwable throwable) { super(throwable); }
+        public InvalidToken(String msg) { super(msg); }
+        public InvalidToken(String msg, Throwable throwable) { super(msg, throwable); }
+    }
 }
