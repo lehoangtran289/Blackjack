@@ -1217,28 +1217,6 @@ border: 2px solid #ff2025;
    </property>
    <layout class="QVBoxLayout" name="card27"/>
   </widget>
-  <widget class="QLabel" name="username_label">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>430</y>
-     <width>140</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="text">
-    <string>Username</string>
-   </property>
-  </widget>
   <zorder>label_2</zorder>
   <zorder>chat_history</zorder>
   <zorder>chat_entry</zorder>
@@ -1306,7 +1284,6 @@ border: 2px solid #ff2025;
   <zorder>verticalLayoutWidget_16</zorder>
   <zorder>verticalLayoutWidget_41</zorder>
   <zorder>verticalLayoutWidget_42</zorder>
-  <zorder>username_label</zorder>
  </widget>
  <resources/>
  <connections/>

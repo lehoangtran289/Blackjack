@@ -34,14 +34,14 @@ class gamePage(QtWidgets.QWidget):
         self.play_phase = 0
         self.bet_phase = 0
         self.turn = 0
-        self.setWindowTitle('Room: ' + room_id)
+        self.setWindowTitle(self.user.username + ' - Room: ' + room_id)
         self.setFixedSize(800, 600)
         self.setGeometry(x, y, 800, 600)
         self.close_on_purpose = True
         self.quit_app = False
 
         # update user's information label
-        self.username_label.setText(str(self.user.username))
+        #self.username_label.setText(str(self.user.username))
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         
