@@ -61,7 +61,8 @@ public class CreditCardService {
             player.setBalance(player.getBalance() + amount);
         }
         else if (action == CreditCard.Action.WITHDRAW) {
-            if (player.getBalance() < amount || player.getBalance() <= 1000) {
+            // player.getBalance() < amount ||
+            if (player.getBalance() <= 1000 || player.getBalance() - amount < 1000) {
                 log.error("Player {} bank balance not enough, balance = {}", playerName, player.getBalance());
                 throw new PlayerException.NotEnoughBankBalanceException();
             }
