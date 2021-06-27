@@ -47,3 +47,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(b'DEAL=7 0 8 0,palizu 1 1 13 1')
                 time.sleep(2)
                 conn.sendall(b'TURN=palizu 1')
+            if header == 'STAND':
+                conn.sendall(b'CHECK=13 0,palizu blackjack 1000.0')

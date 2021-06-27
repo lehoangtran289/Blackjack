@@ -273,10 +273,17 @@ class gamePage(QtWidgets.QWidget):
                         self.display_chat(res.upper() + ', ' + username + ' loss $' + str(abs(gain_loss)))
                     else:
                         self.display_chat(res.upper() + ', ' + username + ' won $' + str(abs(gain_loss)))
-            rep = QtWidgets.QMessageBox.information(self, 'Result', info)
-            if rep == QtWidgets.QMessageBox.Ok:
+            #rep = QtWidgets.QMessageBox.information(self, 'Result', info)
+            msgBox = QtWidgets.QMessageBox()
+            ok_button = msgBox.addButton(QtWidgets.QMessageBox.Ok)
+            msgBox.setGeometry(self.pos().x() + 300, self.pos().y() + 200, 400, 200)
+            msgBox.setText(info)
+            msgBox.setWindowTitle("Game Result")
+            msgBox.exec_()
+            if msgBox.clickedButton() == ok_button:
+                #g test di
                 self.freezeUI(5000)
-                reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?', \
+                reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?',
                     QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if reply == QtWidgets.QMessageBox.Yes:
                     self.clear_table()
