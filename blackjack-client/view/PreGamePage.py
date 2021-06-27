@@ -40,10 +40,10 @@ class preGamePage(QtWidgets.QWidget):
 
     def enter_room(self):
         room_id, ok = QtWidgets.QInputDialog.getText(self, 'input dialog', 'Enter room id')
-        if self.validateInput(str(room_id)) == False or len(str(room_id)) != 4:
-            QtWidgets.QMessageBox.about(self, 'Enter room Failed', 'Room id must have length of 4 and contain only digits and alphabet characters')
-            return
         if ok:
+            if self.validateInput(str(room_id)) == False or len(str(room_id)) != 4:
+                QtWidgets.QMessageBox.about(self, 'Enter room Failed', 'Room id must have length of 4 and contain only digits and alphabet characters')
+                return
             room_id = str(room_id).strip()
             request = 'PLAY ' + self.user.username + ' ' + room_id
             response = self.connection.send_request(request)
