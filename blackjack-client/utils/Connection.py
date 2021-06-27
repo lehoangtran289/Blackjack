@@ -26,6 +26,7 @@ class connection():
             print("Error receiving message")
             self.show_message_box('Error 500', 'Internal Server Error! BlackJack will be terminated')
             exit()
+            
         print('received: ' + response)
         if response.split(' ')[0] == 'FAIL':
             self.show_message_box('Request Failed', response.split(' ')[1] + "! BlackJack will be termiated")
@@ -39,6 +40,7 @@ class connection():
             print('Error receiving message')
             self.show_message_box('Request Failed', 'Error recieving message! BlackJack will be termiated')
             exit()
+
         response = response.strip()
         if response == '':
             self.show_message_box('Error 500', 'Internal Server Error! BlackJack will be terminated')
