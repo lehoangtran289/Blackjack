@@ -249,7 +249,7 @@ class gamePage(QtWidgets.QWidget):
                 self.display_chat('System: Dealer hit a ' + configs.ranks[dealer_hand[i]] + ' of ' + configs.suits[dealer_hand[i + 1]])
                 i = i + 2
             players_result = message.split(',')[1:]
-            self.freezeUI(1000)
+            self.freezeUI(5000)
             for result in players_result:
                 username, res, gain_loss = result.split(' ')
                 gain_loss = float(gain_loss)
