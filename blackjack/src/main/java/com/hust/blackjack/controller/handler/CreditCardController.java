@@ -1,6 +1,7 @@
 package com.hust.blackjack.controller.handler;
 
 import com.hust.blackjack.exception.CreditCardException;
+import com.hust.blackjack.exception.InvalidChannelException;
 import com.hust.blackjack.exception.PlayerException;
 import com.hust.blackjack.exception.RequestException;
 import com.hust.blackjack.model.CreditCard;
@@ -8,6 +9,7 @@ import com.hust.blackjack.model.Player;
 import com.hust.blackjack.model.RequestType;
 import com.hust.blackjack.model.Token;
 import com.hust.blackjack.service.CreditCardService;
+import com.hust.blackjack.service.PlayerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,15 @@ import static com.hust.blackjack.utils.MessageUtils.writeToChannel;
 public class CreditCardController implements IController {
 
     private final CreditCardService creditCardService;
+    private final PlayerService playerService;
 
-    public CreditCardController(CreditCardService creditCardService) {
+    public CreditCardController(CreditCardService creditCardService, PlayerService playerService) {
         this.creditCardService = creditCardService;
+        this.playerService = playerService;
+    }
+
+    private boolean isValidChannelToProcess(String username, SocketChannel channel) throws PlayerException {
+        return playerService.getPlayerByName(username).getChannel() == channel;
     }
 
     @Override
@@ -34,6 +42,12 @@ public class CreditCardController implements IController {
             case CARDREQUEST: {
                 String cardId = request.get(1);
                 String username = request.get(2);
+                if (!isValidChannelToProcess(username, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Token token = creditCardService.sendToken(cardId, username);
                     writeToChannel(channel, "RQOK");
@@ -52,6 +66,12 @@ public class CreditCardController implements IController {
                 String cardNumber = request.get(2);
                 String secret = request.get(3);
                 double amount = Double.parseDouble(request.get(4));
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.ADD, playerName, cardNumber, amount, secret
@@ -80,6 +100,12 @@ public class CreditCardController implements IController {
                 String cardNumber = request.get(2);
                 String secret = request.get(3);
                 double amount = Double.parseDouble(request.get(4));
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Player player = creditCardService.manageCreditCard(
                             CreditCard.Action.WITHDRAW, playerName, cardNumber, amount, secret
