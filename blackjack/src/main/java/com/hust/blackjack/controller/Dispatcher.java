@@ -47,6 +47,7 @@ public class Dispatcher {
                 queryController.processRequest(channel, requestType, request);
                 break;
 
+            case CARDREQUEST:
             case ADDMONEY:
             case WITHDRAWMONEY:
                 cardController.processRequest(channel, requestType, request);

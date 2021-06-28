@@ -14,7 +14,7 @@ public class Player {
     // player's info
     private String playerName;
     private String password;
-    private double bank;
+    private double balance;
     private SocketChannel channel;
 
     // game state properties
@@ -29,13 +29,13 @@ public class Player {
 
     public Player(String playerName) {
         this.playerName = playerName;
-        this.bank = 1000;
+        this.balance = 1000;
     }
 
     public Player(String playerName, String password) {
         this.playerName = playerName;
         this.password = password;
-        this.bank = 1000;
+        this.balance = 1000;
     }
 
     public void refresh() {
@@ -58,7 +58,7 @@ public class Player {
 
     public void placeBet(double bet) {
         setBet(bet);
-        setBank(getBank() - bet);
+        setBalance(getBalance() - bet);
     }
 
     public ResultState checkPlayerFinalState(int dealerHand) {
@@ -81,7 +81,7 @@ public class Player {
                 "null";
         return "Player{" +
                 "playerName='" + playerName + '\'' +
-                ", bank=" + bank +
+                ", bank=" + balance +
                 ", channel=" + clientChannel +
                 ", tableId=" + tableId +
                 '}';

@@ -134,14 +134,14 @@ border-width:1px;</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>620</x>
      <y>370</y>
      <width>131</width>
      <height>151</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image : url(&quot;./asset/meme.png&quot;) 0 0 0 0 stretch stretch;</string>
+    <string notr="true">border-image : url(&quot;./asset/meme1.png&quot;) 0 0 0 0 stretch stretch;</string>
    </property>
    <property name="text">
     <string/>
@@ -169,7 +169,7 @@ border-width:1px;</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>490</x>
      <y>370</y>
      <width>131</width>
      <height>151</height>

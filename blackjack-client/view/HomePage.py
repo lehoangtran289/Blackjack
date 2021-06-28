@@ -24,7 +24,7 @@ class homePage(QtWidgets.QWidget):
         self.about_button.clicked.connect(self.about)
         #self.enter_room_button.clicked.connect(self.enter_room)
 
-        self.username_label.setText("Henlo " + self.user.username)
+        self.username_label.setText("Welcome, " + self.user.username)
         self.balance_label.setText('Balance: $' + str(self.user.balance))
     
     def play(self):
@@ -52,6 +52,9 @@ class homePage(QtWidgets.QWidget):
         self.history_page.show()
     
     def withdraw(self):
+        if float(self.user.balance) <= 1000:
+            QtWidgets.QMessageBox.about(self, 'Balance not enough', 'You must have more than $1000 to withdraw money')
+            return
         self.withdraw_page = WithdrawPage.withdrawPage(self.user, self.connection, self.pos().x(), self.pos().y() + 30)
         self.close_on_purpose = False
         self.close()

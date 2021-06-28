@@ -125,7 +125,7 @@ border-width:1px;</string>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
   </widget>
@@ -141,7 +141,7 @@ border-width:1px;</string>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
   </widget>

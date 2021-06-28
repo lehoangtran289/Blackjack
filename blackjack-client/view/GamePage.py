@@ -34,13 +34,14 @@ class gamePage(QtWidgets.QWidget):
         self.play_phase = 0
         self.bet_phase = 0
         self.turn = 0
-        self.setWindowTitle('Room: ' + room_id)
+        self.setWindowTitle(self.user.username + ' - Room: ' + room_id)
         self.setFixedSize(800, 600)
         self.setGeometry(x, y, 800, 600)
         self.close_on_purpose = True
         self.quit_app = False
 
         # update user's information label
+        #self.username_label.setText(str(self.user.username))
         self.balance_label.setText('$' + str(self.user.balance))
         self.bet_label.setText('$' + str(self.bet_value))
         
@@ -208,7 +209,7 @@ class gamePage(QtWidgets.QWidget):
                 self.display_card(self.room_players[pos], pos, self.room_players[pos].card_owned[1])
             if username == self.user.username:
                 self.turn = 1
-                if is_blackjack == 1:
+                if int(is_blackjack) == 1:
                     request = 'STAND ' + self.room_id + ' ' + username
                     self.connection.send(request)
                     #response = self.connection.send_request(request)
@@ -218,7 +219,7 @@ class gamePage(QtWidgets.QWidget):
                     self.display_chat('System: It\'s your turn')
                     #self.play_phase = 1
                     self.set_enable_play_button(True)
-            elif is_blackjack == 0:
+            elif int(is_blackjack) == 1:
                 self.display_chat('System: ' + username + ' got BlackJack')
             else:
                 self.display_chat('System: It\'s ' + username + '\'s turn')
@@ -248,7 +249,7 @@ class gamePage(QtWidgets.QWidget):
                 self.display_chat('System: Dealer hit a ' + configs.ranks[dealer_hand[i]] + ' of ' + configs.suits[dealer_hand[i + 1]])
                 i = i + 2
             players_result = message.split(',')[1:]
-            self.freezeUI(1000)
+            self.freezeUI(5000)
             for result in players_result:
                 username, res, gain_loss = result.split(' ')
                 gain_loss = float(gain_loss)
@@ -259,23 +260,30 @@ class gamePage(QtWidgets.QWidget):
                     elif gain_loss == self.bet_value:
                         self.display_chat(res.upper() + ', You will receive your bet $' + str(abs(gain_loss)))
                         info = res.upper() + ', You got a draw'
-                        self.user.balance += self.bet_value
+                        self.user.balance += self.gain_loss
                         self.balance_label.setText('$' + str(self.user.balance))
                     else:
                         self.display_chat(res.upper() + ', You won $' + str(gain_loss))
                         info = 'You beat the dealer with a ' + res.upper()
                         self.user.balance += gain_loss
-                        self.user.balance += self.bet_value
+                        #self.user.balance += self.bet_value
                         self.balance_label.setText('$' + str(self.user.balance))
                 else:
                     if gain_loss < 0:
                         self.display_chat(res.upper() + ', ' + username + ' loss $' + str(abs(gain_loss)))
                     else:
                         self.display_chat(res.upper() + ', ' + username + ' won $' + str(abs(gain_loss)))
-            rep = QtWidgets.QMessageBox.information(self, 'Result', info)
-            if rep == QtWidgets.QMessageBox.Ok:
+            #rep = QtWidgets.QMessageBox.information(self, 'Result', info)
+            msgBox = QtWidgets.QMessageBox()
+            ok_button = msgBox.addButton(QtWidgets.QMessageBox.Ok)
+            msgBox.setGeometry(self.pos().x() + 300, self.pos().y() + 200, 400, 200)
+            msgBox.setText(info)
+            msgBox.setWindowTitle("Game Result")
+            msgBox.exec_()
+            if msgBox.clickedButton() == ok_button:
+                #g test di
                 self.freezeUI(5000)
-                reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?', \
+                reply = QtWidgets.QMessageBox.question(self, 'Quit', 'Do you want to continue playing?',
                     QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if reply == QtWidgets.QMessageBox.Yes:
                     self.clear_table()

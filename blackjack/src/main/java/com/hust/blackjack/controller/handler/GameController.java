@@ -1,10 +1,7 @@
 package com.hust.blackjack.controller.handler;
 
 import com.hust.blackjack.common.tuple.Tuple2;
-import com.hust.blackjack.exception.LoginException;
-import com.hust.blackjack.exception.PlayerException;
-import com.hust.blackjack.exception.RequestException;
-import com.hust.blackjack.exception.TableException;
+import com.hust.blackjack.exception.*;
 import com.hust.blackjack.model.*;
 import com.hust.blackjack.service.PlayerService;
 import com.hust.blackjack.service.TableService;
@@ -32,6 +29,10 @@ public class GameController implements IController {
         this.playerService = playerService;
     }
 
+    private boolean isValidChannelToProcess(String username, SocketChannel channel) throws PlayerException {
+        return playerService.getPlayerByName(username).getChannel() == channel;
+    }
+
     @Override
     public void processRequest(SocketChannel channel, RequestType requestType, List<String> request)
             throws RequestException, IOException, LoginException, PlayerException, TableException {
@@ -39,6 +40,12 @@ public class GameController implements IController {
             case CREATEROOM: {
                 String playerName = request.get(1);
                 String password = request.get(2);
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Table table = tableService.createRoom(playerName, password);
                     // build response string and send to each players in table
@@ -72,6 +79,12 @@ public class GameController implements IController {
                 String tableId = request.size() > 2 ? request.get(2) : "";
                 String password = request.size() > 3 ?
                         request.stream().skip(3).collect(Collectors.joining(" ")) : "";
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Table table;
                     if (StringUtils.isEmpty(tableId)) {
@@ -136,6 +149,12 @@ public class GameController implements IController {
                         .skip(3)
                         .collect(Collectors.joining(" "));
                 String msgSend = "CHAT=" + playerName + " " + msgRcv;
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Table table = tableService.getTableById(tableId);
                     for (Player player : table.getPlayers()) {
@@ -151,7 +170,12 @@ public class GameController implements IController {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
                 double bet = Double.parseDouble(request.get(3));
-
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Player player = tableService.getBet(tableId, playerName, bet);
                     Table table = tableService.getTableById(tableId);
@@ -231,6 +255,12 @@ public class GameController implements IController {
             case BETQUIT: {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Table table = tableService.removePlayerInBetPhase(tableId, playerName);
                     // write to requested channel
@@ -317,7 +347,12 @@ public class GameController implements IController {
             case HIT: {
                 Table table = tableService.getTableById(request.get(1));
                 Player player = playerService.getPlayerByName(request.get(2));
-
+                if (!isValidChannelToProcess(player.getPlayerName(), channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     String msg = tableService.processHit(table, player);    // HIT BUST BLACKJACK
 
@@ -335,7 +370,12 @@ public class GameController implements IController {
                 Table table = tableService.getTableById(request.get(1));
                 List<Player> playersInTable = table.getPlayers();
                 Player player = playerService.getPlayerByName(request.get(2));
-
+                if (!isValidChannelToProcess(player.getPlayerName(), channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     sleep(1000);
                     String processedMsg = tableService.processStand(table, player);     // CHECK or TURN
@@ -356,6 +396,12 @@ public class GameController implements IController {
             case QUIT: {
                 String tableId = request.get(1);
                 String playerName = request.get(2);
+                if (!isValidChannelToProcess(playerName, channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
                 try {
                     Tuple2<Table, String> tup = tableService.removePlayer(tableId, playerName);
                     Table table = tup.getA0();
@@ -392,10 +438,16 @@ public class GameController implements IController {
                 Table table = tableService.getTableById(request.get(1));
                 Player player = playerService.getPlayerByName(request.get(2));
                 player.setIsReady(1);
+                if (!isValidChannelToProcess(player.getPlayerName(), channel)) {
+                    log.error("Invalid channel to process");
+                    writeToChannel(channel, "FAIL=invalid channel to process");
+                    new InvalidChannelException().printStackTrace();
+                    break;
+                }
 
-                if (player.getBank() < Table.MINIMUM_BET) {
+                if (player.getBalance() < Table.MINIMUM_BET) {
                     log.error("Invalid balance of player {} to start game, bl = {}"
-                            , player.getPlayerName(), player.getBank());
+                            , player.getPlayerName(), player.getBalance());
                     tableService.removePlayer(table.getTableId(), player.getPlayerName());
                     writeToChannel(channel, "FAIL=Balance not enough");
                     throw new TableException.NotEnoughBankBalanceException();
