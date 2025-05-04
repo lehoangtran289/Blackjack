@@ -1,2 +1,2 @@
 # Blackjack
-A game of blackjack
+Desktop blackjack game, with server and client communicating through socket
